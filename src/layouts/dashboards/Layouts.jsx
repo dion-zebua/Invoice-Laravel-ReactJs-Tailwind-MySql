@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import Nav from "./Nav";
 import Aside from "./Aside";
 
 export default function Layouts(props) {
+  const { sidebarActive, setSidebarActive } = useState(false);
   const { childred } = props;
+
+  
+
   return (
     <>
       <div className="">
         <Nav />
         <div className="flex overflow-hidden bg-white pt-16 lg:pt-[3.3rem]">
-          <Aside />
+          <Aside sidebarActive={sidebarActive} />
           <div
             id="main-content"
             className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">

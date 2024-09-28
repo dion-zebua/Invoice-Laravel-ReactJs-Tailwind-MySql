@@ -1,5 +1,4 @@
 import React from "react";
-
 export default function Nav() {
   return (
     <nav className="bg-white border-b border-gray-200 fixed z-30 w-full">
@@ -10,7 +9,7 @@ export default function Nav() {
               id="toggleSidebarMobile"
               aria-expanded="true"
               aria-controls="sidebar"
-              className="lg:hidden mr-2 text-gray-600 hover:text-gray-900 cursor-pointer p-2 hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 rounded">
+              className="lg:hidden mr-2 ring-1 ring-blue-200 text-blue-800  cursor-pointer p-2 bg-blue-50 hover:ring-2 hover:ring-blue-500 focus:ring-2 focus:ring-blue-500 rounded outline-none">
               <svg
                 id="toggleSidebarMobileHamburger"
                 className="w-6 h-6"
@@ -38,11 +37,11 @@ export default function Nav() {
             </button>
             <a
               href="https://dionzebua.com/umroh/dashboard"
-              className="w-40 md:w-44 xl:w-52 md:ml-2">
+              className="p-2 w-40 md:w-44 xl:w-52 md:ml-2">
               <img
                 className="w-full"
-                alt="Logo"
-                src="https://dionzebua.com/umroh/img/logo-panjang.png"
+                alt="Logo Invoice"
+                src="/images/invoice.jpg"
               />
             </a>
           </div>
@@ -66,11 +65,11 @@ export default function Nav() {
             <div className="relative">
               <button
                 type="button"
-                className="relative flex rounded-full bg-slate-800 focus:outline-none focus:ring-2 focus:ring-mine"
+                className="relative flex rounded-full bg-blue-600 hover:outline-none ring-2 hover:ring-2 hover:ring-slate-700"
                 id="user-menu-button">
                 <img
-                  className="h-7 w-auto rounded-full"
-                  src="https://dionzebua.com/umroh/img/user.png"
+                  className="h-7 invert p-[3px] w-auto rounded-full"
+                  src="./images/icons8-human-96.png"
                   alt="User"
                 />
               </button>
@@ -78,7 +77,7 @@ export default function Nav() {
                 <div className="rounded-md bg-white py-1 shadow">
                   <a
                     href="https://dionzebua.com/umroh/dashboard/profil"
-                    className="block px-4 py-2 text-slate-600 hover:text-mine">
+                    className="block px-4 py-2 text-slate-600 hover:text-blue-600">
                     Profil
                   </a>
                   <form
@@ -97,7 +96,7 @@ export default function Nav() {
                     />
                     <button
                       type="submit"
-                      className="w-full text-left px-4 py-2 text-slate-600 hover:text-mine">
+                      className="w-full text-left px-4 py-2 text-slate-600 hover:text-blue-600">
                       Bilyet DP
                     </button>
                   </form>
@@ -117,7 +116,7 @@ export default function Nav() {
                     />
                     <button
                       type="submit"
-                      className="w-full text-left px-4 py-2 text-slate-600 hover:text-mine">
+                      className="w-full text-left px-4 py-2 text-slate-600 hover:text-blue-600">
                       Logout
                     </button>
                   </form>
