@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Auth from "../../layouts/Auth";
+import Auth from "../../layouts/auths/Auth";
 import Label from "../../components/Label";
 import whatsapp from "../../helpers/GLobalFunction";
 import { InputText } from "primereact/inputtext";
