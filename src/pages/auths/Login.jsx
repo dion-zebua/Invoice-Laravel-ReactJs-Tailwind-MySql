@@ -7,10 +7,6 @@ import { InputText } from "primereact/inputtext";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const handlePassword = (e) => {
-    setShowPassword((prev) => !prev);
-  };
-
   const footer = () => {
     return (
       <p className="col-span-full text-right text-[13px]">
@@ -57,7 +53,7 @@ const Login = () => {
               name="password"
             />
             <svg
-              onClick={handlePassword}
+              onClick={(e) => setShowPassword((prev) => !prev)}
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"

@@ -2,14 +2,14 @@ import React from "react";
 
 export default function Aside(props) {
   const { sidebarActive } = props;
-
+  
   return (
     <>
       <aside
         id="sidebar"
         className={`${
-          sidebarActive ? "" : "hidden"
-        } fixed  z-20 h-full top-0 left-0 pt-16 lg:flex flex-shrink-0 flex-col w-64 transition-width duration-75`}
+          sidebarActive ? "!block" : ""
+        } fixed hidden z-20 h-full top-0 left-0 pt-16 lg:flex flex-shrink-0 flex-col w-64 transition-width duration-75`}
         aria-label="Sidebar">
         <div className="relative flex-1 flex flex-col min-h-full max-h-full border-r border-gray-200 bg-white pt-5">
           <div className="flex-1 flex flex-col pb-4 overflow-y-auto">
@@ -65,7 +65,9 @@ export default function Aside(props) {
         </div>
       </aside>
       <div
-        className="hover:cursor-pointer bg-gray-900 opacity-50 hidden lg:!hidden fixed inset-0 z-10 lg:-z-10"
+        className={`${
+          sidebarActive ? "!block" : ""
+        } hover:cursor-pointer bg-gray-900 opacity-50 hidden lg:!hidden fixed inset-0 z-10 lg:-z-10`}
         id="sidebarBackdrop"></div>
     </>
   );
