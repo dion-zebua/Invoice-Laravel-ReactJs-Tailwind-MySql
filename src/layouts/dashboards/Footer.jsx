@@ -1,15 +1,18 @@
 import React from "react";
 import globalFunction from "../../helpers/GLobalFunction";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
     <>
-      <footer className="bg-white flex items-center justify-between shadow rounded-lg p-4 m-5 text-sm">
+      <footer className="bg-white flex items-center justify-between shadow rounded-lg p-4 m-5">
         <p className="text-gray-500">
-          Kembali ke Dasboard&nbsp;
-          <a
+          Kembali ke&nbsp;
+          <Link
             className="underline"
-            href="/"></a>
+            to="/">
+            Dasboard
+          </Link>
         </p>
         <a
           href={globalFunction.whatsapp}

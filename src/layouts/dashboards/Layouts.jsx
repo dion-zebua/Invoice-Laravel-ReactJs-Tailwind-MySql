@@ -11,13 +11,14 @@ export default function Layouts(props) {
       <div className="h-full text-sm">
         <Nav openSidebar={(e) => setSidebarActive((prev) => !prev)} />
         <div className="flex overflow-hidden bg-white pt-16 lg:pt-[3.3rem]">
-          <Aside sidebarActive={sidebarActive} />
+          <Aside
+            sidebarActive={sidebarActive}
+            openSidebar={(e) => setSidebarActive((prev) => !prev)}
+          />
           <div
             id="main-content"
             className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64 pt-5">
-            <main className="min-h-full">
-
-            </main>
+            <main className="min-h-full"></main>
             <Footer />
           </div>
         </div>

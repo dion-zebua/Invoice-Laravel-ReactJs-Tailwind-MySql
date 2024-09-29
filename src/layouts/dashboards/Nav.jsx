@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Nav(props) {
   const { openSidebar } = props;
@@ -38,17 +39,17 @@ export default function Nav(props) {
                 />
               </svg>
             </button>
-            <a
-              href="https://dionzebua.com/umroh/dashboard"
+            <Link
+              to="/"
               className="p-2 w-32 md:w-40 xl:w-44 md:ml-2">
               <img
                 className="w-full"
                 alt="Logo Invoice"
                 src="/images/invoice.jpg"
               />
-            </a>
+            </Link>
           </div>
-          <div className="flex items-center group">
+          <div className="flex items-center group cursor-pointer">
             <div className="flex items-center mr-1 text-slate-600 group-hover:text-slate-800">
               <span className="font-normal">Mecca</span>
               <svg
@@ -77,47 +78,10 @@ export default function Nav(props) {
                 />
               </button>
               <div className="hidden group-hover:block top-full pt-5 right-1 lg:-right-1 absolute w-48">
-                <div className="rounded-md bg-white py-1 border shadow">
-                  <a
-                    href="https://dionzebua.com/umroh/dashboard/profil"
-                    className="block px-4 py-2 text-slate-600 hover:text-blue-600">
-                    Profil
-                  </a>
-                  <form
-                    action="https://dionzebua.com/umroh/dashboard/cetak-bilyet-dp/7b559ba3-1834-347c-a2e1-d49c4391d7f6"
-                    target="_blank"
-                    method="GET">
-                    <input
-                      type="hidden"
-                      name="_token"
-                      value="BlBNLY4Iv7r6w1H455iX49bvuJ6uNqrv81fW6fRe"
-                    />
-                    <input
-                      type="hidden"
-                      name="_method"
-                      value="GET"
-                    />
-                  </form>
+                <div className="rounded-md bg-white py-1 border shadow [&_a]:block [&_a]:px-4 [&_a]:py-2 [&_a]:text-slate-600 hover:[&_a]:text-blue-600">
+                  <Link to="/profil">Profil</Link>
                   <span className="h-[1px] bg-slate-100"></span>
-                  <form
-                    action="https://dionzebua.com/umroh/dashboard/logout"
-                    method="POST">
-                    <input
-                      type="hidden"
-                      name="_token"
-                      value="BlBNLY4Iv7r6w1H455iX49bvuJ6uNqrv81fW6fRe"
-                    />
-                    <input
-                      type="hidden"
-                      name="_method"
-                      value="POST"
-                    />
-                    <button
-                      type="submit"
-                      className="w-full text-left px-4 py-2 text-slate-600 hover:text-blue-600">
-                      Logout
-                    </button>
-                  </form>
+                  <a href="#!">Logout</a>
                 </div>
               </div>
             </div>
