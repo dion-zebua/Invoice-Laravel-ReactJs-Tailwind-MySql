@@ -11,14 +11,14 @@ export default function Aside(props) {
           sidebarActive ? "!block" : ""
         } fixed hidden z-20 h-full top-0 left-0 pt-16 lg:flex flex-shrink-0 flex-col w-64 transition-width duration-75`}
         aria-label="Sidebar">
-        <div className="relative flex-1 flex flex-col min-h-full max-h-full border-r border-gray-200 bg-white pt-5">
+        <div className="relative flex-1 flex flex-col min-h-full max-h-full border-r border-gray-200 bg-white pt-2">
           <div className="flex-1 flex flex-col pb-4 overflow-y-auto">
             <div className="flex-1 px-3 bg-white divide-y space-y-1 pb-14">
-              <ul className="space-y-2 pb-2 text-sm pt-5">
-                <li className="!mb-5">
+              <ul className="space-y-2 pb-2 pt-5">
+                <li className="mb-2">
                   <a
                     href="https://dionzebua.com/umroh/dashboard"
-                    className="text-slate-600 font-semibold rounded-lg flex items-center p-2 hover:text-slate-800 hover:bg-slate-100 group">
+                    className="text-slate-600 font-medium rounded-lg flex items-center p-2 hover:text-slate-800 hover:bg-slate-100 group">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="size-[19px] text-gray-500 group-hover:text-blue-600 stroke-current stroke-2"
@@ -29,10 +29,10 @@ export default function Aside(props) {
                     <span className="ml-3">Dasbor</span>
                   </a>
                 </li>
-                <li className="!mb-5">
+                <li className="mb-2">
                   <a
                     href="#!"
-                    className="text-slate-600 font-semibold rounded-lg flex items-center p-2 hover:text-slate-800 hover:bg-slate-100 group">
+                    className="text-slate-600 font-medium rounded-lg flex items-center p-2 hover:text-slate-800 hover:bg-slate-100 group">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="size-[19px] text-gray-500 group-hover:text-blue-600 stroke-current stroke-2"
@@ -42,11 +42,11 @@ export default function Aside(props) {
                     </svg>
                     <span className="ml-3">User</span>
                   </a>
-                  <ul className="mt-2 text-[13px]">
+                  <ul className="mt-2">
                     <li className="mb-2">
                       <a
                         href="https://dionzebua.com/umroh/dashboard/user"
-                        className="border-l ml-9 text-slate-500 font-medium rounded hover:border-blue-600 flex items-center p-1.5 hover:text-slate-700 group">
+                        className="border-l ml-9 text-slate-500 font-medium rounded hover:border-blue-600 flex items-center p-1 hover:text-slate-700 group">
                         <span className="ml-3">Semua User</span>
                       </a>
                     </li>

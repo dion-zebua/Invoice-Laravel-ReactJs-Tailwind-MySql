@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Auth from "../../layouts/auths/Auth";
 import Label from "../../components/Label";
-import whatsapp from "../../helpers/GLobalFunction";
+import globalFunction from "../../helpers/GLobalFunction";
 import { InputText } from "primereact/inputtext";
 
 const Login = () => {
@@ -13,7 +13,7 @@ const Login = () => {
         Tidak punya akun?&nbsp;
         <a
           className="underline"
-          href={whatsapp()}
+          href={globalFunction.whatsapp}
           target="_blank">
           Daftar
         </a>

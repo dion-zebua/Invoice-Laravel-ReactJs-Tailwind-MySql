@@ -40,7 +40,7 @@ export default function Nav(props) {
             </button>
             <a
               href="https://dionzebua.com/umroh/dashboard"
-              className="p-2 w-40 md:w-44 xl:w-52 md:ml-2">
+              className="p-2 w-32 md:w-40 xl:w-44 md:ml-2">
               <img
                 className="w-full"
                 alt="Logo Invoice"
@@ -50,7 +50,7 @@ export default function Nav(props) {
           </div>
           <div className="flex items-center group">
             <div className="flex items-center mr-1 text-slate-600 group-hover:text-slate-800">
-              <span className="text-sm font-normal">MECCA</span>
+              <span className="font-normal">Mecca</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -71,13 +71,13 @@ export default function Nav(props) {
                 className="relative flex rounded-full bg-blue-600 hover:outline-none ring-2 hover:ring-2 hover:ring-slate-700"
                 id="user-menu-button">
                 <img
-                  className="h-7 invert p-[3px] w-auto rounded-full"
+                  className="h-6 invert p-[3px] w-auto rounded-full"
                   src="./images/icons8-human-96.png"
                   alt="User"
                 />
               </button>
               <div className="hidden group-hover:block top-full pt-5 right-1 lg:-right-1 absolute w-48">
-                <div className="rounded-md bg-white py-1 shadow">
+                <div className="rounded-md bg-white py-1 border shadow">
                   <a
                     href="https://dionzebua.com/umroh/dashboard/profil"
                     className="block px-4 py-2 text-slate-600 hover:text-blue-600">
@@ -97,11 +97,6 @@ export default function Nav(props) {
                       name="_method"
                       value="GET"
                     />
-                    <button
-                      type="submit"
-                      className="w-full text-left px-4 py-2 text-slate-600 hover:text-blue-600">
-                      Bilyet DP
-                    </button>
                   </form>
                   <span className="h-[1px] bg-slate-100"></span>
                   <form

@@ -39,7 +39,7 @@
     @apply text-lg;
   }
   p {
-    @apply text-base text-slate-600;
+    @apply text-sm text-slate-600;
   }
 
   input {
