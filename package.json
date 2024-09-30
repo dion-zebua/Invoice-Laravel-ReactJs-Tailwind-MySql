@@ -11,6 +11,7 @@
     "malas": "git add . && git commit -m \"malas\" && git pull origin main && git push -u origin main"
   },
   "dependencies": {
+    "chart.js": "^4.4.4",
     "primereact": "^10.8.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

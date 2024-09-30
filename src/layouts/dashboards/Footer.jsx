@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <>
       <footer className="">
-        <div className="bg-white flex items-center justify-between shadow rounded-lg p-4 m-5">
+        <div className="bg-white flex items-center justify-between shadow p-5 m-5">
           <p className="text-gray-500">
             Kembali ke&nbsp;
             <Link
