@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Chart } from "primereact/chart";
 import Layout from "../../layouts/dashboards/Layout";
 import Container from "../../layouts/dashboards/Container";
+import { Link } from "react-router-dom";
+import globalFunction from "../../helpers/GLobalFunction";
 
 export default function Index() {
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
+  const [user, setUser] = useState([]);
 
   useEffect(() => {
     const data = {
@@ -38,8 +41,42 @@ export default function Index() {
       },
     };
 
+    const userTable = [
+      {
+        nama: "Andi Setiawan",
+        handphone: "081234567890",
+        company: "PT. Maju Jaya",
+        total_invoice: 150,
+      },
+      {
+        nama: "Budi Santoso",
+        handphone: "082345678901",
+        company: "CV. Sukses Selalu",
+        total_invoice: 2500,
+      },
+      {
+        nama: "Citra Dewi",
+        handphone: "083456789012",
+        company: "PT. Mitra Abadi",
+        total_invoice: 750,
+      },
+      {
+        nama: "Doni Prasetyo",
+        handphone: "084567890123",
+        company: "UD. Sinar Harapan",
+        total_invoice: 20,
+      },
+      {
+        nama: "Eka Ramadhani",
+        handphone: "085678901234",
+        company: "PT. Teknologi Canggih",
+        total_invoice: 1800,
+      },
+    ];
+
     setChartData(data);
     setChartOptions(options);
+    setUser(userTable);
   }, []);
 
   return (
@@ -64,59 +101,40 @@ export default function Index() {
           />
         </Container>
         <Container title="Pengguna Terbaru">
-          <div class="relative rounded-xl overflow-auto">
-            <div class="shadow-sm overflow-x-scroll my-8">
-              <table class="border-collapse table-auto w-full text-sm min-w-[600px]">
-                <thead>
-                  <tr>
-                    <th class="border-b dark:border-slate-600 font-medium p-4 pl-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
-                      Song
+          <div className="relative overflow-x-auto">
+            <table className="w-full text-left rtl:text-right">
+              <thead className="uppercase text-xs bg-slate-100 text-slate-600">
+                <tr className="[&_th]:px-6 [&_th]:p-3">
+                  <th scope="col">Nama</th>
+                  <th scope="col">Handphone</th>
+                  <th scope="col">Company</th>
+                  <th scope="col">Total Invoice</th>
+                </tr>
+              </thead>
+              <tbody>
+                {user.map((e, i) => (
+                  <tr
+                    key={i}
+                    className="odd:bg-white even:bg-slate-50 border-b [&>*]:px-6 [&>*]:py-1 sm:[&>*]:py-4 [&>*]:text-slate-600">
+                    <th
+                      scope="row"
+                      className="font-medium !text-slate-800 whitespace-nowrap">
+                      <Link className="underline">{e.nama}</Link>
                     </th>
-                    <th class="border-b dark:border-slate-600 font-medium p-4 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
-                      Artist
-                    </th>
-                    <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 dark:text-slate-200 text-left">
-                      Year
-                    </th>
+                    <td>
+                      <Link
+                        className="underline"
+                        target="_blank"
+                        to={`https://wa.me/${globalFunction.phoneNumber(e.handphone)}`}>
+                        {e.handphone}
+                      </Link>
+                    </td>
+                    <td>{e.company}</td>
+                    <td>{e.total_invoice}</td>
                   </tr>
-                </thead>
-                <tbody class="bg-white dark:bg-slate-800">
-                  <tr>
-                    <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
-                      The Sliding Mr. Bones (Next Stop, Pottersville)
-                    </td>
-                    <td class="border-b border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">
-                      Malcolm Lockyer
-                    </td>
-                    <td class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">
-                      1961
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
-                      Witchy Woman
-                    </td>
-                    <td class="border-b border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">
-                      The Eagles
-                    </td>
-                    <td class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">
-                      1972
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="border-b border-slate-200 dark:border-slate-600 p-4 pl-8 text-slate-500 dark:text-slate-400">
-                      Shining Star
-                    </td>
-                    <td class="border-b border-slate-200 dark:border-slate-600 p-4 text-slate-500 dark:text-slate-400">
-                      Earth, Wind, and Fire
-                    </td>
-                    <td class="border-b border-slate-200 dark:border-slate-600 p-4 pr-8 text-slate-500 dark:text-slate-400">
-                      1975
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         </Container>
       </Layout>
