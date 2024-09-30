@@ -43,7 +43,7 @@ export default function Aside(props) {
                 {menuItems.map((item, index) => (
                   <li
                     key={index}
-                    className="!mb-5">
+                    className="!mb-2">
                     <Link
                       to={item.route ? `${item.route}` : "#!"}
                       className={`text-slate-600 font-medium rounded-lg flex items-center p-2 hover:text-slate-800 hover:bg-slate-100 ${

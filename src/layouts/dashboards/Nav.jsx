@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Nav(props) {
-  const { openSidebar } = props;
+  const { openSidebar, sidebarActive } = props;
+
   return (
     <nav className="bg-white border-b border-gray-200 fixed z-30 w-full">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
@@ -13,10 +14,10 @@ export default function Nav(props) {
               id="toggleSidebarMobile"
               aria-expanded="true"
               aria-controls="sidebar"
-              className="lg:hidden mr-2 ring-1 ring-blue-200 text-blue-800  cursor-pointer p-2 bg-blue-50 hover:ring-2 hover:ring-blue-500 focus:ring-2 focus:ring-blue-500 rounded outline-none">
+              className="lg:hidden mr-2 ring-1 ring-blue-200 text-blue-800  cursor-pointer p-2 bg-blue-50 hover:ring-2 hover:ring-blue-500 focus:ring-2 focus:ring-blue-500 rounded outline-none [&_svg]:w-6 [&_svg]:h-6">
               <svg
                 id="toggleSidebarMobileHamburger"
-                className="w-6 h-6"
+                className={`${sidebarActive ? "hidden" : "block"}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg">
@@ -28,7 +29,7 @@ export default function Nav(props) {
               </svg>
               <svg
                 id="toggleSidebarMobileClose"
-                className="w-6 h-6 hidden"
+                className={`${!sidebarActive ? "hidden" : "block"}`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +52,7 @@ export default function Nav(props) {
           </div>
           <div className="flex items-center group cursor-pointer">
             <div className="flex items-center mr-1 text-slate-600 group-hover:text-slate-800">
-              <span className="font-normal">Mecca</span>
+              <span className="font-normal">Dion Zebua</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

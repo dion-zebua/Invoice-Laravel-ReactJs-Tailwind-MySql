@@ -1,6 +1,6 @@
 import React from "react";
-import Layouts from "../../layouts/dashboards/Layouts";
+import Layout from "../../layouts/dashboards/Layout";
 
 export default function Index() {
-  return <Layouts>asas</Layouts>;
+  return <Layout>asas</Layout>;
 }

@@ -9,7 +9,10 @@ export default function Layouts(props) {
   return (
     <>
       <div className="h-full text-sm">
-        <Nav openSidebar={(e) => setSidebarActive((prev) => !prev)} />
+        <Nav
+          openSidebar={(e) => setSidebarActive((prev) => !prev)}
+          sidebarActive={sidebarActive}
+        />
         <div className="flex overflow-hidden bg-white pt-16 lg:pt-[3.3rem]">
           <Aside
             sidebarActive={sidebarActive}
