@@ -41,6 +41,40 @@ export default function Profil() {
           />
         </FormField>
       </Container>
+
+      <Container
+        className=""
+        title="Ubah Password">
+        <FormField>
+          <Label
+            text="Email"
+            htmlFor="email"
+          />
+
+          <InputText
+            type="email"
+            className="p-inputtext-sm"
+            required
+            id="email"
+            name="email"
+          />
+        </FormField>
+
+        <FormField>
+          <Label
+            text="Telepon"
+            htmlFor="phone"
+          />
+
+          <InputText
+            type="number"
+            className="p-inputtext-sm"
+            required
+            id="phone"
+            name="phone"
+          />
+        </FormField>
+      </Container>
     </Layout>
   );
 }
