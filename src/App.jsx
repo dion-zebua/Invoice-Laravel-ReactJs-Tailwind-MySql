@@ -10,6 +10,7 @@ import Login from "./pages/auths/Login";
 import { PrimeReactProvider } from "primereact/api";
 import React from "react";
 import Index from "./pages/dashboard/Index";
+import Profil from "./pages/dashboard/Profil";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -23,6 +24,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route
             index
             element={<Index />}
+          />
+          <Route
+            path="profil"
+            element={<Profil />}
           />
           <Route
             path="*"
