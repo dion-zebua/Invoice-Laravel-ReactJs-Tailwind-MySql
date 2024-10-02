@@ -86,6 +86,7 @@ export default function Index() {
           className="sm:!col-span-6"
           title="Invoice">
           <Chart
+            className="w-full"
             type="bar"
             data={chartData}
             options={chartOptions}
@@ -95,6 +96,7 @@ export default function Index() {
           className="sm:!col-span-6 sm:-mt-14"
           title="Pendapatan">
           <Chart
+            className="w-full"
             type="line"
             data={chartData}
             options={chartOptions}
@@ -119,17 +121,21 @@ export default function Index() {
                     <th
                       scope="row"
                       className="font-medium !text-slate-800 whitespace-nowrap">
-                      <Link className="underline">{e.nama}</Link>
+                      <Link className="underline">
+                        {globalFunction.limit(e.nama, 15)}
+                      </Link>
                     </th>
                     <td>
                       <Link
                         className="underline"
                         target="_blank"
-                        to={`https://wa.me/${globalFunction.phoneNumber(e.handphone)}`}>
+                        to={`https://wa.me/${globalFunction.phoneNumber(
+                          e.handphone
+                        )}`}>
                         {e.handphone}
                       </Link>
                     </td>
-                    <td>{e.company}</td>
+                    <td>{globalFunction.limit(e.company, 25)}</td>
                     <td>{e.total_invoice}</td>
                   </tr>
                 ))}
