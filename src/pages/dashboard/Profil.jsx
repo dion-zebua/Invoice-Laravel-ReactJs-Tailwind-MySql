@@ -4,13 +4,28 @@ import Container from "../../layouts/dashboards/Container";
 import Label from "../../components/Label";
 import { InputText } from "primereact/inputtext";
 import FormField from "../../components/FormField";
+import ButtonRight from "../../components/ButtonRight";
 
 export default function Profil() {
   return (
     <Layout title="Profil">
       <Container
-        className=""
+        className="[&>*]:col-span-full [&>*]:sm:col-span-1 grid-cols-2"
         title="Ubah Profil">
+        <FormField>
+          <Label
+            text="Nama"
+            htmlFor="nama"
+          />
+
+          <InputText
+            type="text"
+            className="p-inputtext-sm"
+            required
+            id="nama"
+            name="name"
+          />
+        </FormField>
         <FormField>
           <Label
             text="Email"
@@ -25,21 +40,7 @@ export default function Profil() {
             name="email"
           />
         </FormField>
-
-        <FormField>
-          <Label
-            text="Telepon"
-            htmlFor="phone"
-          />
-
-          <InputText
-            type="number"
-            className="p-inputtext-sm"
-            required
-            id="phone"
-            name="phone"
-          />
-        </FormField>
+        <ButtonRight />
       </Container>
 
       <Container
