@@ -2,14 +2,10 @@ import React from "react";
 import Layout from "../../../layouts/dashboards/Layout";
 import Container from "../../../layouts/dashboards/Container";
 
-export default function Index() {
+export default function Add() {
   return (
-    <>
-      <Layout title="Semua Pengguna">
-        <Container>
-          test
-        </Container>
-      </Layout>
-    </>
+    <Layout title="Tambah Pengguna">
+      <Container>test</Container>
+    </Layout>
   );
 }

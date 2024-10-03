@@ -13,6 +13,7 @@ import Index from "./pages/dashboard/Index";
 import Profil from "./pages/dashboard/Profil";
 
 import UserIndex from "./pages/dashboard/user/Index";
+import Add from "./pages/dashboard/user/Add";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -31,10 +32,16 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             path="profil"
             element={<Profil />}
           />
+
           <Route
             path="user"
             element={<UserIndex />}
           />
+          <Route
+            path="user/tambah-pengguna"
+            element={<Add />}
+          />
+
           <Route
             path="*"
             element={<NotFound />}

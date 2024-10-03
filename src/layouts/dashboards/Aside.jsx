@@ -21,7 +21,7 @@ export default function Aside(props) {
         },
         {
           name: "Tambah Pengguna",
-          route: "/user/tambah",
+          route: "/user/tambah-pengguna",
         },
       ],
     },
