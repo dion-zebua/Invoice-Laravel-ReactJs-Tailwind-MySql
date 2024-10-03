@@ -42,14 +42,14 @@ export default function Aside(props) {
                 {menuItems.map((item, index) => (
                   <li
                     key={index}
-                    className="!mb-2">
+                    className="!mb-2 [&>a]:has-[.sub-active]:!text-slate-800 [&>a]:has-[.sub-active]:!bg-slate-100 [&>a>svg]:has-[.sub-active]:!text-blue-600">
                     <Link
                       to={item.route ? `${item.route}` : "#!"}
                       className={`text-slate-600 font-medium rounded-lg flex items-center p-2 hover:text-slate-800 hover:bg-slate-100 ${
                         location.pathname === item.route
                           ? "text-slate-800 bg-slate-100"
                           : ""
-                      } group [&>svg]:has-[.sub-active]:!text-slate-600`}>
+                      } group `}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className={`size-[19px] text-gray-500 group-hover:text-blue-600 stroke-current stroke-2 ${

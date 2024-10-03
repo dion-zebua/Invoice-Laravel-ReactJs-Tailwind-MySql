@@ -7,7 +7,6 @@ export default function Index() {
     <>
       <Layout title="Dashboard">
         <Container
-          className="sm:!col-span-6"
           title="Semua Pengguna">
           a
         </Container>
