@@ -74,7 +74,7 @@ export default function Nav(props) {
                 id="user-menu-button">
                 <img
                   className="h-6 invert p-[3px] w-auto rounded-full"
-                  src="./images/icons8-human-96.png"
+                  src="/images/icons8-human-96.png"
                   alt="User"
                 />
               </button>
