@@ -80,7 +80,13 @@ export default function Nav(props) {
               </button>
               <div className="hidden group-hover:block top-full pt-5 right-1 lg:-right-1 absolute w-48">
                 <div className="rounded-md bg-white py-1 border shadow [&_a]:block [&_a]:px-4 [&_a]:py-2 [&_a]:text-slate-600 hover:[&_a]:text-blue-600">
-                  <Link to="/profil">Profil</Link>
+                  <Link
+                    className={
+                      location.pathname == "/profil" ? "!text-blue-600" : ""
+                    }
+                    to="/profil">
+                    Profil
+                  </Link>
                   <span className="h-[1px] bg-slate-100"></span>
                   <a href="#!">Logout</a>
                 </div>

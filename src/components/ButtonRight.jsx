@@ -9,7 +9,7 @@ export default function ButtonRight(props) {
         type="submit"
         className="mt-3  bg-blue-600 hover:bg-blue-700"
         size="small"
-        label={label ?? "props"}
+        label={label ?? "Simpan"}
       />
     </div>
   );

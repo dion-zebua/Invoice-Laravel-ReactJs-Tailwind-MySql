@@ -5,6 +5,7 @@ import Label from "../../components/Label";
 import { InputText } from "primereact/inputtext";
 import FormField from "../../components/FormField";
 import ButtonRight from "../../components/ButtonRight";
+import InputPassword from "../../components/InputPassword";
 
 export default function Profil() {
   return (
@@ -44,37 +45,26 @@ export default function Profil() {
       </Container>
 
       <Container
-        className=""
+        className="[&>*]:col-span-full [&>*]:sm:col-span-1 grid-cols-2"
         title="Ubah Password">
         <FormField>
           <Label
-            text="Email"
-            htmlFor="email"
+            text="Password Lama"
+            htmlFor="password"
           />
 
-          <InputText
-            type="email"
-            className="p-inputtext-sm"
-            required
-            id="email"
-            name="email"
-          />
+          <InputPassword />
         </FormField>
 
         <FormField>
           <Label
-            text="Telepon"
-            htmlFor="phone"
+            text="password Baru"
+            htmlFor="confirmation-password"
           />
 
-          <InputText
-            type="number"
-            className="p-inputtext-sm"
-            required
-            id="phone"
-            name="phone"
-          />
+          <InputPassword name="confirmation-password" />
         </FormField>
+        <ButtonRight />
       </Container>
     </Layout>
   );

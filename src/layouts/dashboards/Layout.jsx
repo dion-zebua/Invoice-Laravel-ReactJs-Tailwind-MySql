@@ -21,7 +21,7 @@ export default function Layouts(props) {
           />
           <div
             id="main-content"
-            className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64 pt-5">
+            className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">
             <TitlePage title={title} />
             <main className="min-h-full p-5 grid grid-cols-12 gap-x-5 gap-y-7 [&>div]:col-span-full [&>div]:bg-white [&>div]:shadow [&>div]:p-5 [&>div]:rounded-none first:[&>div]:-mt-14">
               {children}

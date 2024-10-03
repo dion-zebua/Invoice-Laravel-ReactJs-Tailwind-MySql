@@ -38,7 +38,6 @@ export default function Aside(props) {
         <div className="relative flex-1 flex flex-col min-h-full max-h-full border-r border-gray-200 bg-white pt-2">
           <div className="flex-1 flex flex-col pb-4 overflow-y-auto">
             <div className="flex-1 px-3 bg-white divide-y space-y-1 pb-14">
-
               <ul className="space-y-2 pb-2 text-sm pt-5">
                 {menuItems.map((item, index) => (
                   <li
@@ -47,14 +46,14 @@ export default function Aside(props) {
                     <Link
                       to={item.route ? `${item.route}` : "#!"}
                       className={`text-slate-600 font-medium rounded-lg flex items-center p-2 hover:text-slate-800 hover:bg-slate-100 ${
-                        window.location.pathname === item.route
+                        location.pathname === item.route
                           ? "text-slate-800 bg-slate-100"
                           : ""
-                      } group`}>
+                      } group [&>svg]:has-[.sub-active]:!text-slate-600`}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className={`size-[19px] text-gray-500 group-hover:text-blue-600 stroke-current stroke-2 ${
-                          window.location.pathname === item.route
+                          location.pathname === item.route
                             ? "!text-blue-600"
                             : ""
                         }`}
@@ -73,8 +72,8 @@ export default function Aside(props) {
                             <Link
                               to={sub.route ? `${sub.route}` : "#!"}
                               className={`border-l ml-9 text-slate-500 font-medium rounded hover:border-blue-600 flex items-center p-1.5 hover:text-slate-700 ${
-                                window.location.pathname === sub.name
-                                  ? "border-blue-600 !text-slate-700"
+                                location.pathname === sub.route
+                                  ? "!border-blue-600 !text-slate-700 sub-active"
                                   : ""
                               } group`}>
                               <span className="ml-3">{sub.name}</span>

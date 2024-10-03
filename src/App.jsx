@@ -12,6 +12,8 @@ import React from "react";
 import Index from "./pages/dashboard/Index";
 import Profil from "./pages/dashboard/Profil";
 
+import UserIndex from "./pages/dashboard/user/Index";
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <PrimeReactProvider>
@@ -28,6 +30,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route
             path="profil"
             element={<Profil />}
+          />
+          <Route
+            path="user"
+            element={<UserIndex />}
           />
           <Route
             path="*"
