@@ -7,19 +7,21 @@ import { InputText } from "primereact/inputtext";
 import ButtonRight from "../../../components/ButtonRight";
 import InputPassword from "../../../components/InputPassword";
 
-export default function Add() {
+export default function Edit() {
   return (
-    <Layout title="Tambah Pengguna">
+    <Layout title="Edit Perusahaan">
       <Container
         className="[&>*]:col-span-full [&>*]:sm:col-span-1 grid-cols-2"
-        title="Buat Profil">
+        title="Edit Profil">
         <FormField>
           <Label
             text="Nama"
             htmlFor="nama"></Label>
           <InputText
+            required
             id="nama"
-            name="name"></InputText>
+            name="name"
+          />
         </FormField>
         <FormField>
           <Label
@@ -27,14 +29,31 @@ export default function Add() {
             htmlFor="email"></Label>
           <InputText
             id="email"
+            required
             type="email"
-            name="email"></InputText>
+            name="email"
+          />
         </FormField>
-        <FormField className="!col-span-full">
+        <FormField>
           <Label
-            text="Password"
-            htmlFor="password"></Label>
-          <InputPassword></InputPassword>
+            text="Telepon"
+            htmlFor="telepon"></Label>
+          <InputText
+            id="telepon"
+            required
+            type="number"
+            name="telephon"
+          />
+        </FormField>
+        <FormField>
+          <Label
+            text="Alamat"
+            htmlFor="alamat"></Label>
+          <InputText
+            required
+            id="alamat"
+            name="address"
+          />
         </FormField>
         <ButtonRight />
       </Container>
