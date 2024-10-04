@@ -5,7 +5,7 @@ export default function Label(props) {
 
   return (
     <label
-      className={`mb-1 block text-sm font-medium leading-6 text-slate-600 ${
+      className={`cursor-pointer mb-1 block text-sm font-medium leading-6 text-slate-600 ${
         className || ""
       }`}
       htmlFor={htmlFor ?? ""}>

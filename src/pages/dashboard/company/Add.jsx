@@ -11,7 +11,7 @@ export default function Add() {
   return (
     <Layout title="Tambah Perusahaan">
       <Container
-        className="[&>*]:col-span-full [&>*]:sm:col-span-1 grid-cols-2"
+        className="[&>*]:col-span-full [&>*]:sm:col-span-3 grid-cols-6"
         title="Buat Profil">
         <FormField>
           <Label
@@ -23,6 +23,7 @@ export default function Add() {
             name="name"
           />
         </FormField>
+
         <FormField>
           <Label
             text="Email"
@@ -34,6 +35,7 @@ export default function Add() {
             name="email"
           />
         </FormField>
+
         <FormField>
           <Label
             text="Telepon"
@@ -45,6 +47,7 @@ export default function Add() {
             name="telephon"
           />
         </FormField>
+
         <FormField>
           <Label
             text="Alamat"
@@ -55,6 +58,40 @@ export default function Add() {
             name="address"
           />
         </FormField>
+
+        <FormField className="md:!col-span-2">
+          <Label
+            text="Metode Pembayaran"
+            htmlFor="payment_methode"></Label>
+          <InputText
+            required
+            id="payment_methode"
+            name="payment_methode"
+          />
+        </FormField>
+
+        <FormField className="md:!col-span-2">
+          <Label
+            text="Nomor Akun"
+            htmlFor="payment_name"></Label>
+          <InputText
+            required
+            id="payment_name"
+            name="payment_name"
+          />
+        </FormField>
+
+        <FormField className="sm:!col-span-full md:!col-span-2">
+          <Label
+            text="Nama Akun"
+            htmlFor="payment_name"></Label>
+          <InputText
+            required
+            id="payment_name"
+            name="payment_name"
+          />
+        </FormField>
+
         <ButtonRight />
       </Container>
     </Layout>
