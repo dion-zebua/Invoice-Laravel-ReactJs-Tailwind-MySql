@@ -8,11 +8,16 @@ import ButtonRight from "../../components/ButtonRight";
 import InputPassword from "../../components/InputPassword";
 
 export default function Profil() {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("asas");
+  };
   return (
     <Layout title="Profil">
       <Container
         className="[&>*]:col-span-full [&>*]:sm:col-span-1 grid-cols-2"
-        title="Ubah Profil">
+        title="Ubah Profil"
+        onSubmit={(e) => handleSubmit(e)}>
         <FormField>
           <Label
             text="Nama"
@@ -20,7 +25,6 @@ export default function Profil() {
           />
 
           <InputText
-            type="text"
             className="p-inputtext-sm"
             required
             id="nama"
