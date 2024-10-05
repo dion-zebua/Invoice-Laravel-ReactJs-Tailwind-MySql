@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../../layouts/dashboards/Layout";
 import Container from "../../../layouts/dashboards/Container";
 import FormField from "../../../components/FormField";
@@ -7,9 +7,11 @@ import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import ButtonRight from "../../../components/ButtonRight";
 import { Button } from "primereact/button";
+import { Checkbox } from "primereact/checkbox";
 
 export default function Add() {
   const [selectedStatus, setSelectedStatus] = useState(null);
+  const [checked, setChecked] = useState(false);
   const [detailPriceInvoice, setDetailPriceInvoice] = useState({
     sub_total: 0,
     discount: 0,
@@ -30,6 +32,7 @@ export default function Add() {
     },
   ]);
   const [productQuantity, setProductQuantity] = useState([1]);
+
   const status = [
     { name: "Belum Lunas", code: "0" },
     { name: "Lunas", code: "1" },
@@ -99,6 +102,32 @@ export default function Add() {
     e.preventDefault();
     alert("Test Form Profil");
   };
+
+  useEffect(() => {
+    const subTotal = productInvoice.reduce((total, product) => {
+      return total + Number(product.amount);
+    }, 0);
+    const total = subTotal - detailPriceInvoice.discount;
+    // const tax =
+    const grandTotal =
+      detailPriceInvoice.tax == 1 ? total - (total * 11) / 100 : total;
+    const paid_off = grandTotal - detailPriceInvoice.down_payment;
+
+    setDetailPriceInvoice((prev) => ({
+      ...prev,
+      sub_total: subTotal,
+      total: total,
+      tax: checked ? 1 : 0,
+      grand_total: grandTotal,
+      paid_off: paid_off,
+    }));
+  }, [
+    productInvoice,
+    detailPriceInvoice.discount,
+    detailPriceInvoice.tax,
+    detailPriceInvoice.down_payment,
+  ]);
+
   return (
     <Layout title="Tambah Invoice">
       <Container
@@ -334,6 +363,7 @@ export default function Add() {
               htmlFor="sub_total"
             />
             <InputText
+              min={0}
               value={detailPriceInvoice.sub_total}
               disabled
               id="sub_total"
@@ -352,9 +382,16 @@ export default function Add() {
             <InputText
               value={detailPriceInvoice.discount}
               id="discount"
+              min={0}
               required
               type="number"
               name="discount"
+              onChange={(e) => {
+                setDetailPriceInvoice((prev) => ({
+                  ...prev,
+                  discount: e.target.value,
+                }));
+              }}
             />
           </FormField>
 
@@ -371,6 +408,7 @@ export default function Add() {
               required
               type="number"
               name="total"
+              min={0}
             />
           </FormField>
 
@@ -378,15 +416,34 @@ export default function Add() {
             <Label
               className="mb-0"
               text="PPN : 11%"
-              htmlFor="pajak"
+              htmlFor="tax"
+            />
+            <Checkbox
+              id="tax"
+              required
+              name="tax"
+              onChange={(e) => {
+                const isChecked = e.target.checked;
+                setChecked(isChecked);
+                setDetailPriceInvoice((prev) => ({
+                  ...prev,
+                  tax: isChecked ? 1 : 0,
+                }));
+              }}
+              checked={checked}
             />
             <InputText
-              value={detailPriceInvoice.tax}
+              value={
+                detailPriceInvoice.tax == 1
+                  ? (detailPriceInvoice.total * 11) / 100
+                  : 0
+              }
               disabled
               id="pajak"
               required
               type="number"
-              name="tax"
+              min={0}
+              name="pajak"
             />
           </FormField>
 
@@ -403,6 +460,7 @@ export default function Add() {
               required
               type="number"
               name="grand_total"
+              min={0}
             />
           </FormField>
 
@@ -417,7 +475,14 @@ export default function Add() {
               id="down_payment"
               required
               type="number"
+              min={0}
               name="down_payment"
+              onChange={(e) => {
+                setDetailPriceInvoice((prev) => ({
+                  ...prev,
+                  down_payment: e.target.value,
+                }));
+              }}
             />
           </FormField>
 
@@ -434,6 +499,7 @@ export default function Add() {
               required
               type="number"
               name="paid_off"
+              min={0}
             />
           </FormField>
         </div>
