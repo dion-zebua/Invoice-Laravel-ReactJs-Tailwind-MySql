@@ -6,6 +6,7 @@ import Label from "../../../components/Label";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import ButtonRight from "../../../components/ButtonRight";
+import { Button } from "primereact/button";
 
 export default function Add() {
   const [selectedCity, setSelectedCity] = useState(null);
@@ -119,7 +120,84 @@ export default function Add() {
         </FormField>
 
         <div className="!col-span-full border-t border-slate-300 mt-12 pt-7">
-          Table produk ini
+          <div className="relative overflow-x-auto">
+            <table className="w-full text-left rtl:text-right text-gray-500">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+                <tr className="[&_th]:px-6 [&_th]:py-3">
+                  <th scope="col">Produk / Jasa</th>
+                  <th scope="col">Qty</th>
+                  <th scope="col">Satuan</th>
+                  <th scope="col">Harga</th>
+                  <th scope="col">Jumlah</th>
+                  <th scope="col">Aksi</th>
+                </tr>
+              </thead>
+              <tbody className="[&_tr]:bg-white even:[&_tr]:bg-slate-50 hover:[&_tr]:bg-slate-100 [&_td]:border-b [&_td]:px-6 [&_td]:py-3">
+                <tr>
+                  <td className="font-medium text-slate-700">
+                    Travel Jakarta Surabaya
+                  </td>
+                  <td>
+                    <div className="flex items-center">
+                      <button
+                        className="inline-flex items-center justify-center p-1 me-3 text-sm font-medium h-6 w-6 text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200"
+                        type="button">
+                        <span className="sr-only">Quantity button</span>
+                        <svg
+                          className="w-3 h-3"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 18 2">
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M1 1h16"
+                          />
+                        </svg>
+                      </button>
+                      <div>
+                        <input
+                          type="number"
+                          id="quantity"
+                          className="bg-gray-50 w-14 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-2.5 py-1"
+                          placeholder="1"
+                          required
+                        />
+                      </div>
+                      <button
+                        className="inline-flex items-center justify-center h-6 w-6 p-1 ms-3 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-full focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200"
+                        type="button">
+                        <span className="sr-only">Quantity button</span>
+                        <svg
+                          className="w-3 h-3"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 18 18">
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M9 1v16M1 9h16"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                  <td>Kursi</td>
+                  <td>Rp 180.000</td>
+                  <td>Rp 180.000</td>
+                  <td>
+                    <Button label="Hapus" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
         <div className="!col-span-full grid grid-cols-8 border-t border-slate-300 mt-12 pt-7 [&>div]:col-span-full md:[&>div]:col-span-3 xl:[&>div]:col-span-2 [&>div]:!col-end-9 [&>div]:flex [&>div]:justify-center [&>div]:items-center [&>div]:gap-x-2 [&_label]:!min-w-28 [&_label]:text-right [&_:is(.disabled,.disabled_label)]:!cursor-not-allowed [&_.disabled_input]:bg-gray-200 [&_.disabled_input]:border-gray-500">
           <FormField className="disabled">
