@@ -8,11 +8,16 @@ import ButtonRight from "../../../components/ButtonRight";
 import InputPassword from "../../../components/InputPassword";
 
 export default function Add() {
+  const handleSubmitProfile = (e) => {
+    e.preventDefault();
+    alert("Test Form Profil");
+  };
   return (
     <Layout title="Tambah Pengguna">
       <Container
         className="[&>*]:col-span-full [&>*]:sm:col-span-1 grid-cols-2"
-        title="Buat Profil">
+        title="Buat Profil"
+        onSubmit={(e) => handleSubmitProfile(e)}>
         <FormField>
           <Label
             text="Nama"

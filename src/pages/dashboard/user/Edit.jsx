@@ -8,11 +8,16 @@ import ButtonRight from "../../../components/ButtonRight";
 import InputPassword from "../../../components/InputPassword";
 
 export default function Edit() {
+  const handleSubmitProfile = (e) => {
+    e.preventDefault();
+    alert("Test Form Profil");
+  };
   return (
     <Layout title="Edit Pengguna">
       <Container
         className="[&>*]:col-span-full [&>*]:sm:col-span-1 grid-cols-2"
-        title="Edit Profil">
+        title="Edit Profil"
+        onSubmit={(e) => handleSubmitProfile(e)}>
         <FormField>
           <Label
             text="Nama"

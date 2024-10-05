@@ -8,16 +8,22 @@ import ButtonRight from "../../components/ButtonRight";
 import InputPassword from "../../components/InputPassword";
 
 export default function Profil() {
-  const handleSubmit = (e) => {
+  const handleSubmitProfile = (e) => {
     e.preventDefault();
-    console.log("asas");
+    alert("Test Form Profil");
   };
+
+  const handleSubmitPassword = (e) => {
+    e.preventDefault();
+    alert("Test Form Password");
+  };
+
   return (
     <Layout title="Profil">
       <Container
         className="[&>*]:col-span-full [&>*]:sm:col-span-1 grid-cols-2"
         title="Ubah Profil"
-        onSubmit={(e) => handleSubmit(e)}>
+        onSubmit={(e) => handleSubmitProfile(e)}>
         <FormField>
           <Label
             text="Nama"
@@ -50,7 +56,8 @@ export default function Profil() {
 
       <Container
         className="[&>*]:col-span-full [&>*]:sm:col-span-1 grid-cols-2"
-        title="Ubah Password">
+        title="Ubah Password"
+        onSubmit={(e) => handleSubmitPassword(e)}>
         <FormField>
           <Label
             text="Password Lama"

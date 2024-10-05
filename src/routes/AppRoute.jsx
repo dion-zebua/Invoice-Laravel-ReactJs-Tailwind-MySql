@@ -14,6 +14,7 @@ import CompanyIndex from "../pages/dashboard/company/Index";
 import CompanyAdd from "../pages/dashboard/company/Add";
 import CompanyEdit from "../pages/dashboard/company/Edit";
 import CompanyRoute from "./CompanyRoute";
+import ProductRoute from "./ProductRoute";
 
 export default function AppRoute() {
   return (
@@ -46,6 +47,11 @@ export default function AppRoute() {
       <Route
         path="perusahaan/*"
         element={<CompanyRoute />}
+      />
+
+      <Route
+        path="produk/*"
+        element={<ProductRoute />}
       />
     </Routes>
   );
