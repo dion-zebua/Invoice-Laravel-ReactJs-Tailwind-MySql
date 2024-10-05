@@ -118,6 +118,114 @@ export default function Add() {
           />
         </FormField>
 
+        <div className="!col-span-full border-t border-slate-300 mt-12 pt-7">
+          Table produk ini
+        </div>
+        <div className="!col-span-full grid grid-cols-8 border-t border-slate-300 mt-12 pt-7 [&>div]:col-span-full md:[&>div]:col-span-3 xl:[&>div]:col-span-2 [&>div]:!col-end-9 [&>div]:flex [&>div]:justify-center [&>div]:items-center [&>div]:gap-x-2 [&_label]:!min-w-28 [&_label]:text-right [&_:is(.disabled,.disabled_label)]:!cursor-not-allowed [&_.disabled_input]:bg-gray-200 [&_.disabled_input]:border-gray-500">
+          <FormField className="disabled">
+            <Label
+              className="mb-0"
+              text="Sub Total : Rp"
+              htmlFor="sub_total"
+            />
+            <InputText
+              disabled
+              id="sub_total"
+              required
+              type="number"
+              name="sub_total"
+            />
+          </FormField>
+
+          <FormField>
+            <Label
+              className="mb-0"
+              text="Diskon : Rp"
+              htmlFor="discount"
+            />
+            <InputText
+              id="discount"
+              required
+              type="number"
+              name="discount"
+            />
+          </FormField>
+
+          <FormField className="disabled">
+            <Label
+              className="mb-0"
+              text="Total : Rp"
+              htmlFor="total"
+            />
+            <InputText
+              disabled
+              id="total"
+              required
+              type="number"
+              name="total"
+            />
+          </FormField>
+
+          <FormField className="disabled">
+            <Label
+              className="mb-0"
+              text="PPN : 11%"
+              htmlFor="pajak"
+            />
+            <InputText
+              disabled
+              id="pajak"
+              required
+              type="number"
+              name="tax"
+            />
+          </FormField>
+
+          <FormField className="disabled">
+            <Label
+              className="mb-0"
+              text="Grand Total : Rp"
+              htmlFor="grand_total"
+            />
+            <InputText
+              disabled
+              id="grand_total"
+              required
+              type="number"
+              name="grand_total"
+            />
+          </FormField>
+
+          <FormField>
+            <Label
+              className="mb-0"
+              text="DP : Rp"
+              htmlFor="down_payment"
+            />
+            <InputText
+              id="down_payment"
+              required
+              type="number"
+              name="down_payment"
+            />
+          </FormField>
+
+          <FormField className="disabled">
+            <Label
+              className="mb-0"
+              text="Sisa : Rp"
+              htmlFor="paid_off"
+            />
+            <InputText
+              disabled
+              id="paid_off"
+              required
+              type="number"
+              name="paid_off"
+            />
+          </FormField>
+        </div>
+
         <ButtonRight />
       </Container>
     </Layout>
