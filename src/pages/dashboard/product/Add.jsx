@@ -10,23 +10,18 @@ import UploadImage from "../../../components/UploadImage";
 import PreviewImage from "../../../components/PreviewImage";
 
 export default function Add() {
-  const [image, setImage] = useState(null);
-
-  const handleImageUpload = (uploadedImage) => {
-    setImage(uploadedImage);
-  };
 
   const handleSubmitProfile = (e) => {
     e.preventDefault();
     alert("Test Form Profil");
   };
   return (
-    <Layout title="Tambah Perusahaan">
+    <Layout title="Tambah Produk">
       <Container
         className="[&>*]:col-span-full [&>*]:sm:col-span-3 grid-cols-6"
-        title="Buat Profil"
+        title="Buat Produk"
         onSubmit={(e) => handleSubmitProfile(e)}>
-        <FormField>
+        <FormField className="!col-span-full">
           <Label
             text="Nama"
             htmlFor="nama"
@@ -40,93 +35,27 @@ export default function Add() {
 
         <FormField>
           <Label
-            text="Email"
-            htmlFor="email"
+            text="Unit"
+            htmlFor="unit"
           />
           <InputText
-            id="email"
+            id="unit"
             required
-            type="email"
-            name="email"
+            name="unit"
           />
         </FormField>
 
         <FormField>
           <Label
-            text="Telepon"
-            htmlFor="telepon"
+            text="Harga"
+            htmlFor="price"
           />
           <InputText
-            id="telepon"
+            id="price"
             required
             type="number"
-            name="telephon"
+            name="price"
           />
-        </FormField>
-
-        <FormField>
-          <Label
-            text="Alamat"
-            htmlFor="alamat"
-          />
-          <InputText
-            required
-            id="alamat"
-            name="address"
-          />
-        </FormField>
-
-        <FormField className="md:!col-span-2">
-          <Label
-            text="Metode Pembayaran"
-            htmlFor="payment_methode"
-          />
-          <InputText
-            required
-            id="payment_methode"
-            name="payment_methode"
-          />
-        </FormField>
-
-        <FormField className="md:!col-span-2">
-          <Label
-            text="Nomor Akun"
-            htmlFor="payment_name"
-          />
-          <InputText
-            required
-            id="payment_name"
-            name="payment_name"
-          />
-        </FormField>
-
-        <FormField className="sm:!col-span-full md:!col-span-2">
-          <Label
-            text="Nama Akun"
-            htmlFor="payment_name"
-          />
-          <InputText
-            required
-            id="payment_name"
-            name="payment_name"
-          />
-        </FormField>
-
-        <FormField className="min-h-52 [&>div]:h-full flex flex-col">
-          <Label
-            text="Logo Perusahaan"
-            htmlFor="logo"
-          />
-          <UploadImage onUpload={handleImageUpload} />
-        </FormField>
-
-        <FormField className="min-h-52 [&>div]:h-full flex flex-col">
-          <Label
-            className="!cursor-auto"
-            text="Preview Logo Perusahaan"
-            htmlFor="logo-preview"
-          />
-          <PreviewImage image={image} />
         </FormField>
 
         <ButtonRight />

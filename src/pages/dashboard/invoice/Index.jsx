@@ -5,7 +5,7 @@ import Container from "../../../layouts/dashboards/Container";
 export default function Index() {
   return (
     <>
-      <Layout title="Semua Produk">
+      <Layout title="Semua Invoice">
         <Container>
           test
         </Container>

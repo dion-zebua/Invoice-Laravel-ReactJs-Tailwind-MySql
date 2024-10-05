@@ -15,6 +15,7 @@ import CompanyAdd from "../pages/dashboard/company/Add";
 import CompanyEdit from "../pages/dashboard/company/Edit";
 import CompanyRoute from "./CompanyRoute";
 import ProductRoute from "./ProductRoute";
+import InvoiceRoute from "./InvoiceRoute";
 
 export default function AppRoute() {
   return (
@@ -52,6 +53,11 @@ export default function AppRoute() {
       <Route
         path="produk/*"
         element={<ProductRoute />}
+      />
+
+      <Route
+        path="invoice/*"
+        element={<InvoiceRoute />}
       />
     </Routes>
   );
