@@ -82,9 +82,11 @@ export default function Nav(props) {
                 <div className="rounded-md bg-white py-1 border shadow [&_a]:block [&_a]:px-4 [&_a]:py-2 [&_a]:text-slate-600 hover:[&_a]:text-blue-600">
                   <Link
                     className={
-                      location.pathname == "/profil" ? "!text-blue-600" : ""
+                      location.pathname == "/dashboard/profil"
+                        ? "!text-blue-600"
+                        : ""
                     }
-                    to="/profil">
+                    to="/dashboard/profil">
                     Profil
                   </Link>
                   <span className="h-[1px] bg-slate-100"></span>

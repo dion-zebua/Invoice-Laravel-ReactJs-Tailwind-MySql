@@ -31,7 +31,7 @@ export default function AppRoute() {
       />
 
       <Route
-        path="profil"
+        path="/dashboard/profil"
         element={<Profil />}
       />
 
