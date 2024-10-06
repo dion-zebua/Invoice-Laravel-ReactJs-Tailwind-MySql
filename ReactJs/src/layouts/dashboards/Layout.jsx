@@ -5,7 +5,7 @@ import Footer from "./Footer";
 import TitlePage from "./TitlePage";
 import { Skeleton } from "primereact/skeleton";
 
-export default function Layouts(props) {
+export default function Layout(props) {
   const [sidebarActive, setSidebarActive] = useState(false);
   const [loading, setLoading] = useState(true);
   const { children, title } = props;

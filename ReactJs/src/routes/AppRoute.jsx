@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import React from "react";
+import React, { createContext, useContext } from "react";
 
 import { PrimeReactProvider } from "primereact/api";
 
@@ -10,14 +10,12 @@ import NotFound from "../pages/NotFound";
 
 import UserRoute from "./UserRoute";
 
-import CompanyIndex from "../pages/dashboard/company/Index";
-import CompanyAdd from "../pages/dashboard/company/Add";
-import CompanyEdit from "../pages/dashboard/company/Edit";
 import CompanyRoute from "./CompanyRoute";
 import ProductRoute from "./ProductRoute";
 import InvoiceRoute from "./InvoiceRoute";
 
 export default function AppRoute() {
+
   return (
     <Routes>
       <Route
