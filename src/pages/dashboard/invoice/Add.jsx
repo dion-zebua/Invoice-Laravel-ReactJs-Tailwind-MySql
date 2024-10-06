@@ -25,7 +25,7 @@ export default function Add() {
     {
       idRow: 1,
       name: "",
-      quantity: 1,
+      quantity: 0,
       unit: "",
       price: "",
       amount: "",
@@ -279,7 +279,7 @@ export default function Add() {
                             onChange={(e) =>
                               handleChangeProduct(e, product.idRow)
                             }
-                            min={1}
+                            min={0}
                             required
                             type="number"
                             value={product.quantity}
@@ -493,6 +493,7 @@ export default function Add() {
               htmlFor="paid_off"
             />
             <InputText
+              className="font-bold text-slate-900 !text-base"
               value={detailPriceInvoice.paid_off}
               disabled
               id="paid_off"
