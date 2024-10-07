@@ -25,7 +25,7 @@ class Verification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Verification User INVOICES.MY.ID',
+            subject: 'Verifikasi Pengguna INVOICES.MY.ID',
         );
     }
 

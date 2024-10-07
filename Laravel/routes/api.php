@@ -19,5 +19,13 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::resource('user', UserController::class)->only(['index', 'store', 'update', 'destroy']);
-// Route::get('user', 'UserController@index');
+Route::prefix('user')->group(function () {
+    Route::post('/', [UserController::class, 'store']);
+    Route::get('/{id}', [UserController::class, 'show']);
+    Route::put('/{id}', [UserController::class, 'update']);
+    Route::delete('/{id}', [UserController::class, 'destroy']);
+
+    // Verifikasi
+    Route::post('/{id}/kirim-verifikasi/', [UserController::class, 'kirimVerifikasi']);
+    Route::post('/{id}/cek-verifikasi/{token}', [UserController::class, 'cekVerifikasi']);
+});
