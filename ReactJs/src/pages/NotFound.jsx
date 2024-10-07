@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "primereact/button";
 import Layout from "../layouts/dashboards/Layout";
+import { AuthContext } from "../hooks/AuthContext";
 
 const Logout = (props) => {
+  const isLogin = useContext(AuthContext);
   const { className } = props;
   return (
     <div
@@ -17,11 +19,11 @@ const Logout = (props) => {
           Maaf, halaman yang Anda cari tidak dapat ditemukan.
         </p>
         <Link
-          to="/"
+          to={isLogin.login ? "/" : "/login"}
           className="w-full mt-5">
           <Button
             size="small"
-            label="Kembali ke Dashbord"
+            label={isLogin.login ? "Ke Halaman Dashbord" : "Ke Halaman Login"}
             icon="pi pi-check"
             className="w-full"
           />
@@ -38,8 +40,10 @@ const Login = () => {
   );
 };
 
-const NotFound = ({isLogin = true}) => {
-  return isLogin ? <Login /> : <Logout />;
+const NotFound = () => {
+  const isLogin = useContext(AuthContext);
+
+  return isLogin.login ? <Login /> : <Logout />;
 };
 
 export default NotFound;

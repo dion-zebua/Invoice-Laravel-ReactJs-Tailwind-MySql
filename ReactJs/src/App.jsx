@@ -5,12 +5,15 @@ import { PrimeReactProvider } from "primereact/api";
 
 import "./assets/styles/index.css";
 import AppRoute from "./routes/AppRoute";
+import AuthProvider from "./hooks/AuthContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <PrimeReactProvider>
       <BrowserRouter>
-        <AppRoute />
+        <AuthProvider>
+          <AppRoute />
+        </AuthProvider>
       </BrowserRouter>
     </PrimeReactProvider>
   </React.StrictMode>

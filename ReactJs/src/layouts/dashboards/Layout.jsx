@@ -6,6 +6,8 @@ import TitlePage from "./TitlePage";
 import { Skeleton } from "primereact/skeleton";
 
 export default function Layout(props) {
+
+  
   const [sidebarActive, setSidebarActive] = useState(false);
   const [loading, setLoading] = useState(true);
   const { children, title } = props;

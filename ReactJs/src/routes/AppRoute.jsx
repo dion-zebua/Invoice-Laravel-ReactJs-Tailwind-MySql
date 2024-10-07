@@ -1,5 +1,5 @@
-import { Routes, Route } from "react-router-dom";
-import React, { createContext, useContext } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import React, { useContext } from "react";
 
 import { PrimeReactProvider } from "primereact/api";
 
@@ -13,50 +13,48 @@ import UserRoute from "./UserRoute";
 import CompanyRoute from "./CompanyRoute";
 import ProductRoute from "./ProductRoute";
 import InvoiceRoute from "./InvoiceRoute";
+import AuthProvider, { AuthContext } from "../hooks/AuthContext";
 
 export default function AppRoute() {
+  const routes = [
+    { path: "/", element: <Index />, protected: true },
+    { path: "/login", element: <Login /> },
+    { path: "/user/profil", element: <Profil />, protected: true },
+    { path: "user/*", element: <UserRoute />, protected: true },
+    { path: "perusahaan/*", element: <CompanyRoute />, protected: true },
+    { path: "produk/*", element: <ProductRoute />, protected: true },
+    { path: "invoice/*", element: <InvoiceRoute />, protected: true },
+    { path: "*", element: <NotFound /> },
+  ];
+
+  const isLogin = useContext(AuthContext);
+  console.log(isLogin.login);
 
   return (
     <Routes>
-      <Route
-        index
-        element={<Index />}
-      />
+      {routes.map((route, index) => {
+        const { path, element, protected: isProtected } = route;
 
-      <Route
-        path="login"
-        element={<Login />}
-      />
-
-      <Route
-        path="/dashboard/profil"
-        element={<Profil />}
-      />
-
-      <Route
-        path="*"
-        element={<NotFound />}
-      />
-
-      <Route
-        path="user/*"
-        element={<UserRoute />}
-      />
-
-      <Route
-        path="perusahaan/*"
-        element={<CompanyRoute />}
-      />
-
-      <Route
-        path="produk/*"
-        element={<ProductRoute />}
-      />
-
-      <Route
-        path="invoice/*"
-        element={<InvoiceRoute />}
-      />
+        return (
+          <Route
+            key={index}
+            path={path}
+            element={
+              isLogin.login ? (
+                path == "/login" ? (
+                  <Navigate to={"/"} />
+                ) : (
+                  element
+                )
+              ) : path != "/login" && path != "*" ? (
+                <Navigate to={"/login"} />
+              ) : (
+                element
+              )
+            }
+          />
+        );
+      })}
     </Routes>
   );
 }
