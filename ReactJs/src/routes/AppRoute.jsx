@@ -28,7 +28,6 @@ export default function AppRoute() {
   ];
 
   const isLogin = useContext(AuthContext);
-  console.log(isLogin.login);
 
   return (
     <Routes>
