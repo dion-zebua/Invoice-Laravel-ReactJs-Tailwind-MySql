@@ -19,12 +19,18 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['middleware' => ['auth.not.authenticated']], function () {
-    Route::post('loginn', [AuthController::class, 'login']);
+    Route::post('login', [AuthController::class, 'login']);
     Route::post('user/{id}/check-verifikasi/{token}', [UserController::class, 'checkVerifikasi']);
 });
 
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('logout', function () {
+        return response()->json([
+            'status' => true,
+        ]);
+    });
+
     // User
     Route::prefix('user')->group(function () {
         Route::post('/', [UserController::class, 'store']);
