@@ -61,7 +61,7 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Berhasil daftar.',
+            'message' => 'Berhasil tambah.',
             'data' => $user,
         ], 201);
     }
@@ -155,7 +155,7 @@ class UserController extends Controller
     }
 
 
-    public function kirimVerifikasi($id)
+    public function sendVerifikasi($id)
     {
         $user = User::find($id);
         if (!$user) {
@@ -181,7 +181,7 @@ class UserController extends Controller
         ], 200);
     }
 
-    public function cekVerifikasi($id, $token)
+    public function checkVerifikasi($id, $token)
     {
         $user = User::where('id', $id)
             ->where('token_verified', $token)

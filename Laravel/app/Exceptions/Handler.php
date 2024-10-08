@@ -2,8 +2,10 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+
 
 class Handler extends ExceptionHandler
 {
@@ -12,6 +14,17 @@ class Handler extends ExceptionHandler
      *
      * @var array<int, string>
      */
+
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Tidak terautentikasi.',
+            ], 401);
+        }
+    }
+
     protected $dontFlash = [
         'current_password',
         'password',
