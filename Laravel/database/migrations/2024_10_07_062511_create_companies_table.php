@@ -18,9 +18,9 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade');
             $table->string('name');
-            $table->string('logo');
+            $table->string('logo')->nullable();
             $table->string('address');
-            $table->integer('telephone');
+            $table->string('telephone');
             $table->string('email');
             $table->string('payment_methode');
             $table->string('payment_name');

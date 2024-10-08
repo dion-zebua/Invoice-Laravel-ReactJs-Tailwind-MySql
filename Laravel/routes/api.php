@@ -42,7 +42,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/{id}/send-verifikasi/', [UserController::class, 'sendVerifikasi']);
     });
 
-
     Route::prefix('company')->group(function () {
         Route::post('/', [CompanyController::class, 'store']);
         Route::get('/{id}', [CompanyController::class, 'show']);
