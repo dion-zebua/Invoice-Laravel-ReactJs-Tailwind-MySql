@@ -7,6 +7,7 @@ use App\Mail\Verification;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -33,6 +34,7 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
+
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
@@ -42,7 +44,7 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validasi error.',
                 'errors' => $validator->errors(),
             ], 422);
@@ -60,7 +62,7 @@ class UserController extends Controller
         Mail::to($request->email)->send(new Verification($user, $tokenVerified));
 
         return response()->json([
-            'success' => true,
+            'status' => true,
             'message' => 'Berhasil tambah.',
             'data' => $user,
         ], 201);
@@ -114,7 +116,7 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'success' => false,
+                'status' => false,
                 'message' => 'Validasi error.',
                 'errors' => $validator->errors(),
             ], 422);
@@ -128,7 +130,7 @@ class UserController extends Controller
         ]);
 
         return response()->json([
-            'success' => true,
+            'status' => true,
             'message' => 'Berhasil update.',
             'data' => $user,
         ], 201);
@@ -190,7 +192,7 @@ class UserController extends Controller
         if (!$user) {
             return response()->json([
                 'status' => false,
-                'message' => 'Pengguna tidak ditemukan'
+                'message' => 'Token / Pengguna tidak ditemukan'
             ], 404);
         }
 

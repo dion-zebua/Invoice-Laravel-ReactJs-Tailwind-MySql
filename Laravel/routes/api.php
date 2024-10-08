@@ -18,7 +18,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('login', [AuthController::class, 'login'])->middleware(['guest']);
+Route::group(['middleware' => ['auth.not.authenticated']], function () {
+    Route::post('loginn', [AuthController::class, 'login']);
+    Route::post('user/{id}/check-verifikasi/{token}', [UserController::class, 'checkVerifikasi']);
+});
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [AuthController::class, 'logout']);
@@ -31,7 +34,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         // Verifikasi
         Route::post('/{id}/send-verifikasi/', [UserController::class, 'sendVerifikasi']);
-        Route::post('/{id}/check-verifikasi/{token}', [UserController::class, 'checkVerifikasi']);
     });
 
 
