@@ -84,9 +84,21 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Company $company)
+    public function show($id)
     {
-        //
+        $company = Company::find($id);
+        if ($company) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Pengguna ditemukan',
+                'data' => $company,
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Pengguna tidak ditemukan'
+            ], 404);
+        }
     }
 
     /**
