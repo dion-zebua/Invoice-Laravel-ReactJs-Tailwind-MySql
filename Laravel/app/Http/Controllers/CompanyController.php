@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Company;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
-use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
 {
@@ -31,13 +31,12 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(\Illuminate\Http\Request $request)
+    public function store(Request $request)
     {
-
+        // return $request;
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
-            'logo' => 'nullable|image|mimes:jpeg,jpg,png,webp|size:1024',
-            // 'logo' => 'nullable|string',
+            'logo' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:1024',
             'email' => 'required|email|unique:users,email,' . Auth::id(),
             'telephone' => 'required|string|min:6|max:15',
             'address' => 'required|string|max:100',
@@ -45,17 +44,6 @@ class CompanyController extends Controller
             'payment_name' => 'required|string|max:100',
             'payment_number' => 'required|string|max:100',
         ]);
-
-
-        // if ($request->file('image')) {
-        //     $file = $request->file('image');
-        //     $filename = date('YmdHi') . $file->getClientOriginalName();
-        //     // $file->move(public_path('public/Image'), $filename);
-        //     $data['image'] = $filename;
-
-        //     return response()->json($filename);
-        // }
-        return response()->json($request->file('logo'));
 
         if ($validator->fails()) {
             return response()->json([
@@ -65,13 +53,20 @@ class CompanyController extends Controller
             ], 422);
         }
 
+        if ($request->file('logo')) {
+            $file = $request->file('logo');
+            $filename = time() . '-' . Str::random(5) . '-' . $file->getClientOriginalName();
+            $file->move(public_path('img/company'), $filename);
+            $data['image'] = $filename;
+        }
+
         $id = Auth::id();
         $company = Company::create([
             'users_id' => $id,
             'name' => $request->name,
             'email' => $request->email,
             'address' => $request->address,
-            'logo' => $request->logo,
+            'logo' => $filename ?? NULL,
             'telephone' => $request->telephone,
             'payment_methode' => $request->payment_methode,
             'payment_name' => $request->payment_name,
