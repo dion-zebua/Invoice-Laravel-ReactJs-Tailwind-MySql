@@ -6,6 +6,7 @@ use App\Models\Company;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
@@ -107,8 +108,25 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Company $company)
+    public function destroy($id)
     {
-        //
+        $company = Company::find($id);
+        if (!$company) {
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Perusahaan tidak ditemukan'
+            ], 404);
+        }
+        if (File::exists(public_path('/img/company/' . $company->logo))) {
+            File::delete(public_path('/img/company/' . $company->logo));
+        }
+
+        $company->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Perusahaan telah dihapus',
+        ], 200);
     }
 }
