@@ -17,14 +17,14 @@ return new class extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('logo')->nullable();
-            $table->string('address');
-            $table->string('telephone');
-            $table->string('email');
-            $table->string('payment_methode');
-            $table->string('payment_name');
-            $table->string('payment_number');
+            $table->string('address')->nullable();
+            $table->string('telephone')->nullable();
+            $table->string('email')->nullable();
+            $table->string('payment_methode')->nullable();
+            $table->string('payment_name')->nullable();
+            $table->string('payment_number')->nullable();
             $table->timestamps();
         });
     }

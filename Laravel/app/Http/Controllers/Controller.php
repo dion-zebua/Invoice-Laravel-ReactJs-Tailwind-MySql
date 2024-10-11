@@ -9,4 +9,12 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
+
+    public function unauthorizedResponse()
+    {
+        return response()->json([
+            'status' => 'false',
+            'message' => 'Akses tidak sah',
+        ], 403);
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Mail\Verification;
+use App\Models\Company;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -58,6 +59,10 @@ class UserController extends Controller
             'token_verified' => $tokenVerified,
         ]);
 
+        $company = Company::create([
+            'users_id' => $user->id,
+        ]);
+
         Mail::to($request->email)->send(new Verification($user, $tokenVerified));
 
         return response()->json([
@@ -73,7 +78,13 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
+
         if ($user) {
+
+            if (Auth::user()->role != 'admin' && $user->id != Auth::id()) {
+                return $this->unauthorizedResponse();
+            }
+
             return response()->json([
                 'status' => true,
                 'message' => 'Pengguna ditemukan',
@@ -101,12 +112,18 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
+
         if (!$user) {
             return response()->json([
                 'status' => false,
                 'message' => 'Pengguna tidak ditemukan'
             ], 404);
         }
+
+        if (Auth::user()->role != 'admin' && $user->id != Auth::id()) {
+            return $this->unauthorizedResponse();
+        }
+
         $validator = Validator::make($request->all(), [
             'name' => 'string|max:50',
             'email' => 'email|unique:users,email,' . $id,
