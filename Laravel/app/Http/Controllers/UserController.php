@@ -39,7 +39,6 @@ class UserController extends Controller
             'name' => 'required|string|max:50',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|max:30',
-            'role' => 'required|string|in:agen,admin',
         ]);
 
         if ($validator->fails()) {
