@@ -16,7 +16,6 @@ class Company extends Model
         'address',
         'telephone',
         'email',
-        'logo',
         'payment_methode',
         'payment_name',
         'payment_number',
