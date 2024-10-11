@@ -112,9 +112,51 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCompanyRequest $request, Company $company)
+    public function update(Request $request, $id)
     {
-        //
+        dd($request->all(), $id);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:50',
+            'logo' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:1024',
+            'email' => 'required|email|unique:users,email,' . Auth::id(),
+            'telephone' => 'required|string|min:6|max:15',
+            'address' => 'required|string|max:100',
+            'payment_methode' => 'required|string|max:100',
+            'payment_name' => 'required|string|max:100',
+            'payment_number' => 'required|string|max:100',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        if ($request->file('logo')) {
+            $file = $request->file('logo');
+            $filename = time() . '-' . Str::random(5) . '-' . $file->getClientOriginalName();
+            $file->move(public_path('img/company'), $filename);
+            $data['image'] = $filename;
+        }
+
+        $company = Company::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'address' => $request->address,
+            'logo' => $filename ?? NULL,
+            'telephone' => $request->telephone,
+            'payment_methode' => $request->payment_methode,
+            'payment_name' => $request->payment_name,
+            'payment_number' => $request->payment_number,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil edit',
+            'data' => $company,
+        ], 201);
     }
 
     /**

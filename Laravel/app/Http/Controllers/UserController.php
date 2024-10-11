@@ -34,12 +34,12 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|max:30',
+            'role' => 'required|in:agen,admin',
         ]);
 
         if ($validator->fails()) {
