@@ -56,21 +56,19 @@ class User extends Authenticatable
         parent::boot();
 
         static::deleting(function ($user) {
-            $companies = $user->companies;
-            foreach ($companies as $company) {
-                if ($company->logo) {
-                    $logoPath = public_path('img/company/' . $company->logo);
-                    if (file_exists($logoPath)) {
-                        unlink($logoPath);
-                    }
+            $company = $user->company;
+            if ($company->logo) {
+                $logoPath = public_path('img/company/' . $company->logo);
+                if (file_exists($logoPath)) {
+                    unlink($logoPath);
                 }
-                $company->delete();
             }
+            $company->delete();
         });
     }
 
-    public function companies()
+    public function company(): HasOne
     {
-        return $this->hasMany(Company::class, 'users_id');
+        return $this->hasOne(Company::class, 'users_id');
     }
 }

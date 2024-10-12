@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Facades\File;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Company extends Model
 {
@@ -21,4 +22,10 @@ class Company extends Model
         'payment_name',
         'payment_number',
     ];
+
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class , 'users_id');
+    }
 }
