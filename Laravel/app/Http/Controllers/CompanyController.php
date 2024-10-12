@@ -149,13 +149,17 @@ class CompanyController extends Controller
         }
 
 
+        $validatedData = $validator->validated();
+
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
             $filename = time() . '-' . Str::random(5) . '-' . $file->getClientOriginalName();
             $file->move(public_path('img/company'), $filename);
+
+            $validatedData['logo'] = $filename;
         }
 
-        $company->update($validator->validate());
+        $company->update($validatedData);
 
         return response()->json([
             'success' => true,

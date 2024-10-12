@@ -21,16 +21,4 @@ class Company extends Model
         'payment_name',
         'payment_number',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function ($company) {
-
-            if (File::exists(public_path('/img/company/' . $company->logo))) {
-                File::delete(public_path('/img/company/' . $company->logo));
-            }
-        });
-    }
 }
