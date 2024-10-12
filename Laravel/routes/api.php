@@ -39,19 +39,18 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         });
         Route::get('/{id}', [UserController::class, 'show']);
         Route::put('/{id}', [UserController::class, 'update']);
-        
+
         // Verifikasi
         Route::post('/{id}/send-verifikasi/', [UserController::class, 'sendVerifikasi']);
     });
-    
-    Route::prefix('company')->group(function () {
-        Route::middleware(['role:admin'])->group(function () {
 
-        });
+    Route::prefix('company')->group(function () {
+        Route::middleware(['role:admin'])->group(function () {});
         // Route::post('/', [CompanyController::class, 'store']);
         // Route::delete('/{id}', [CompanyController::class, 'destroy']);
-        
+
         Route::get('/{id}', [CompanyController::class, 'show']);
         Route::put('/{id}', [CompanyController::class, 'update']);
+        // Route::post('/{id}', [CompanyController::class, 'update']);
     });
 });

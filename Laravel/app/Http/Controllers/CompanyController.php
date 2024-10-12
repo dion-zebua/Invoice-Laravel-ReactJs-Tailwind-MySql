@@ -58,7 +58,6 @@ class CompanyController extends Controller
     //         $file = $request->file('logo');
     //         $filename = time() . '-' . Str::random(5) . '-' . $file->getClientOriginalName();
     //         $file->move(public_path('img/company'), $filename);
-    //         $data['image'] = $filename;
     //     }
 
     //     $id = Auth::id();
@@ -149,23 +148,14 @@ class CompanyController extends Controller
             ], 422);
         }
 
-        if ($request->file('logo')) {
+
+        if ($request->hasFile('logo')) {
             $file = $request->file('logo');
             $filename = time() . '-' . Str::random(5) . '-' . $file->getClientOriginalName();
             $file->move(public_path('img/company'), $filename);
-            $data['image'] = $filename;
         }
 
-        $company = Company::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'address' => $request->address,
-            'logo' => $filename ?? NULL,
-            'telephone' => $request->telephone,
-            'payment_methode' => $request->payment_methode,
-            'payment_name' => $request->payment_name,
-            'payment_number' => $request->payment_number,
-        ]);
+        $company->update($validator->validate());
 
         return response()->json([
             'success' => true,

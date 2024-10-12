@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Dion Zebua',
             'email' => 'zebuadbless@gmail.com',
             'password' => 'Password',
+            'role' => 'admin',
         ]);
-        \App\Models\User::factory(1000)->create();
+        // \App\Models\User::factory(1000)->create();
     }
 }
