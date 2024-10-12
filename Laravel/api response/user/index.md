@@ -1,10 +1,7 @@
 # API Specification: User Registration
 
 ## Endpoint
-**POST** `/api/users`
-
-## Description
-This endpoint allows for the registration of a new user. It validates the input data, creates a new user and associated company, and sends a verification email.
+**POST** `/api/users/store`
 
 ## Request
 
@@ -25,3 +22,4 @@ This endpoint allows for the registration of a new user. It validates the input 
     "email": "john.doe@example.com",
     "password": "securePassword123"
 }
+
