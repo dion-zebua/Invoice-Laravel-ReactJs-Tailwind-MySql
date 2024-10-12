@@ -51,8 +51,26 @@ class User extends Authenticatable
     ];
 
 
-    public function company(): HasOne
+    protected static function boot()
     {
-        return $this->hasOne(Company::class, 'foreign_key', 'users_id');
+        parent::boot();
+
+        static::deleting(function ($user) {
+            $companies = $user->companies;
+            foreach ($companies as $company) {
+                if ($company->logo) {
+                    $logoPath = public_path('img/company/' . $company->logo);
+                    if (file_exists($logoPath)) {
+                        unlink($logoPath);
+                    }
+                }
+                $company->delete();
+            }
+        });
+    }
+
+    public function companies()
+    {
+        return $this->hasMany(Company::class, 'users_id');
     }
 }

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Mail\Verification;
 use App\Models\Company;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,24 +53,31 @@ class UserController extends Controller
 
         $tokenVerified = Str::random(60);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'token_verified' => $tokenVerified,
-        ]);
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'token_verified' => $tokenVerified,
+            ]);
 
-        $company = Company::create([
-            'users_id' => $user->id,
-        ]);
+            $company = Company::create([
+                'users_id' => $user->id,
+            ]);
 
-        Mail::to($request->email)->send(new Verification($user, $tokenVerified));
+            Mail::to($request->email)->send(new Verification($user, $tokenVerified));
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Berhasil tambah.',
-            'data' => $user,
-        ], 201);
+            return response()->json([
+                'status' => true,
+                'message' => 'Berhasil tambah.',
+                'data' => $user,
+            ], 201);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'gagal tambah.',
+            ], 500);
+        }
     }
 
     /**
@@ -183,20 +191,27 @@ class UserController extends Controller
             ], 404);
         }
 
-        $tokenVerified = Str::random(60);
+        try {
+            $tokenVerified = Str::random(60);
 
-        $user->update([
-            'token_verified' => $tokenVerified,
-            'is_verified' => 0,
-            'email_verified_at' => NULL,
-        ]);
+            $user->update([
+                'token_verified' => $tokenVerified,
+                'is_verified' => 0,
+                'email_verified_at' => NULL,
+            ]);
 
-        Mail::to($user->email)->send(new Verification($user, $tokenVerified));
+            Mail::to($user->email)->send(new Verification($user, $tokenVerified));
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Verifikasi telah terkirim',
-        ], 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'Verifikasi telah terkirim',
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'gagal tambah.',
+            ], 500);
+        }
     }
 
     public function checkVerifikasi($id, $token)
