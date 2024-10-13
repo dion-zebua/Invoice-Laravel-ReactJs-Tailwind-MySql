@@ -5,7 +5,9 @@
 /public/storage
 /storage/*.key
 /vendor
-!/vendor/laravel/sanctum/src/
+!/vendor/laravel
+!/vendor/laravel/sanctum
+!/vendor/laravel/sanctum/src
 .env
 .env.backup
 .env.production
