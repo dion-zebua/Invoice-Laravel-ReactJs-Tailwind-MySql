@@ -1,6 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Request;
+// use Illuminate\Support\Facades\Request;
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    $ipAddress = Request::ip();
-    dd($ipAddress);
+Route::get('/', function (Request $request) {
+
+    dd($request->ips());
+    // dd($request->header());
+    // dd($request->userAgent());
 });
