@@ -4,10 +4,8 @@
 /public/hot
 /public/storage
 /storage/*.key
-/vendor
-!/vendor/laravel
+/vendor/*
 !/vendor/laravel/sanctum
-!/vendor/laravel/sanctum/src
 .env
 .env.backup
 .env.production
