@@ -2,6 +2,8 @@
 
 // use Illuminate\Support\Facades\Request;
 
+use App\Models\User;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +20,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function (Request $request) {
 
-    dd($request->ips());
-    // dd($request->header());
-    // dd($request->userAgent());
+    // dd(request()->header());
+    $user = User::find(1);
+    $token = $user->createToken('apiToken')->plainTextToken;
+
+    return $token;
 });
