@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Mail\Verification;
 use App\Models\Company;
-use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -173,58 +172,6 @@ class UserController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Pengguna telah dihapus',
-        ], 200);
-    }
-
-
-    public function sendVerifikasi($id)
-    {
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Pengguna tidak ditemukan'
-            ], 404);
-        }
-
-        $tokenVerified = Str::random(60);
-
-        $user->update([
-            'token_verified' => $tokenVerified,
-            'is_verified' => 0,
-            'email_verified_at' => NULL,
-        ]);
-
-        Mail::to($user->email)->send(new Verification($user, $tokenVerified));
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Verifikasi telah terkirim',
-        ], 200);
-    }
-
-    public function checkVerifikasi($id, $token)
-    {
-        $user = User::where('id', $id)
-            ->where('token_verified', $token)
-            ->whereNot('is_verified', 1)
-            ->first();
-        if (!$user) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Token / Pengguna tidak ditemukan'
-            ], 404);
-        }
-
-        $user->update([
-            'token_verified' => NULL,
-            'is_verified' => 1,
-            'email_verified_at' => Carbon::now(),
-        ]);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Verifikasi berhasil',
         ], 200);
     }
 }

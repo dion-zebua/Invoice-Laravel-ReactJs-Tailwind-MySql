@@ -22,12 +22,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth.not.authenticated']], function () {
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('user/{id}/check-verifikasi/{token}', [UserController::class, 'checkVerifikasi']);
+    Route::post('user/check-verifikasi/{id}/{token}', [AuthController::class, 'checkVerifikasi']);
+    Route::post('forgot-password/{email}', [AuthController::class, 'forgotPassword']);
 });
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('send-verifikasi/{id}', [AuthController::class, 'sendVerifikasi']);
 
     // User
     Route::prefix('user')->group(function () {
@@ -38,8 +40,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/{id}', [UserController::class, 'show']);
         Route::put('/{id}', [UserController::class, 'update']);
 
-        // Verifikasi
-        Route::post('/{id}/send-verifikasi/', [UserController::class, 'sendVerifikasi']);
     });
 
     // Company
@@ -74,6 +74,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
             Route::post('/', [InvoiceController::class, 'store']);
         });
         Route::delete('/{id}', [InvoiceController::class, 'destroy']);
-
     });
 });

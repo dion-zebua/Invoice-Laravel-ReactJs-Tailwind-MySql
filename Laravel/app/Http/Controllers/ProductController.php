@@ -75,7 +75,7 @@ class ProductController extends Controller
             ]);
         }
 
-        if (Auth::user()->role != 'admin' && $product->company->user->id != Auth::id()) {
+        if (Auth::user()->role != 'admin' && $product->company->users_id != Auth::id()) {
             return $this->unauthorizedResponse();
         }
 
@@ -108,7 +108,7 @@ class ProductController extends Controller
             ]);
         }
 
-        if (Auth::user()->role != 'admin' && $product->company->user->id != Auth::id()) {
+        if (Auth::user()->role != 'admin' && $product->company->users_id != Auth::id()) {
             return $this->unauthorizedResponse();
         }
 
@@ -148,10 +148,10 @@ class ProductController extends Controller
             ]);
         }
 
-        if (Auth::user()->role != 'admin' && $product->company->user->id != Auth::id()) {
+        if (Auth::user()->role != 'admin' && $product->company->users_id != Auth::id()) {
             return $this->unauthorizedResponse();
         }
-        
+
         $product->delete();
         return response()->json([
             'status' => true,

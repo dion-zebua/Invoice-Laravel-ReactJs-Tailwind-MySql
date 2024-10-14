@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
+use App\Mail\Verification;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
+
+
 
 class AuthController extends Controller
 {
@@ -47,7 +54,7 @@ class AuthController extends Controller
     {
         $user = Auth::user();
 
-        Auth::user()->currentAccessToken()->delete();
+        $user->currentAccessToken()->delete();
         return response()->json(
             [
                 'status' => 'success',
@@ -55,5 +62,69 @@ class AuthController extends Controller
             ],
             200
         );
+    }
+
+    public function sendVerifikasi($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Pengguna tidak ditemukan'
+            ], 404);
+        }
+
+        $tokenVerified = Str::random(60);
+
+        $user->update([
+            'token_verified' => $tokenVerified,
+            'is_verified' => false,
+            'email_verified_at' => NULL,
+        ]);
+
+        Mail::to($user->email)->send(new Verification($user, $tokenVerified));
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Verifikasi telah terkirim',
+        ], 200);
+    }
+
+    public function checkVerifikasi($id, $token)
+    {
+        $user = User::where('id', $id)
+            ->where('token_verified', $token)
+            ->whereNot('is_verified', 1)
+            ->first();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Token / Pengguna tidak ditemukan'
+            ], 404);
+        }
+
+        $user->update([
+            'token_verified' => NULL,
+            'is_verified' => true,
+            'email_verified_at' => Carbon::now(),
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Verifikasi berhasil',
+        ], 200);
+    }
+
+    public function forgotPassword($email)
+    {
+        $email->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $email->only('email')
+        );
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with(['status' => __($status)])
+            : back()->withErrors(['email' => __($status)]);
     }
 }

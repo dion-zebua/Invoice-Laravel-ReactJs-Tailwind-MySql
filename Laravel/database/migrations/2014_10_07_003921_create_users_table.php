@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'user'])->default('user');
             $table->string('token_verified')->unique()->nullable();
-            $table->boolean('is_verified')->default(0);
+            $table->boolean('is_verified')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });

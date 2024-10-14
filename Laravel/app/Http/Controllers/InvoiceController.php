@@ -40,6 +40,8 @@ class InvoiceController extends Controller
         $code = Str::upper(Str::random(7));
 
         $request['code'] = $code;
+        // $request['products'] = [1,2,3];
+        dd($request['products.0.name']);
 
         $validator = Validator::make($request->all(), [
             'code' => 'required|string|unique:invoices,code',
@@ -59,12 +61,12 @@ class InvoiceController extends Controller
             'status' => 'required|in:paid,unpaid',
 
 
-            'products' => 'required|array',
             'products.*.name' => 'required|string|max:30',
             'products.*.unit' => 'required|string|max:30',
             'products.*.price' => 'required|integer|min:0',
             'products.*.quantity' => 'required|integer|min:1',
             'products.*.amount' => 'required|integer|min:0',
+            'products' => 'required|array',
         ]);
 
         if ($validator->fails()) {
