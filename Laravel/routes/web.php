@@ -5,6 +5,7 @@
 use App\Models\User;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function (Request $request) {
 
+    $user = User::find(1);
+    dd($user , $user->company);
+    return view('welcome');
     // dd(request()->header());
     $user = User::find(1);
     $token = $user->createToken('apiToken')->plainTextToken;

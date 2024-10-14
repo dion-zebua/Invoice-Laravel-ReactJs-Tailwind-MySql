@@ -25,11 +25,7 @@ Route::group(['middleware' => ['auth.not.authenticated']], function () {
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('logout', function () {
-        return response()->json([
-            'status' => true,
-        ]);
-    });
+    Route::post('logout', [AuthController::class, 'logout']);
 
     // User
     Route::prefix('user')->group(function () {
