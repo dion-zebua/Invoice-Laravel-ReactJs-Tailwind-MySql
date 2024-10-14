@@ -22,14 +22,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth.not.authenticated']], function () {
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('user/check-verifikasi/{id}/{token}', [AuthController::class, 'checkVerifikasi']);
-    Route::post('forgot-password/{email}', [AuthController::class, 'forgotPassword']);
+    Route::post('check-verifikasi/{id}/{token}', [AuthController::class, 'checkVerifikasi']);
+    Route::post('forgot-password/', [AuthController::class, 'forgotPassword']);
 });
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::post('send-verifikasi/{id}', [AuthController::class, 'sendVerifikasi']);
+    Route::post('send-verifikasi/', [AuthController::class, 'sendVerifikasi']);
 
     // User
     Route::prefix('user')->group(function () {

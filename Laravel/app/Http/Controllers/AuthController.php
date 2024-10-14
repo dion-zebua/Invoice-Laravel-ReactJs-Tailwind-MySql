@@ -64,13 +64,25 @@ class AuthController extends Controller
         );
     }
 
-    public function sendVerifikasi($id)
+    public function sendVerifikasi(Request $request)
     {
-        $user = User::find($id);
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi error.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $user = User::where('email', $request->email)->first();
         if (!$user) {
             return response()->json([
                 'status' => false,
-                'message' => 'Pengguna tidak ditemukan'
+                'message' => 'Email tidak ditemukan'
             ], 404);
         }
 
@@ -94,7 +106,7 @@ class AuthController extends Controller
     {
         $user = User::where('id', $id)
             ->where('token_verified', $token)
-            ->whereNot('is_verified', 1)
+            ->whereNot('is_verified', true)
             ->first();
         if (!$user) {
             return response()->json([
@@ -115,16 +127,31 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function forgotPassword($email)
+    public function forgotPassword(Request $request)
     {
-        $email->validate(['email' => 'required|email']);
 
-        $status = Password::sendResetLink(
-            $email->only('email')
-        );
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
 
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with(['status' => __($status)])
-            : back()->withErrors(['email' => __($status)]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi error.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Email tidak ditemukan'
+            ], 404);
+        }
+
+        $tokenVerified = Str::random(60);
+        Mail::to($user->email)->send(new Verification($user, $tokenVerified));
+
     }
 }

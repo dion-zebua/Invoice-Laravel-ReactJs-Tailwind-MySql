@@ -26,10 +26,10 @@
         <p style="color: #a9a9a9;">Email <span style="color: #367cf5;">{{ $user['email'] }}</span> telah didaftarkan dan
             segera lakukan verifikasi!!!</p>
         <p style="color: #a9a9a9;margin:10px 0">Klik tombol dibawah ini untuk verifikasi</p>
-        <a href={{ 'https://invoices.my.id/verification/' . $user['token_verified'] }}
+        <a href={{ 'https://invoices.my.id/verifikasi/' . $user['id'] . '/' . $user['token_verified'] }}
             style="font-weight: 700;text-decoration: underline; color: #171a1c;">
             <div style="padding: 20px; background: #afe1ff;">
-                {{ 'https://invoices.my.id/verifikasi/' . $user['token_verified'] }}
+                {{ 'https://invoices.my.id/verifikasi/' . $user['id'] . '/' . $user['token_verified'] }}
             </div>
         </a>
         <p style="color: #a9a9a9;  margin: 15px 0;">Jika bukan anda, maka hiraukan pesan ini!</p>
