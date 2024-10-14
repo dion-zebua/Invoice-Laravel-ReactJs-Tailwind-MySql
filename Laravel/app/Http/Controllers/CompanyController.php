@@ -156,6 +156,10 @@ class CompanyController extends Controller
             $filename = time() . '-' . Str::random(5) . '-' . $file->getClientOriginalName();
             $file->move(public_path('img/company'), $filename);
 
+            if (File::exists(public_path('/img/company/' . $company->logo))) {
+                File::delete(public_path('/img/company/' . $company->logo));
+            }
+
             $validatedData['logo'] = $filename;
         }
 
@@ -171,25 +175,25 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
-    {
-        $company = Company::find($id);
-        if (!$company) {
+    // public function destroy($id)
+    // {
+    //     $company = Company::find($id);
+    //     if (!$company) {
 
-            return response()->json([
-                'status' => false,
-                'message' => 'Perusahaan tidak ditemukan'
-            ], 404);
-        }
-        if (File::exists(public_path('/img/company/' . $company->logo))) {
-            File::delete(public_path('/img/company/' . $company->logo));
-        }
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'Perusahaan tidak ditemukan'
+    //         ], 404);
+    //     }
+    //     if (File::exists(public_path('/img/company/' . $company->logo))) {
+    //         File::delete(public_path('/img/company/' . $company->logo));
+    //     }
 
-        $company->delete();
+    //     $company->delete();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Perusahaan telah dihapus',
-        ], 200);
-    }
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => 'Perusahaan telah dihapus',
+    //     ], 200);
+    // }
 }

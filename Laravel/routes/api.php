@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -41,12 +42,21 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 
     Route::prefix('company')->group(function () {
-        Route::middleware(['role:admin'])->group(function () {});
+        // Route::middleware(['role:admin'])->group(function () {});
         // Route::post('/', [CompanyController::class, 'store']);
         // Route::delete('/{id}', [CompanyController::class, 'destroy']);
 
         Route::get('/{id}', [CompanyController::class, 'show']);
         Route::put('/{id}', [CompanyController::class, 'update']);
-        // Route::post('/{id}', [CompanyController::class, 'update']);
+    });
+
+    Route::prefix('product')->group(function () {
+        Route::middleware(['role:user'])->group(function () {
+            Route::post('/', [ProductController::class, 'store']);
+        });
+        
+        Route::get('/{id}', [ProductController::class, 'show']);
+        Route::put('/{id}', [ProductController::class, 'update']);
+        Route::delete('/{id}', [ProductController::class, 'destroy']);
     });
 });
