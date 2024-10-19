@@ -53,9 +53,10 @@ class AuthController extends Controller
 
     public function logout()
     {
+        /** @var User $user */
         $user = Auth::user();
 
-        // dd($user);
+        dd($user->currentAccessToken());
         $user->currentAccessToken()->delete();
         return response()->json(
             [
