@@ -26,7 +26,7 @@ class User extends Authenticatable
         'password',
         'role',
         'token_verified',
-        'token_forgot_password',
+        'token_reset_password',
         'is_verified',
         'email_verified_at',
     ];
@@ -38,7 +38,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'token_verified',
-        'token_forgot_password',
+        'token_reset_password',
         'password',
         'remember_token',
     ];

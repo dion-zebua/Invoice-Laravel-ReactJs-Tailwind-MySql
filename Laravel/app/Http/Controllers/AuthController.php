@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ResetPassword;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Mail\Verification;
@@ -54,6 +55,7 @@ class AuthController extends Controller
     {
         $user = Auth::user();
 
+        // dd($user);
         $user->currentAccessToken()->delete();
         return response()->json(
             [
@@ -98,7 +100,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Verifikasi telah terkirim',
+            'message' => 'Email Verifikasi telah terkirim',
         ], 200);
     }
 
@@ -137,7 +139,7 @@ class AuthController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => 'Validasi error.',
+                'message' => 'Validasi error',
                 'errors' => $validator->errors(),
             ], 422);
         }
@@ -151,7 +153,55 @@ class AuthController extends Controller
         }
 
         $tokenVerified = Str::random(60);
-        Mail::to($user->email)->send(new Verification($user, $tokenVerified));
 
+        $user->update([
+            'token_reset_password' => $tokenVerified,
+        ]);
+
+        Mail::to($user->email)->send(new ResetPassword($user, $tokenVerified));
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Email Reset Password telah terkirim',
+        ], 200);
+    }
+
+    public function resetPassword(Request $request, $id, $token)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string|min:8|max:30|confirmed',
+            'password_confirmation' => 'required|string|min:8|max:30',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $user = User::where('id', $id)
+            ->where('token_reset_password', $token)
+            ->where('is_verified', true)
+            ->first();
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Token / Pengguna tidak ditemukan'
+            ], 404);
+        }
+
+        $user->update([
+            'token_reset_password' => NULL,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Reset password berhasil',
+        ], 200);
     }
 }

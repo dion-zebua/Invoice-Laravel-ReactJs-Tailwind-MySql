@@ -16,7 +16,6 @@ class Verification extends Mailable
     /**
      * Create a new message instance.
      */
-
     public function __construct(public $user, public $token) {}
 
     /**
@@ -25,7 +24,7 @@ class Verification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Verifikasi Pengguna INVOICES.MY.ID',
+            subject: 'Verifikasi Pengguna',
         );
     }
 
@@ -34,10 +33,15 @@ class Verification extends Mailable
      */
     public function content(): Content
     {
-        $this->user['token_verified'] = $this->token;
         return new Content(
-            view: 'email-verification',
-            with: [$this->user],
+            view: 'mail.layout',
+            with: [
+                $this->user,
+                'token' => $this->token,
+                'title' => 'Verifikasi Akun',
+                'desc' => 'didaftarkan',
+                'link' => 'verifikasi',
+            ],
         );
     }
 

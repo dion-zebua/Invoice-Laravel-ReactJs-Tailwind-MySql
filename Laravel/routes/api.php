@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth.not.authenticated']], function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('check-verifikasi/{id}/{token}', [AuthController::class, 'checkVerifikasi']);
     Route::post('forgot-password/', [AuthController::class, 'forgotPassword']);
+    Route::post('reset-password/{id}/{token}', [AuthController::class, 'resetPassword']);
 });
 
 

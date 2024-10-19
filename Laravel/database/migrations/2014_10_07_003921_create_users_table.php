@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('role', ['admin', 'user'])->default('user');
             $table->string('token_verified')->unique()->nullable();
-            $table->string('token_forgot_password')->unique()->nullable();
+            $table->string('token_reset_password')->unique()->nullable();
             $table->boolean('is_verified')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
