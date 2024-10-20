@@ -26,11 +26,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validasi error.',
-                'errors' => $validator->errors(),
-            ], 422);
+            return $this->unprocessableContent($validator);
         }
 
         $user = User::where('email', $request['email'])
@@ -39,16 +35,16 @@ class AuthController extends Controller
 
         if (!$user || !Hash::check($request['password'], $user->password)) {
             return response()->json([
-                'success' => false,
-                'message' => 'Email / password salah',
+                'status' => false,
+                'message' => 'Email / password salah.',
             ], 401);
         }
 
         $token = $user->createToken('apiToken')->plainTextToken;
 
         return response()->json([
-            'success' => true,
-            'message' => 'Berhasil login',
+            'status' => true,
+            'message' => 'Berhasil login.',
             'data' => $user,
             'token' => $token,
         ], 200);
@@ -61,35 +57,25 @@ class AuthController extends Controller
 
         dd($user->currentAccessToken());
         $user->currentAccessToken()->delete();
-        return response()->json(
-            [
-                'status' => 'success',
-                'message' => 'Berhasil logout',
-            ],
-            200
-        );
+        return response()->json([
+            'status' => 'true',
+            'message' => 'Berhasil logout.',
+        ], 200);
     }
 
     public function sendVerifikasi(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            // 'email' => 'required|email|exists:users,email',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validasi error.',
-                'errors' => $validator->errors(),
-            ], 422);
+            return $this->unprocessableContent($validator);
         }
 
         $user = User::where('email', $request->email)->first();
         if (!$user) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Email tidak ditemukan'
-            ], 404);
+            return $this->dataNotFound('Email');
         }
 
         $tokenVerified = Str::random(60);
@@ -104,7 +90,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Email Verifikasi telah terkirim',
+            'message' => 'Email Verifikasi telah terkirim.',
         ], 200);
     }
 
@@ -115,10 +101,7 @@ class AuthController extends Controller
             ->first();
 
         if (!$user && !Hash::check($token, $user->token_verified)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Token / Pengguna tidak ditemukan'
-            ], 404);
+            return $this->dataNotFound('Token / Pengguna');
         }
 
         $user->update([
@@ -129,7 +112,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Verifikasi berhasil',
+            'message' => 'Verifikasi berhasil.',
         ], 200);
     }
 
@@ -141,19 +124,12 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validasi error',
-                'errors' => $validator->errors(),
-            ], 422);
+            return $this->unprocessableContent($validator);
         }
 
         $user = User::where('email', $request->email)->first();
         if (!$user) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Email tidak ditemukan'
-            ], 404);
+            return $this->dataNotFound('Email');
         }
 
         $tokenVerified = Str::random(60);
@@ -167,7 +143,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Email Reset Password telah terkirim',
+            'message' => 'Email Reset Password telah terkirim.',
         ], 200);
     }
 
@@ -180,11 +156,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validasi error',
-                'errors' => $validator->errors(),
-            ], 422);
+            return $this->unprocessableContent($validator);
         }
 
         $user = User::where('id', $id)
@@ -192,10 +164,7 @@ class AuthController extends Controller
             ->first();
 
         if (!$user && !Hash::check($token, $user->token_reset_password)) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Token / Pengguna tidak ditemukan'
-            ], 404);
+            return $this->dataNotFound('Token / Pengguna');
         }
 
         $user->update([
@@ -205,7 +174,7 @@ class AuthController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'Reset password berhasil',
+            'message' => 'Reset password berhasil.',
         ], 200);
     }
 }

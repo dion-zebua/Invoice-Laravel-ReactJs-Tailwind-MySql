@@ -14,7 +14,60 @@ class Controller extends BaseController
     {
         return response()->json([
             'status' => 'false',
-            'message' => 'Akses tidak sah',
+            'message' => 'Akses tidak sah.',
         ], 403);
+    }
+
+    public function unprocessableContent($validator)
+    {
+        return response()->json([
+            'success' => false,
+            'message' => 'Validasi error.',
+            'errors' => $validator->errors(),
+        ], 422);
+    }
+
+
+    public function dataNotFound($data = NULL)
+    {
+        return response()->json([
+            'status' => false,
+            'message' => ($data ?? 'Data') . ' tidak ditemukan'
+        ], 404);
+    }
+
+    public function dataFound($data = NULL, $teks = Null)
+    {
+        return response()->json([
+            'status' => true,
+            'message' => ($teks ?? 'Data') . ' ditemukan.',
+            'data' => $data,
+        ], 200);
+    }
+
+    public function createSuccess($data)
+    {
+        return response()->json([
+            'status' => true,
+            'message' => 'Berhasil tambah.',
+            'data' => $data,
+        ], 201);
+    }
+
+    public function editSuccess($data)
+    {
+        return response()->json([
+            'status' => true,
+            'message' => 'Berhasil edit.',
+            'data' => $data,
+        ], 200);
+    }
+
+    public function deleteSuccess()
+    {
+        return response()->json([
+            'status' => true,
+            'message' => 'Berhasil hapus.',
+        ], 200);
     }
 }

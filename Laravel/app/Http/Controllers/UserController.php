@@ -42,11 +42,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validasi error.',
-                'errors' => $validator->errors(),
-            ], 422);
+            return $this->unprocessableContent($validator);
         }
 
         $tokenVerified = Str::random(60);
@@ -64,15 +60,7 @@ class UserController extends Controller
 
         Mail::to($request->email)->send(new Verification($user, $tokenVerified));
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Berhasil tambah.',
-            'data' => $user,
-        ], 201);
-        return response()->json([
-            'status' => false,
-            'message' => 'gagal tambah.',
-        ], 500);
+        return $this->createSuccess($user);
     }
 
     /**
@@ -89,17 +77,10 @@ class UserController extends Controller
                 return $this->unauthorizedResponse();
             }
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Pengguna ditemukan',
-                'data' => $user,
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Pengguna tidak ditemukan'
-            ], 404);
+            return $this->dataFound($user, 'Pengguna');
         }
+
+        return $this->dataNotFound('Pengguna');
     }
 
     /**
@@ -118,10 +99,7 @@ class UserController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Pengguna tidak ditemukan'
-            ], 404);
+            return $this->dataNotFound('Pengguna');
         }
 
         $userLogin = Auth::user();
@@ -136,11 +114,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validasi error.',
-                'errors' => $validator->errors(),
-            ], 422);
+            return $this->unprocessableContent($validator);
         }
 
 
@@ -150,11 +124,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Berhasil update.',
-            'data' => $user,
-        ], 201);
+        return $this->editSuccess($user);
     }
 
     /**
@@ -164,17 +134,10 @@ class UserController extends Controller
     {
         $user = User::find($id);
         if (!$user) {
-
-            return response()->json([
-                'status' => false,
-                'message' => 'Pengguna tidak ditemukan'
-            ], 404);
+            return $this->dataNotFound('Pengguna');
         }
         $user->delete();
-        
-        return response()->json([
-            'status' => true,
-            'message' => 'Pengguna telah dihapus',
-        ], 200);
+
+        return $this->deleteSuccess();
     }
 }

@@ -43,11 +43,7 @@ class ProductController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validasi error',
-                'errors' => $validator->errors(),
-            ], 422);
+            return $this->unprocessableContent($validator);
         }
 
         $product = Product::create($request->all());
@@ -67,10 +63,7 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         if (!$product) {
-            return response()->json([
-                'status' => false,
-                'message' => "Produk tidak ditemukan",
-            ]);
+            return $this->dataNotFound('Produk');
         }
 
         $userLogin = Auth::user();
@@ -79,11 +72,7 @@ class ProductController extends Controller
         }
 
         $product->makeHidden('company');
-        return response()->json([
-            'status' => true,
-            'data' => $product,
-            'message' => "Produk ditemukan",
-        ], 200);
+        return $this->dataFound($product, 'Produk');
     }
 
     /**
@@ -102,12 +91,8 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         if (!$product) {
-            return response()->json([
-                'status' => false,
-                'message' => "Produk tidak ditemukan",
-            ]);
+            return $this->dataNotFound('Produk');
         }
-
 
         $userLogin = Auth::user();
         if ($userLogin->role != 'admin' && $product->company->users_id != $userLogin->id) {
@@ -121,19 +106,11 @@ class ProductController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validasi error',
-                'errors' => $validator->errors(),
-            ], 422);
+            return $this->unprocessableContent($validator);
         }
 
-        $product->update($request->all());
-        return response()->json([
-            'status' => true,
-            'message' => 'Berhasil update',
-            'data' => $product,
-        ], 200);
+        $product->update($validator->valid());
+        return $this->editSuccess($product);
     }
 
     /**
@@ -144,12 +121,8 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         if (!$product) {
-            return response()->json([
-                'status' => false,
-                'message' => "Produk tidak ditemukan",
-            ]);
+            return $this->dataNotFound('Produk');
         }
-
 
         $userLogin = Auth::user();
         if ($userLogin->role != 'admin' && $product->company->users_id != $userLogin->id) {
@@ -157,9 +130,6 @@ class ProductController extends Controller
         }
 
         $product->delete();
-        return response()->json([
-            'status' => true,
-            'message' => "Produk dihapus",
-        ]);
+        return $this->deleteSuccess();
     }
 }

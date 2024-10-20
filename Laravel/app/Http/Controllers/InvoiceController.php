@@ -35,19 +35,31 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-
         $user = Auth::user();
+        $code = Str::upper(Str::random(7));
+
+        $productCollect = collect($request->products);
+
+        $productRes = $productCollect->map(function ($item) {
+            $item['amount'] = $item['price'] * $item['quantity'];
+            return $item;
+        });
+
+        $request['products'] = $productRes->toArray();
+        $request['code'] = $code;
 
         $request['users_id'] = $user->id;
         $request['companies_id'] = $user->company->id;
-        $request['sub_total'] = 0;
-        $request['total'] = 0;
-        $request['grand_total'] = 0;
-        $request['paid_off'] = 0;
-
-        $code = Str::upper(Str::random(7));
-
-        $request['code'] = $code;
+        $request['sub_total'] = $productRes->sum('amount');
+        $request['total'] = $request['sub_total'] - $request['discount'];
+        $request['grand_total'] = $request['tax'] == 1 ?
+            $request['total'] - ($request['total'] * 11 / 100)
+            : $request['total'];
+        $request['paid_off'] = $request->status == 'paid' ?
+            0
+            : ($request['down_payment'] ?
+                $request['grand_total'] - $request['down_payment']
+                : $request['grand_total']);
 
         $validator = Validator::make($request->all(), [
             'code' => 'required|string|unique:invoices,code',
@@ -76,48 +88,52 @@ class InvoiceController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validasi error.',
-                'errors' => $validator->errors(),
-            ], 422);
+            return $this->unprocessableContent($validator);
         }
 
         try {
-            Db::transaction(function () use ($request, $code) {
+            Db::transaction(function () use ($request, $code, $validator) {
 
-                $invoice = Invoice::create($request->all());
+                $invoice = Invoice::create($validator->valid());
 
+                $productCollect = collect($request->products);
                 foreach ($request['products'] as $key => $product) {
-                    InvoiceProduct::create(
-                        [
-                            'invoices_code' => $code,
-                            'name' => $product['name'],
-                            'unit' => $product['unit'],
-                            'price' => $product['price'],
-                            'quantity' => $product['quantity'],
-                            'amount' => $product['amount'],
-                        ]
-                    );
+                    InvoiceProduct::create([
+                        'invoices_code' => $code,
+                        'name' => $product['name'],
+                        'unit' => $product['unit'],
+                        'price' => $product['price'],
+                        'quantity' => $product['quantity'],
+                        'amount' => $product['amount'],
+                    ]);
                 }
-
-                return response()->json([
-                    'status' => true,
-                    'data' => $invoice,
-                    'message' => 'Invoice tambah.'
-                ]);
             });
-        } catch (\Throwable $th) {
-            //throw $th;
+
+            DB::commit();
+
+            return $this->createSuccess($validator->valid());
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => true,
+                'message' => $e->getMessage() . $e->getLine(),
+            ]);
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Invoice $invoice)
+    public function show($id)
     {
-        //
+        $invoice = Invoice::find($id);
+
+        if (!$invoice) {
+            return $this->dataNotFound('Invoice');
+        }
+
+        return $this->dataFound($invoice, 'Invoice');
     }
 
     /**
@@ -139,8 +155,20 @@ class InvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Invoice $invoice)
+    public function destroy($id)
     {
-        //
+        $invoice = Invoice::find($id);
+
+        if (!$invoice) {
+            return $this->dataNotFound('Invoice');
+        }
+
+        $userLogin = Auth::user();
+        if ($userLogin->role != 'admin' && $invoice->users_id != $userLogin->id) {
+            return $this->unauthorizedResponse();
+        }
+
+        $invoice->delete();
+        return $this->deleteSuccess();
     }
 }

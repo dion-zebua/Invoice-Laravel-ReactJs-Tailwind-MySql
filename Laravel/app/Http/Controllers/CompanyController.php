@@ -43,22 +43,15 @@ class CompanyController extends Controller
     public function show($id)
     {
         $company = Company::find($id);
-        if ($company) {
-            if (Auth::user()->role != 'admin' && $company->users_id != Auth::id()) {
-                return $this->unauthorizedResponse();
-            }
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Perusahaan ditemukan',
-                'data' => $company,
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Perusahaan tidak ditemukan'
-            ], 404);
+        if (!$company) {
+            return $this->dataNotFound('Perusahaan');
         }
+
+        if (Auth::user()->role != 'admin' && $company->users_id != Auth::id()) {
+            return $this->unauthorizedResponse();
+        }
+
+        return $this->dataFound($company, 'Perusahaan');
     }
 
     /**
@@ -76,10 +69,7 @@ class CompanyController extends Controller
     {
         $company = Company::find($id);
         if (!$company) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Perusahaan tidak ditemukan'
-            ], 404);
+            return $this->dataNotFound('Perusahaan');
         }
 
         if (Auth::user()->role != 'admin' && $company->users_id != Auth::id()) {
@@ -98,13 +88,8 @@ class CompanyController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validasi error',
-                'errors' => $validator->errors(),
-            ], 422);
+            return $this->unprocessableContent($validator);
         }
-
 
         $validatedData = $validator->validated();
 
@@ -123,11 +108,7 @@ class CompanyController extends Controller
 
         $company->update($validatedData);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Berhasil edit',
-            'data' => $company,
-        ], 201);
+        return $this->editSuccess($company);
     }
 
     /**
