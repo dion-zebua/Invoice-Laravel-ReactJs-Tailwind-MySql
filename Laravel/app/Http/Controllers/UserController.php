@@ -55,7 +55,7 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'token_verified' => $tokenVerified,
+            'token_verified' => Hash::make($tokenVerified),
         ]);
 
         $company = Company::create([
@@ -84,7 +84,8 @@ class UserController extends Controller
 
         if ($user) {
 
-            if (Auth::user()->role != 'admin' && $user->id != Auth::id()) {
+            $userLogin = Auth::user();
+            if ($userLogin->role != 'admin' && $user->id != $userLogin->id) {
                 return $this->unauthorizedResponse();
             }
 
@@ -123,7 +124,8 @@ class UserController extends Controller
             ], 404);
         }
 
-        if (Auth::user()->role != 'admin' && $user->id != Auth::id()) {
+        $userLogin = Auth::user();
+        if ($userLogin->role != 'admin' && $user->id != $userLogin->id) {
             return $this->unauthorizedResponse();
         }
 
@@ -169,6 +171,7 @@ class UserController extends Controller
             ], 404);
         }
         $user->delete();
+        
         return response()->json([
             'status' => true,
             'message' => 'Pengguna telah dihapus',

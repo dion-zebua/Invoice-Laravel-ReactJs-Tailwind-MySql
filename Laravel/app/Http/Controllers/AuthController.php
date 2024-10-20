@@ -32,7 +32,10 @@ class AuthController extends Controller
                 'errors' => $validator->errors(),
             ], 422);
         }
-        $user = User::where('email', $request['email'])->first();
+
+        $user = User::where('email', $request['email'])
+            ->where('is_verified', true)
+            ->first();
 
         if (!$user || !Hash::check($request['password'], $user->password)) {
             return response()->json([
@@ -92,7 +95,7 @@ class AuthController extends Controller
         $tokenVerified = Str::random(60);
 
         $user->update([
-            'token_verified' => $tokenVerified,
+            'token_verified' => Hash::make($tokenVerified),
             'is_verified' => false,
             'email_verified_at' => NULL,
         ]);
@@ -108,10 +111,10 @@ class AuthController extends Controller
     public function checkVerifikasi($id, $token)
     {
         $user = User::where('id', $id)
-            ->where('token_verified', $token)
-            ->whereNot('is_verified', true)
+            ->where('is_verified', 0)
             ->first();
-        if (!$user) {
+
+        if (!$user && !Hash::check($token, $user->token_verified)) {
             return response()->json([
                 'status' => false,
                 'message' => 'Token / Pengguna tidak ditemukan'
@@ -155,8 +158,9 @@ class AuthController extends Controller
 
         $tokenVerified = Str::random(60);
 
+
         $user->update([
-            'token_reset_password' => $tokenVerified,
+            'token_reset_password' => Hash::make($tokenVerified),
         ]);
 
         Mail::to($user->email)->send(new ResetPassword($user, $tokenVerified));
@@ -184,11 +188,10 @@ class AuthController extends Controller
         }
 
         $user = User::where('id', $id)
-            ->where('token_reset_password', $token)
-            ->where('is_verified', true)
+            ->whereNotNull('token_reset_password')
             ->first();
 
-        if (!$user) {
+        if (!$user && !Hash::check($token, $user->token_reset_password)) {
             return response()->json([
                 'status' => false,
                 'message' => 'Token / Pengguna tidak ditemukan'

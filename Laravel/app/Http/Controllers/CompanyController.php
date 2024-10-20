@@ -32,53 +32,10 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(Request $request)
-    // {
-    //     // return $request;
-    //     $validator = Validator::make($request->all(), [
-    //         'name' => 'required|string|max:50',
-    //         'logo' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:1024',
-    //         'email' => 'required|email|unique:users,email,' . Auth::id(),
-    //         'telephone' => 'required|string|min:6|max:15',
-    //         'address' => 'required|string|max:100',
-    //         'payment_methode' => 'required|string|max:100',
-    //         'payment_name' => 'required|string|max:100',
-    //         'payment_number' => 'required|string|max:100',
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Validasi error',
-    //             'errors' => $validator->errors(),
-    //         ], 422);
-    //     }
-
-    //     if ($request->file('logo')) {
-    //         $file = $request->file('logo');
-    //         $filename = time() . '-' . Str::random(5) . '-' . $file->getClientOriginalName();
-    //         $file->move(public_path('img/company'), $filename);
-    //     }
-
-    //     $id = Auth::id();
-    //     $company = Company::create([
-    //         'users_id' => $id,
-    //         'name' => $request->name,
-    //         'email' => $request->email,
-    //         'address' => $request->address,
-    //         'logo' => $filename ?? NULL,
-    //         'telephone' => $request->telephone,
-    //         'payment_methode' => $request->payment_methode,
-    //         'payment_name' => $request->payment_name,
-    //         'payment_number' => $request->payment_number,
-    //     ]);
-
-    //     return response()->json([
-    //         'success' => true,
-    //         'message' => 'Berhasil tambah',
-    //         'data' => $company,
-    //     ], 201);
-    // }
+    public function store(Request $request)
+    {
+        // 
+    }
 
     /**
      * Display the specified resource.
@@ -156,8 +113,9 @@ class CompanyController extends Controller
             $filename = time() . '-' . Str::random(5) . '-' . $file->getClientOriginalName();
             $file->move(public_path('img/company'), $filename);
 
-            if (File::exists(public_path('/img/company/' . $company->logo))) {
-                File::delete(public_path('/img/company/' . $company->logo));
+            $oldImage = public_path('/img/company/' . $company->logo);
+            if (File::exists($oldImage)) {
+                File::delete($oldImage);
             }
 
             $validatedData['logo'] = $filename;
@@ -175,25 +133,8 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    // public function destroy($id)
-    // {
-    //     $company = Company::find($id);
-    //     if (!$company) {
-
-    //         return response()->json([
-    //             'status' => false,
-    //             'message' => 'Perusahaan tidak ditemukan'
-    //         ], 404);
-    //     }
-    //     if (File::exists(public_path('/img/company/' . $company->logo))) {
-    //         File::delete(public_path('/img/company/' . $company->logo));
-    //     }
-
-    //     $company->delete();
-
-    //     return response()->json([
-    //         'status' => true,
-    //         'message' => 'Perusahaan telah dihapus',
-    //     ], 200);
-    // }
+    public function destroy($id)
+    {
+        // 
+    }
 }

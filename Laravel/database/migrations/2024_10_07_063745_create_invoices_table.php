@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string("to_name");
             $table->string("to_company");
             $table->string("to_address");
-            $table->integer("to_telphone");
+            $table->integer("to_telephone");
             $table->string("to_email");
             $table->integer("sub_total");
             $table->integer("discount");

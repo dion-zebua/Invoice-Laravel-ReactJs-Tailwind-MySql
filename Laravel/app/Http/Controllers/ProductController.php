@@ -50,8 +50,6 @@ class ProductController extends Controller
             ], 422);
         }
 
-
-        // return response()->json($request->all());
         $product = Product::create($request->all());
         return response()->json([
             'status' => true,
@@ -75,15 +73,17 @@ class ProductController extends Controller
             ]);
         }
 
-        if (Auth::user()->role != 'admin' && $product->company->users_id != Auth::id()) {
+        $userLogin = Auth::user();
+        if ($userLogin->role != 'admin' && $product->company->users_id != $userLogin->id) {
             return $this->unauthorizedResponse();
         }
 
+        $product->makeHidden('company');
         return response()->json([
-            'status' => false,
+            'status' => true,
             'data' => $product,
             'message' => "Produk ditemukan",
-        ]);
+        ], 200);
     }
 
     /**
@@ -108,7 +108,9 @@ class ProductController extends Controller
             ]);
         }
 
-        if (Auth::user()->role != 'admin' && $product->company->users_id != Auth::id()) {
+
+        $userLogin = Auth::user();
+        if ($userLogin->role != 'admin' && $product->company->users_id != $userLogin->id) {
             return $this->unauthorizedResponse();
         }
 
@@ -148,7 +150,9 @@ class ProductController extends Controller
             ]);
         }
 
-        if (Auth::user()->role != 'admin' && $product->company->users_id != Auth::id()) {
+
+        $userLogin = Auth::user();
+        if ($userLogin->role != 'admin' && $product->company->users_id != $userLogin->id) {
             return $this->unauthorizedResponse();
         }
 

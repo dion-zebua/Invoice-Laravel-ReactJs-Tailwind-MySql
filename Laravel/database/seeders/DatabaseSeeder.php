@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'zebuadbless@gmail.comm',
             'password' => 'Password',
             'role' => 'admin',
+            'is_verified' => 1,
         ]);
         // \App\Models\User::factory(1000)->create();
     }

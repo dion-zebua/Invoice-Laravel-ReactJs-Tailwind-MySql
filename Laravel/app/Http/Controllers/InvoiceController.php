@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
+use App\Models\InvoiceProduct;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
@@ -35,13 +37,17 @@ class InvoiceController extends Controller
     {
 
         $user = Auth::user();
-        $id = $user->id;
-        $companyId = $user->company->id;
+
+        $request['users_id'] = $user->id;
+        $request['companies_id'] = $user->company->id;
+        $request['sub_total'] = 0;
+        $request['total'] = 0;
+        $request['grand_total'] = 0;
+        $request['paid_off'] = 0;
+
         $code = Str::upper(Str::random(7));
 
         $request['code'] = $code;
-        // $request['products'] = [1,2,3];
-        dd($request['products.0.name']);
 
         $validator = Validator::make($request->all(), [
             'code' => 'required|string|unique:invoices,code',
@@ -51,13 +57,13 @@ class InvoiceController extends Controller
             'to_address' => 'required|string|max:70',
             'to_telephone' => 'required|string|max:15|min:6',
             'to_email' => 'required|email',
-            // 'sub_total' => 'required|integer|min:0',
+            'sub_total' => 'required|integer|min:0',
             'discount' => 'required|integer|min:0',
-            // 'total' => 'required|integer|min:0',
+            'total' => 'required|integer|min:0',
             'tax' => 'required|in:1,0',
-            // 'grand_total' => 'required|integer|min:0',
+            'grand_total' => 'required|integer|min:0',
             'down_payment' => 'required|integer|min:0',
-            // 'paid_off' => 'required|integer|min:0',
+            'paid_off' => 'required|integer|min:0',
             'status' => 'required|in:paid,unpaid',
 
 
@@ -76,7 +82,34 @@ class InvoiceController extends Controller
                 'errors' => $validator->errors(),
             ], 422);
         }
-        return response()->json($request->all());
+
+        try {
+            Db::transaction(function () use ($request, $code) {
+
+                $invoice = Invoice::create($request->all());
+
+                foreach ($request['products'] as $key => $product) {
+                    InvoiceProduct::create(
+                        [
+                            'invoices_code' => $code,
+                            'name' => $product['name'],
+                            'unit' => $product['unit'],
+                            'price' => $product['price'],
+                            'quantity' => $product['quantity'],
+                            'amount' => $product['amount'],
+                        ]
+                    );
+                }
+
+                return response()->json([
+                    'status' => true,
+                    'data' => $invoice,
+                    'message' => 'Invoice tambah.'
+                ]);
+            });
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 
     /**
