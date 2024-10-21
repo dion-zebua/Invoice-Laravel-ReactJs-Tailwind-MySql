@@ -47,19 +47,21 @@ class InvoiceController extends Controller
 
         $request['products'] = $productRes->toArray();
         $request['code'] = $code;
-
         $request['users_id'] = $user->id;
         $request['companies_id'] = $user->company->id;
-        $request['sub_total'] = $productRes->sum('amount');
-        $request['total'] = $request['sub_total'] - $request['discount'];
-        $request['grand_total'] = $request['tax'] == 1 ?
-            $request['total'] - ($request['total'] * 11 / 100)
+
+        $subTotal = $productRes->sum('amount');
+        $request['sub_total'] = $subTotal;
+        $request['total'] = $subTotal - $request['discount'];
+
+        $request['grand_total'] = $request['tax'] == 1
+            ? $request['total'] * 0.89
             : $request['total'];
-        $request['paid_off'] = $request->status == 'paid' ?
-            0
-            : ($request['down_payment'] ?
-                $request['grand_total'] - $request['down_payment']
-                : $request['grand_total']);
+
+        $request['paid_off'] = $request->status === 'paid'
+            ? 0
+            : ($request['down_payment'] ?? $request['grand_total']);
+
 
         $validator = Validator::make($request->all(), [
             'code' => 'required|string|unique:invoices,code',

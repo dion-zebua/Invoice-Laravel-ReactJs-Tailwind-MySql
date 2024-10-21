@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // User
     Route::prefix('user')->group(function () {
         Route::middleware(['role:admin'])->group(function () {
+            Route::get('/', [UserController::class, 'index']);
             Route::post('/', [UserController::class, 'store']);
             Route::delete('/{id}', [UserController::class, 'destroy']);
         });

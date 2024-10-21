@@ -17,9 +17,34 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+        $validator = Validator::make($request->all(), [
+            'perPage' => 'integer|in:5,10,50,100',
+            'page' => 'integer|min:1',
+            'verified' => 'string|in:1,0',
+            'search' => 'string',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->unprocessableContent($validator);
+        }
+
+        $perPage = $request->input('perPage', 10);
+        $currentPage = $request->input('page', 10);
+        $is_verified = $request->input('verified');
+        $search = $request->input('search', '');
+
+        $users = User::query()
+            ->where('is_verified', '=', 1)
+            ->paginate($perPage);
+
+        if ($users->total() == 0) {
+            return $this->dataNotFound('Pengguna');
+        }
+
+        return $this->dataFound($users);
     }
 
     /**
