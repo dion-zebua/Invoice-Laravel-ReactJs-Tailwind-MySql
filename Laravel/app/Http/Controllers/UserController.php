@@ -21,10 +21,11 @@ class UserController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'perPage' => 'integer|in:5,10,50,100',
-            'page' => 'integer|min:1',
-            'verified' => 'string|in:1,0',
-            'search' => 'string',
+            'perPage' => 'nullable|integer|' . \Illuminate\Validation\Rule::in([5, 10, 20, 50, 100]),
+            'page' => 'nullable|integer|min:1',
+            'verified' => 'nullable|boolean',
+            'search' => 'nullable|string',
+            'role' => 'nullable|string|in:admin,user',
         ]);
 
         if ($validator->fails()) {
@@ -34,17 +35,28 @@ class UserController extends Controller
         $perPage = $request->input('perPage', 10);
         $currentPage = $request->input('page', 10);
         $is_verified = $request->input('verified');
+        $role = $request->input('role');
         $search = $request->input('search', '');
 
         $users = User::query()
-            ->where('is_verified', '=', 1)
+            // ->when(request()->hasAny(['verified', 'role', 'search']), function ($query) use ($role, $search, $is_verified) {
+            //     if (request()->has('verified')) {
+            //         $query->where('is_verified', '=', $is_verified);
+            //     }
+            //     if ($role) {
+            //         $query->where('role', '=', $role);
+            //     }
+            //     if ($search) {
+            //         $query->where(function ($q) use ($search) {
+            //             $q->where('name', 'like', "%{$search}%")
+            //                 ->orWhere('email', 'like', "%{$search}%");
+            //         });
+            //     }
+            // })
             ->paginate($perPage);
 
-        if ($users->total() == 0) {
-            return $this->dataNotFound('Pengguna');
-        }
-
-        return $this->dataFound($users);
+        $users->appends($validator->validate());
+        return response()->json($users);
     }
 
     /**
