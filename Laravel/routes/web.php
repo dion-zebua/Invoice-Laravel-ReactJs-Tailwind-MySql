@@ -2,6 +2,7 @@
 
 // use Illuminate\Support\Facades\Request;
 
+use App\Http\Controllers\InvoiceGenerator;
 use App\Models\User;
 use GuzzleHttp\Promise\Create;
 use Illuminate\Http\Request;
@@ -495,5 +496,9 @@ Route::get('/', function (Request $request) {
 
 
 
-    
+    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.invoice');
+    return $pdf->stream('invoice.pdf');
+    // return $pdf->stream();
 });
+
+Route::get('/as', [InvoiceGenerator::class, 'stream']);

@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/as', [\App\Http\Controllers\InvoiceGenerator::class, 'stream']);
 
 Route::group(['middleware' => ['auth.not.authenticated']], function () {
     Route::post('login', [AuthController::class, 'login']);
@@ -41,7 +42,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         });
         Route::get('/{id}', [UserController::class, 'show']);
         Route::put('/{id}', [UserController::class, 'update']);
-
     });
 
     // Company
@@ -70,7 +70,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('invoice')->group(function () {
 
         // Route::put('/{id}', [InvoiceController::class, 'update']);
-        
+
         Route::get('/{id}', [InvoiceController::class, 'show']);
         Route::middleware(['role:user'])->group(function () {
             Route::post('/', [InvoiceController::class, 'store']);
