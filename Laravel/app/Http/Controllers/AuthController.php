@@ -29,9 +29,14 @@ class AuthController extends Controller
             return $this->unprocessableContent($validator);
         }
 
-        $user = User::where('email', $request['email'])
-            ->where('is_verified', true)
-            ->first();
+        $user = User::where('email', $request['email'])->first();
+
+        if (!$user->hasVerifiedEmail()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Anda belum verifikasi!'
+            ], 403);
+        }
 
         if (!$user || !Hash::check($request['password'], $user->password)) {
             return response()->json([
@@ -98,9 +103,10 @@ class AuthController extends Controller
     {
         $user = User::where('id', $id)
             ->where('is_verified', 0)
+            ->whereNotNull('token_verified')
             ->first();
 
-        if (!$user && !Hash::check($token, $user->token_verified)) {
+        if (!$user || !Hash::check($token, $user->token_verified)) {
             return $this->dataNotFound('Token / Pengguna');
         }
 

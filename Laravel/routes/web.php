@@ -492,13 +492,6 @@ Route::get('/', function (Request $request) {
     // // Menggunakan macro
     // $collection = User::limit(5)->get();
     // dd($collection->sumOfSquares());
-
-
-
-
-    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.invoice');
-    return $pdf->stream('invoice.pdf');
-    // return $pdf->stream();
 });
 
-Route::get('/as', [InvoiceGenerator::class, 'stream']);
+Route::get('/invoice/{code}', [InvoiceGenerator::class, 'stream']);

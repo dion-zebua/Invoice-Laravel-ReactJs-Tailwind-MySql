@@ -127,14 +127,13 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($code)
     {
-        $invoice = Invoice::find($id);
+        $invoice = Invoice::with('invoiceProducts')->where('code', $code)->first();
 
         if (!$invoice) {
             return $this->dataNotFound('Invoice');
         }
-
         return $this->dataFound($invoice, 'Invoice');
     }
 

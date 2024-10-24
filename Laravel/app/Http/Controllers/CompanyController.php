@@ -79,7 +79,7 @@ class CompanyController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
             'logo' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:1024',
-            'email' => 'required|email|unique:companies,email,' . $company->users_id,
+            'email' => 'required|email',
             'telephone' => 'required|string|min:6|max:15',
             'address' => 'required|string|max:100',
             'payment_methode' => 'required|string|max:100',

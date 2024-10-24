@@ -71,7 +71,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
         // Route::put('/{id}', [InvoiceController::class, 'update']);
 
-        Route::get('/{id}', [InvoiceController::class, 'show']);
+        Route::get('/{code}', [InvoiceController::class, 'show']);
         Route::middleware(['role:user'])->group(function () {
             Route::post('/', [InvoiceController::class, 'store']);
         });
