@@ -29,7 +29,7 @@
         }
 
         .poppins-regular {
-            font-family: "Poppins", sans-serif;
+            font-family: "Poppins", sans-serif !important;
             font-weight: 400;
             font-style: normal;
         }
@@ -37,7 +37,13 @@
         .page-break {
             page-break-after: always;
         }
-
+        #bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
         .status {
             background: rgb(93, 161, 224);
             position: fixed;
@@ -61,20 +67,18 @@
 
         #container {
             padding: 60px 80px;
-            background: url({{ public_path('img/bg-invoice.jpg') }});
+            /* background: url({{ public_path('img/bg-invoice.jpg') }});
             background-size: cover;
-            height: 100%;
-
-            width: 620px;
-            /* padding-top: 30px !important;
-            padding: 45px 80px; */
-            /* z-index: 9; */
+            height: 100vh; */
+            width: 640px;
             position: relative;
+            z-index: 9;
         }
 
-        #header  {
+        #header {
             display: hidden;
         }
+
         #header img {
             width: auto;
             height: auto;
@@ -84,6 +88,25 @@
             margin-top: 20px;
         }
 
+        .address-details tr td {
+            width: 50%;
+        }
+
+        .address-details div.border {
+            border-bottom: 1px solid #000;
+            opacity: .6;
+            height: 30px;
+            margin-bottom: 30px;
+            margin-top: 40px;
+            font-weight: bold;
+        }
+
+        .address-details div.detail {
+            opacity: .55;
+            height: 30px;
+            margin-bottom: 10px;
+        }
+
         h1 {
             opacity: .60;
             font-size: 18px;
@@ -91,14 +114,17 @@
         }
 
         p {
-            opacity: .55;
-            font-size: 16px;
+            line-height: 1.3;
+            opacity: .5;
             letter-spacing: 0.3px;
+            font-size: 16px;
+            margin-bottom: 5px;
         }
     </style>
 </head>
 
-<body class="poppins-regular">
+<body class="poppins-regular" style="font-size: 16px;">
+    <img id="bg" src="{{public_path('img/bg-invoice.jpg')}}" alt="background">
     <div id="container">
         <div class="status">
             @for ($i = 0; $i < 3; $i++)
@@ -107,14 +133,75 @@
             @endfor
         </div>
         <div id="header">
-            <div class="">
+            <table style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td style="width: 50%;">
+                            <img src="{{ public_path('img/company/' . $data->company->logo) }}" alt="logo">
+                            <p>Generator invoice</p>
+                        </td>
+                        <td style="width: 50%; text-align: right;">
 
-                <img src="{{ public_path('img/company/' . $data->company->logo) }}" alt="logo">
-                <p>Generator invoice</p>
-            </div>
-            <div class="" style="float: right;">
-                aa
-            </div>
+                            <p>INV # {{ $data->code }}</p>
+                            <p>Create # {{ Carbon\Carbon::parse($data->created_at)->format('Y-m-d') }}</p>
+                            <p>Expire # {{ Carbon\Carbon::parse($data->expire)->format('Y-m-d') }}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="details">
+            <table class="address-details" style="width: 100%;">
+                <tbody>
+                    <tr>
+                        <td style="padding-right: 30px;">
+
+                            <div class="border">Invoice From :</div>
+                        </td>
+                        <td style="text-align: right; padding-left: 30px;">
+                            <div class="border">Invoice To :</div>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-right: 30px;">
+                            <div class="detail">
+                                From : {{ $data->user->name }}
+                            </div>
+                            <p>
+                                {{ $data->company->name }}
+                            </p>
+                            <p>
+                                {{ $data->company->address }}
+                            </p>
+                            <p>
+                                {{ $data->company->email }}
+                            </p>
+                            <p>
+                                {{ $data->company->telephone }}
+                            </p>
+                        </td>
+                        <td style="text-align: right; padding-left: 30px;">
+                            <div class="detail">
+                                From : {{ $data->to_name }}
+                            </div>
+                            <p>
+                                {{ $data->to_company }}
+                            </p>
+                            <p>
+                                {{ $data->to_address }} lorem lorem lorem lorem loremlorem lorem
+                            </p>
+                            <p>
+                                {{ $data->to_email }}
+                            </p>
+                            <p>
+                                {{ $data->to_telephone }}
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </body>

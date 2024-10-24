@@ -26,4 +26,9 @@ class Invoice extends Model
     {
         return $this->belongsTo(Company::class, 'companies_id');
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'users_id');
+    }
 }
