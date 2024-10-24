@@ -72,23 +72,28 @@
             position: relative;
         }
 
-        .header img {
+        #header  {
+            display: hidden;
+        }
+        #header img {
             width: auto;
             height: auto;
             max-width: 200px;
             max-height: 100px;
+            margin-bottom: 10px;
+            margin-top: 20px;
         }
 
         h1 {
-            opacity: .65;
+            opacity: .60;
             font-size: 18px;
             margin-bottom: 5px;
         }
 
         p {
-            opacity: .65;
+            opacity: .55;
             font-size: 16px;
-            font-weight: bold;
+            letter-spacing: 0.3px;
         }
     </style>
 </head>
@@ -101,14 +106,14 @@
                     id="status-{{ $i }}">{{ $data->status }}{{ Carbon\Carbon::parse($data->expire)->isPast() ? ', expired' : '' }}</span>
             @endfor
         </div>
-        <div class="header">
+        <div id="header">
             <div class="">
 
                 <img src="{{ public_path('img/company/' . $data->company->logo) }}" alt="logo">
                 <p>Generator invoice</p>
             </div>
-            <div class="">
-
+            <div class="" style="float: right;">
+                aa
             </div>
         </div>
     </div>
