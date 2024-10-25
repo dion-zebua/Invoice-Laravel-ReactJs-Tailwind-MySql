@@ -41,6 +41,7 @@ class UserController extends Controller
         $orderDirection = $request->input('orderDirection', 'desc');
 
         $users = User::orderBy($orderBy, $orderDirection)
+            ->with('company:users_id,id,name')
             ->when($role, function ($query, $role) {
                 $query->where('role', $role);
             })

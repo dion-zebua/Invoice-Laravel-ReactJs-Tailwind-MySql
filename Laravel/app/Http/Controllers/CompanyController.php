@@ -16,9 +16,48 @@ class CompanyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+        $validator = Validator::make($request->all(), [
+            'perPage' => 'nullable|integer|in:5,10,20,50,100',
+            'search' => 'nullable|string',
+            'role' => 'nullable|string|in:admin,user',
+            'orderBy' => 'nullable|string|in:id,name,email',
+            'orderDirection' => 'nullable|string|in:asc,desc',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->unprocessableContent($validator);
+        }
+
+        $perPage = $request->input('perPage', 10);
+        $search = $request->input('search', '');
+        $role = $request->input('role', '');
+        $orderBy = $request->input('orderBy', 'id');
+        $orderDirection = $request->input('orderDirection', 'desc');
+
+        $company = Company::orderBy($orderBy, $orderDirection)
+            ->whereNotNull('name')
+            ->with('user:id,name')
+            ->when($role, function ($query, $role) {
+                $query->where('role', $role);
+            })
+            ->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('id', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%");
+            })
+            ->orderBy($orderBy, $orderDirection)
+            ->paginate($perPage);
+
+        $company->appends($validator->validate());
+
+        if ($company->count() > 0) {
+            return $this->dataFound(teks: 'Perusahaan', data: $company);
+        }
+        return $this->dataNotFound('Perusahaan');
     }
 
     /**
