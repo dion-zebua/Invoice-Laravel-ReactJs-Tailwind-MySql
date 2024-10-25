@@ -21,11 +21,12 @@ class UserController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'perPage' => 'nullable|integer|' . \Illuminate\Validation\Rule::in([5, 10, 20, 50, 100]),
-            'page' => 'nullable|integer|min:1',
+            'perPage' => 'nullable|integer|in:5,10,20,50,100',
             'verified' => 'nullable|boolean',
             'search' => 'nullable|string',
             'role' => 'nullable|string|in:admin,user',
+            'orderBy' => 'nullable|string|in:id,name,email',
+            'orderDirection' => 'nullable|string|in:asc,desc',
         ]);
 
         if ($validator->fails()) {
@@ -33,30 +34,27 @@ class UserController extends Controller
         }
 
         $perPage = $request->input('perPage', 10);
-        $currentPage = $request->input('page', 10);
         $is_verified = $request->input('verified');
-        $role = $request->input('role');
         $search = $request->input('search', '');
+        $role = $request->input('role', '');
+        $orderBy = $request->input('orderBy', 'id');
+        $orderDirection = $request->input('orderDirection', 'desc');
 
-        $users = User::query()
-            // ->when(request()->hasAny(['verified', 'role', 'search']), function ($query) use ($role, $search, $is_verified) {
-            //     if (request()->has('verified')) {
-            //         $query->where('is_verified', '=', $is_verified);
-            //     }
-            //     if ($role) {
-            //         $query->where('role', '=', $role);
-            //     }
-            //     if ($search) {
-            //         $query->where(function ($q) use ($search) {
-            //             $q->where('name', 'like', "%{$search}%")
-            //                 ->orWhere('email', 'like', "%{$search}%");
-            //         });
-            //     }
-            // })
+        $users = User::orderBy($orderBy, $orderDirection)
+            ->when($role, function ($query, $role) {
+                $query->where('role', $role);
+            })
+            ->when($is_verified, function ($query, $is_verified) {
+                $query->where('is_verified', $is_verified);
+            })->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('id', 'like', "%{$search}%");
+            })
+            ->orderBy($orderBy, $orderDirection)
             ->paginate($perPage);
-
-        $users->appends($validator->validate());
-        return response()->json($users);
+        // $users->appends($validator->validate());
+        return $this->dataFound($users, 'Pengguna');
     }
 
     /**

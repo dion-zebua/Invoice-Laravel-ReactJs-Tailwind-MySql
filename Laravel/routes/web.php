@@ -495,3 +495,4 @@ Route::get('/', function (Request $request) {
 });
 
 Route::get('/invoice/{code}', [InvoiceGenerator::class, 'stream']);
+Route::get('/user', [\App\Http\Controllers\UserController::class, 'index']);
