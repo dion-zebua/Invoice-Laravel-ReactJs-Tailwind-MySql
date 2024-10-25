@@ -53,8 +53,13 @@ class UserController extends Controller
             })
             ->orderBy($orderBy, $orderDirection)
             ->paginate($perPage);
-        // $users->appends($validator->validate());
-        return $this->dataFound($users, 'Pengguna');
+
+        $users->appends($validator->validate());
+
+        if ($users->count() > 0) {
+            return $this->dataFound(teks: 'Pengguna', data: $users);
+        }
+        return $this->dataNotFound('Pengguna');
     }
 
     /**
