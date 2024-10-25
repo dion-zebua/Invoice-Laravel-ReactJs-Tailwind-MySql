@@ -40,7 +40,7 @@ class UserController extends Controller
         $orderBy = $request->input('orderBy', 'id');
         $orderDirection = $request->input('orderDirection', 'desc');
 
-        $users = User::orderBy($orderBy, $orderDirection)
+        $users = User::query()->select('id', 'name', 'email', 'role', 'is_verified')
             ->with('company:users_id,id,name')
             ->when($role, function ($query, $role) {
                 $query->where('role', $role);
@@ -58,7 +58,7 @@ class UserController extends Controller
         $users->appends($validator->validate());
 
         if ($users->count() > 0) {
-            return $this->dataFound(teks: 'Pengguna', data: $users);
+            return $this->dataFound($users, 'Pengguna');
         }
         return $this->dataNotFound('Pengguna');
     }
@@ -76,9 +76,11 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $request['role'] = $request['role'] ?? 'user';
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
             'email' => 'required|email|unique:users,email',
+            'role' => 'required|string|in:admin,user',
             'password' => 'required|string|min:8|max:30',
         ]);
 

@@ -46,7 +46,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Company
     Route::prefix('company')->group(function () {
-        // Route::middleware(['role:admin'])->group(function () {});
+        Route::middleware(['role:admin'])->group(function () {
+            Route::get('/', [CompanyController::class, 'index']);
+        });
         // Route::post('/', [CompanyController::class, 'store']);
         // Route::delete('/{id}', [CompanyController::class, 'destroy']);
 
@@ -58,6 +60,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('product')->group(function () {
         Route::middleware(['role:user'])->group(function () {
             Route::post('/', [ProductController::class, 'store']);
+        });
+
+        Route::middleware(['role:admin'])->group(function () {
+            Route::get('/', [InvoiceController::class, 'index']);
         });
 
         Route::get('/{id}', [ProductController::class, 'show']);

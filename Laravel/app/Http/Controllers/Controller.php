@@ -28,11 +28,11 @@ class Controller extends BaseController
     }
 
 
-    public function dataNotFound($data = NULL)
+    public function dataNotFound($teks = NULL)
     {
         return response()->json([
             'status' => false,
-            'message' => ($data ?? 'Data') . ' tidak ditemukan'
+            'message' => ($teks ?? 'Data') . ' tidak ditemukan'
         ], 404);
     }
 

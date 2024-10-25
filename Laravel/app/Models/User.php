@@ -41,6 +41,9 @@ class User extends Authenticatable
         'token_reset_password',
         'password',
         'remember_token',
+        'email_verified_at',
+        'updated_at',
+        'created_at',
     ];
 
     /**

@@ -22,8 +22,7 @@ class CompanyController extends Controller
         $validator = Validator::make($request->all(), [
             'perPage' => 'nullable|integer|in:5,10,20,50,100',
             'search' => 'nullable|string',
-            'role' => 'nullable|string|in:admin,user',
-            'orderBy' => 'nullable|string|in:id,name,email',
+            'orderBy' => 'nullable|string|in:id,users_id,name,email',
             'orderDirection' => 'nullable|string|in:asc,desc',
         ]);
 
@@ -33,20 +32,24 @@ class CompanyController extends Controller
 
         $perPage = $request->input('perPage', 10);
         $search = $request->input('search', '');
-        $role = $request->input('role', '');
         $orderBy = $request->input('orderBy', 'id');
         $orderDirection = $request->input('orderDirection', 'desc');
 
-        $company = Company::orderBy($orderBy, $orderDirection)
+        $company = Company::query()->select('id', 'users_id', 'name', 'address', 'telephone', 'email')
             ->whereNotNull('name')
             ->with('user:id,name')
-            ->when($role, function ($query, $role) {
-                $query->where('role', $role);
-            })
+            ->withCount('products')
+            ->with(['invoices' => function ($query) {
+                $query->select('companies_id', \Illuminate\Support\Facades\DB::raw('SUM(paid_off) as total_paid_off'))
+                    ->selectRaw('SUM(grand_total - down_payment) as total_paid')
+                    ->selectRaw('COUNT(invoices.id) as invoices_count')
+                    ->groupBy('companies_id');
+            }])
             ->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('id', 'like', "%{$search}%")
+                    ->orWhere('users_id', 'like', "%{$search}%")
                     ->orWhere('address', 'like', "%{$search}%");
             })
             ->orderBy($orderBy, $orderDirection)
@@ -55,7 +58,7 @@ class CompanyController extends Controller
         $company->appends($validator->validate());
 
         if ($company->count() > 0) {
-            return $this->dataFound(teks: 'Perusahaan', data: $company);
+            return $this->dataFound($company, 'Perusahaan');
         }
         return $this->dataNotFound('Perusahaan');
     }

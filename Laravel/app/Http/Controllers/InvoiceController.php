@@ -17,9 +17,45 @@ class InvoiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+        $validator = Validator::make($request->all(), [
+            'perPage' => 'nullable|integer|in:5,10,20,50,100',
+            'search' => 'nullable|string',
+            'status' => 'nullable|string|in:paid,unpaid',
+            'orderBy' => 'nullable|string|in:id,companies_id,code,to_name,to_email',
+            'orderDirection' => 'nullable|string|in:asc,desc',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->unprocessableContent($validator);
+        }
+
+        $perPage = $request->input('perPage', 10);
+        $search = $request->input('search', '');
+        $orderBy = $request->input('orderBy', 'id');
+        $orderDirection = $request->input('orderDirection', 'desc');
+
+        $company = Invoice::query()->select('id', 'users_id', 'companies_id', 'code', 'address', 'telephone', 'email')
+            ->with('user:id,name')
+            ->where(function ($q) use ($search) {
+                $q->where('code', 'like', "%{$search}%")
+                    ->orWhere('to_email', 'like', "%{$search}%")
+                    ->orWhere('to_name', 'like', "%{$search}%")
+                    ->orWhere('to_address', 'like', "%{$search}%")
+                    ->orWhere('to_telephone', 'like', "%{$search}%")
+                    ->orWhere('to_company', 'like', "%{$search}%");
+            })
+            ->orderBy($orderBy, $orderDirection)
+            ->paginate($perPage);
+
+        $company->appends($validator->validate());
+
+        if ($company->count() > 0) {
+            return $this->dataFound($company, 'Perusahaan');
+        }
+        return $this->dataNotFound('Perusahaan');
     }
 
     /**
