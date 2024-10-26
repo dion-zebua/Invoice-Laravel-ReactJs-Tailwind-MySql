@@ -1,4 +1,4 @@
-import Reac, { useState } from "react";
+import React, { useState } from "react";
 import Auth from "../../layouts/auths/Auth";
 import Label from "../../components/Label";
 import globalFunction from "../../helpers/GLobalFunction";
@@ -6,9 +6,11 @@ import { InputText } from "primereact/inputtext";
 import FormField from "../../components/FormField";
 import InputPassword from "../../components/InputPassword";
 import AxiosConfig from "../../apis/AxiosConfig";
+import { json } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Login = () => {
-  const [loadingSubmit, setLoadingSubmit] = useState(false)
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -28,21 +30,29 @@ const Login = () => {
     );
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    setData({
-      email: e.target[0].value,
-      password: e.target[1].value,
-    });
-
     try {
-      const response = await AxiosConfig.post("login/", data);
-      console.log("Logged in:", response);
+      const res = await AxiosConfig.post("login", data);
+      console.log(res);
     } catch (err) {
-      console.log(err);
+      Swal.fire({
+        text: err.response.data.message,
+        icon: "error",
+        backdrop: true,
+      });
     }
   };
+
   return (
     <>
       <Auth
@@ -57,6 +67,7 @@ const Login = () => {
           />
 
           <InputText
+            onChange={handleChange}
             type="email"
             className="p-inputtext-sm"
             required
@@ -69,7 +80,7 @@ const Login = () => {
             text="Password"
             htmlFor="password"
           />
-          <InputPassword />
+          <InputPassword onChange={handleChange} />
         </FormField>
       </Auth>
     </>

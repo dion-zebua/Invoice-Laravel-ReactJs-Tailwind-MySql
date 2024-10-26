@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { InputText } from "primereact/inputtext";
 
 export default function InputPassword(props) {
-  const { name } = props;
+  const { name, onChange } = props;
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="relative">
       <InputText
+        onChange={onChange}
         type={showPassword ? "text" : "password"}
         className="p-inputtext-sm"
         required
