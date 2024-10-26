@@ -12,29 +12,19 @@ class Company extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'users_id',
-        'name',
-        'logo',
-        'address',
-        'telephone',
-        'email',
-        'payment_methode',
-        'payment_name',
-        'payment_number',
-    ];
+    protected $guard = ['*'];
 
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class , 'users_id');
+        return $this->belongsTo(User::class, 'users_id');
     }
     public function products(): HasMany
     {
-        return $this->hasMany(Product::class , 'companies_id');
+        return $this->hasMany(Product::class, 'companies_id');
     }
     public function invoices(): HasMany
     {
-        return $this->hasMany(Invoice::class , 'companies_id');
+        return $this->hasMany(Invoice::class, 'companies_id');
     }
 }

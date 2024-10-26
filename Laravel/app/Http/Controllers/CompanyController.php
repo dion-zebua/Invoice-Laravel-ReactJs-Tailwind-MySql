@@ -22,7 +22,7 @@ class CompanyController extends Controller
         $validator = Validator::make($request->all(), [
             'perPage' => 'nullable|integer|in:5,10,20,50,100',
             'search' => 'nullable|string',
-            'orderBy' => 'nullable|string|in:id,users_id,name,email',
+            'orderBy' => 'nullable|string|in:id,users_id,name,email,address,telephone,sales,to_name,to_company_to_email',
             'orderDirection' => 'nullable|string|in:asc,desc',
         ]);
 
@@ -40,17 +40,19 @@ class CompanyController extends Controller
             ->with('user:id,name')
             ->withCount('products')
             ->with(['invoices' => function ($query) {
-                $query->select('companies_id', \Illuminate\Support\Facades\DB::raw('SUM(paid_off) as total_paid_off'))
-                    ->selectRaw('SUM(grand_total - down_payment) as total_paid')
-                    ->selectRaw('COUNT(invoices.id) as invoices_count')
+                $query->select('companies_id', \Illuminate\Support\Facades\DB::raw('SUM(paid_off) as paid_off'))
+                    ->selectRaw('SUM(grand_total - down_payment) as paid')
+                    ->selectRaw('COUNT(invoices.id) as count')
                     ->groupBy('companies_id');
             }])
             ->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('sales', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
                     ->orWhere('id', 'like', "%{$search}%")
                     ->orWhere('users_id', 'like', "%{$search}%")
-                    ->orWhere('address', 'like', "%{$search}%");
+                    ->orWhere('address', 'like', "%{$search}%")
+                    ->orWhere('telephone', 'like', "%{$search}%");
             })
             ->orderBy($orderBy, $orderDirection)
             ->paginate($perPage);
@@ -120,6 +122,7 @@ class CompanyController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
+            'sales' => 'required|string|max:50',
             'logo' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:1024',
             'email' => 'required|email',
             'telephone' => 'required|string|min:6|max:15',

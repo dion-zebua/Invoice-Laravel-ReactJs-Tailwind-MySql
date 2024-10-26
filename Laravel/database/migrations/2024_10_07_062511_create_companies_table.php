@@ -18,6 +18,7 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade');
             $table->string('name')->nullable();
+            $table->string('sales')->nullable();
             $table->string('logo')->nullable();
             $table->string('address')->nullable();
             $table->string('telephone')->nullable();

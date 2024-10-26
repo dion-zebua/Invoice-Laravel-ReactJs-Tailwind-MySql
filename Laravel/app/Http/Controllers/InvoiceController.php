@@ -34,26 +34,50 @@ class InvoiceController extends Controller
 
         $perPage = $request->input('perPage', 10);
         $search = $request->input('search', '');
+        $status = $request->input('status');
         $orderBy = $request->input('orderBy', 'id');
         $orderDirection = $request->input('orderDirection', 'desc');
 
-        $company = Invoice::query()->select('id', 'users_id', 'companies_id', 'code', 'address', 'telephone', 'email')
-            ->with('user:id,name')
+        $invoice = Invoice::query()->select(
+            'id',
+            'users_id',
+            'companies_id',
+            'code',
+            'to_name',
+            'to_company',
+            'to_address',
+            'to_telephone',
+            'to_email',
+            'status',
+            'down_payment',
+            'grand_total'
+        )
+            ->with('company:id,name,email,telephone,address,sales')
+            ->when($status, function ($query, $status) {
+                $query->where('status', $status);
+            })
             ->where(function ($q) use ($search) {
                 $q->where('code', 'like', "%{$search}%")
                     ->orWhere('to_email', 'like', "%{$search}%")
                     ->orWhere('to_name', 'like', "%{$search}%")
                     ->orWhere('to_address', 'like', "%{$search}%")
                     ->orWhere('to_telephone', 'like', "%{$search}%")
-                    ->orWhere('to_company', 'like', "%{$search}%");
+                    ->orWhere('to_company', 'like', "%{$search}%")
+                    ->orWhereHas('company', function ($query) use ($search) {
+                        $query->where('address', 'like', "%{$search}%")
+                            ->orWhere('sales', 'like', "%{$search}%")
+                            ->orWhere('telephone', 'like', "%{$search}%")
+                            ->orWhere('email', 'like', "%{$search}%")
+                            ->orWhere('name', 'like', "%{$search}%");
+                    });
             })
             ->orderBy($orderBy, $orderDirection)
             ->paginate($perPage);
 
-        $company->appends($validator->validate());
+        $invoice->appends($validator->validate());
 
-        if ($company->count() > 0) {
-            return $this->dataFound($company, 'Perusahaan');
+        if ($invoice->count() > 0) {
+            return $this->dataFound($invoice, 'Perusahaan');
         }
         return $this->dataNotFound('Perusahaan');
     }

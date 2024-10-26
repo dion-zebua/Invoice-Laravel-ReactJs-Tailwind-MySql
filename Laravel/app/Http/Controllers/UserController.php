@@ -40,7 +40,7 @@ class UserController extends Controller
         $orderBy = $request->input('orderBy', 'id');
         $orderDirection = $request->input('orderDirection', 'desc');
 
-        $users = User::query()->select('id', 'name', 'email', 'role', 'is_verified')
+        $user = User::query()->select('id', 'name', 'email', 'role', 'is_verified')
             ->with('company:users_id,id,name')
             ->when($role, function ($query, $role) {
                 $query->where('role', $role);
@@ -55,10 +55,10 @@ class UserController extends Controller
             ->orderBy($orderBy, $orderDirection)
             ->paginate($perPage);
 
-        $users->appends($validator->validate());
+        $user->appends($validator->validate());
 
-        if ($users->count() > 0) {
-            return $this->dataFound($users, 'Pengguna');
+        if ($user->count() > 0) {
+            return $this->dataFound($user, 'Pengguna');
         }
         return $this->dataNotFound('Pengguna');
     }
