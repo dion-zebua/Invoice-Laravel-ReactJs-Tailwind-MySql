@@ -16,9 +16,45 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+        $validator = Validator::make($request->all(), [
+            'perPage' => 'nullable|integer|in:5,10,20,50,100',
+            'search' => 'nullable|string',
+            'orderBy' => 'nullable|string|in:id,name,unit,price',
+            'orderDirection' => 'nullable|string|in:asc,desc',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->unprocessableContent($validator);
+        }
+
+        $perPage = $request->input('perPage', 10);
+        $search = $request->input('search', '');
+        $orderBy = $request->input('orderBy', 'id');
+        $orderDirection = $request->input('orderDirection', 'desc');
+
+        $product = Product::query()->select('id', 'companies_id', 'name', 'unit', 'price')
+            ->with('company:id,name')
+            ->where(function ($q) use ($search) {
+                $q->where('id', 'like', "%{$search}%")
+                    ->orWhere('name', 'like', "%{$search}%")
+                    ->orWhere('unit', 'like', "%{$search}%")
+                    ->orWhere('price', 'like', "%{$search}%")
+                    ->orWhereHas('company', function ($query) use ($search) {
+                        $query->Where('name', 'like', "%{$search}%");
+                    });
+            })
+            ->orderBy($orderBy, $orderDirection)
+            ->paginate($perPage);
+
+        $product->appends($validator->validate());
+
+        if ($product->count() > 0) {
+            return $this->dataFound($product, 'Produk');
+        }
+        return $this->dataNotFound('Produk');
     }
 
     /**
