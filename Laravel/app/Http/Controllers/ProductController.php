@@ -35,8 +35,12 @@ class ProductController extends Controller
         $orderBy = $request->input('orderBy', 'id');
         $orderDirection = $request->input('orderDirection', 'desc');
 
+        $user = Auth::user();
         $product = Product::query()->select('id', 'companies_id', 'name', 'unit', 'price')
             ->with('company:id,name')
+            ->when($user->role == 'user', function ($q) use ($user) {
+                $q->where('companies_id', $user->company->id);
+            })
             ->where(function ($q) use ($search) {
                 $q->where('id', 'like', "%{$search}%")
                     ->orWhere('name', 'like', "%{$search}%")

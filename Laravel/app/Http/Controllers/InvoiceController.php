@@ -38,6 +38,7 @@ class InvoiceController extends Controller
         $orderBy = $request->input('orderBy', 'id');
         $orderDirection = $request->input('orderDirection', 'desc');
 
+        $user = Auth::user();
         $invoice = Invoice::query()->select(
             'id',
             'users_id',
@@ -55,6 +56,9 @@ class InvoiceController extends Controller
             ->with('company:id,name,email,telephone,address,sales')
             ->when($status, function ($query, $status) {
                 $query->where('status', $status);
+            })
+            ->when($user->role == 'user', function ($q) use ($user) {
+                $q->where('users_id', $user->id);
             })
             ->where(function ($q) use ($search) {
                 $q->where('code', 'like', "%{$search}%")
@@ -77,9 +81,9 @@ class InvoiceController extends Controller
         $invoice->appends($validator->validate());
 
         if ($invoice->count() > 0) {
-            return $this->dataFound($invoice, 'Perusahaan');
+            return $this->dataFound($invoice, 'Invoice');
         }
-        return $this->dataNotFound('Perusahaan');
+        return $this->dataNotFound('Invoice');
     }
 
     /**
