@@ -7,7 +7,6 @@ import FormField from "../../components/FormField";
 import InputPassword from "../../components/InputPassword";
 import AxiosConfig from "../../apis/AxiosConfig";
 
-import { Popup } from "reactible-popups";
 
 const Login = () => {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
