@@ -22,8 +22,7 @@ class Controller extends BaseController
     {
         return response()->json([
             'success' => false,
-            'message' => 'Validasi error.',
-            'errors' => $validator->errors(),
+            'message' => $validator->errors(),
         ], 422);
     }
 

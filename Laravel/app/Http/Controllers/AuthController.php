@@ -31,7 +31,7 @@ class AuthController extends Controller
 
         $user = User::where('email', $request['email'])->first();
 
-        if (!$user->hasVerifiedEmail()) {
+        if ($user && !$user->is_verified) {
             return response()->json([
                 'status' => false,
                 'message' => 'Anda belum verifikasi!'
@@ -59,8 +59,8 @@ class AuthController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-
-        dd($user->currentAccessToken());
+        
+        /** @var PersonalAccessToken $user */
         $user->currentAccessToken()->delete();
         return response()->json([
             'status' => 'true',

@@ -6,11 +6,13 @@ import { InputText } from "primereact/inputtext";
 import FormField from "../../components/FormField";
 import InputPassword from "../../components/InputPassword";
 import AxiosConfig from "../../apis/AxiosConfig";
-import { json } from "react-router-dom";
-import Swal from "sweetalert2";
+
+import { Popup } from "reactible-popups";
 
 const Login = () => {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -42,15 +44,15 @@ const Login = () => {
     e.preventDefault();
 
     try {
+      setLoadingSubmit(true);
       const res = await AxiosConfig.post("login", data);
       console.log(res);
     } catch (err) {
-      Swal.fire({
-        text: err.response.data.message,
-        icon: "error",
-        backdrop: true,
-      });
+      setIsOpen(true)
+      console.log(err.response.data.message);
     }
+
+    setLoadingSubmit(false);
   };
 
   return (
@@ -60,6 +62,16 @@ const Login = () => {
         title="Login"
         onSubmit={handleLogin}
         footer={footer()}>
+        <Popup
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          position="center"
+          overlayColor="rgba(0, 0, 0, 0.5)"
+          overlayOpacity={0.5}
+          closeOnOverlayClick={true}
+          closeOnEscapeKey={true}
+        />
+
         <FormField className="!mb-0">
           <Label
             text="Email"

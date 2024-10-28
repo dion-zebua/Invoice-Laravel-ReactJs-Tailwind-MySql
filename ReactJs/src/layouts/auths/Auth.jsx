@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "primereact/button";
 
 const Auth = (props) => {
   const { title, children, footer, onSubmit, loadingSubmit } = props;
+
   return (
     <>
       <div className="py-20 min-h-full w-full grid place-items-center px-5 bg-blue-50">
@@ -18,6 +19,7 @@ const Auth = (props) => {
                 className="mt-3 bg-blue-600 hover:bg-blue-700"
                 size="small"
                 label="Login"
+                loading={loadingSubmit}
               />
 
               {footer ?? ""}
