@@ -7,10 +7,8 @@ import FormField from "../../components/FormField";
 import InputPassword from "../../components/InputPassword";
 import AxiosConfig from "../../apis/AxiosConfig";
 
-
 const Login = () => {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
 
   const [data, setData] = useState({
     email: "",
@@ -47,7 +45,7 @@ const Login = () => {
       const res = await AxiosConfig.post("login", data);
       console.log(res);
     } catch (err) {
-      setIsOpen(true)
+      setIsOpen(true);
       console.log(err.response.data.message);
     }
 
@@ -61,16 +59,7 @@ const Login = () => {
         title="Login"
         onSubmit={handleLogin}
         footer={footer()}>
-        <Popup
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          position="center"
-          overlayColor="rgba(0, 0, 0, 0.5)"
-          overlayOpacity={0.5}
-          closeOnOverlayClick={true}
-          closeOnEscapeKey={true}
-        />
-
+        
         <FormField className="!mb-0">
           <Label
             text="Email"
