@@ -77,6 +77,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::middleware(['role:user'])->group(function () {
             Route::post('/', [InvoiceController::class, 'store']);
         });
+        
         Route::delete('/{id}', [InvoiceController::class, 'destroy']);
     });
 });
