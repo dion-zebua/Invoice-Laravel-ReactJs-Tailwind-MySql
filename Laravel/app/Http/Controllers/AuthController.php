@@ -63,7 +63,7 @@ class AuthController extends Controller
         /** @var PersonalAccessToken $user */
         $user->currentAccessToken()->delete();
         return response()->json([
-            'status' => 'true',
+            'status' => true,
             'message' => 'Berhasil logout.',
         ], 200);
     }
