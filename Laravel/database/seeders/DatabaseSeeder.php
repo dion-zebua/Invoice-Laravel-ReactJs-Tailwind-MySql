@@ -21,5 +21,8 @@ class DatabaseSeeder extends Seeder
             'is_verified' => 1,
         ]);
         \App\Models\User::factory(1000)->create();
+        \App\Models\Setting::factory()->create([
+            'is_maintenance' => true,
+        ]);
     }
 }

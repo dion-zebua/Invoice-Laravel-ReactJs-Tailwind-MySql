@@ -16,9 +16,8 @@ class MaintenanceMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        return response()->json(Setting::first());
-        if (App::isDownForMaintenance()) {
-            // Hanya untuk rute API
+        $setting = Setting::first();
+        if ($setting->is_maintenance) {
             return response()->json([
                 'status' => false,
                 'message' => 'Aplikasi sedang dalam pemeliharaan, coba lagi nanti.'
