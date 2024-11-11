@@ -21,63 +21,77 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/as', [\App\Http\Controllers\InvoiceGenerator::class, 'stream']);
 
-Route::group(['middleware' => ['auth.not.authenticated']], function () {
-    Route::post('login', [AuthController::class, 'login']);
-    Route::post('check-verifikasi/{id}/{token}', [AuthController::class, 'checkVerifikasi']);
-    Route::post('forgot-password/', [AuthController::class, 'forgotPassword']);
-    Route::post('reset-password/{id}/{token}', [AuthController::class, 'resetPassword']);
-});
-
-
-Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::post('send-verifikasi/', [AuthController::class, 'sendVerifikasi']);
-
-    // User
-    Route::prefix('user')->group(function () {
-        Route::middleware(['role:admin'])->group(function () {
-            Route::get('/', [UserController::class, 'index']);
-            Route::post('/', [UserController::class, 'store']);
-            Route::delete('/{id}', [UserController::class, 'destroy']);
-        });
-        Route::get('/{id}', [UserController::class, 'show']);
-        Route::put('/{id}', [UserController::class, 'update']);
-    });
-
-    // Company
-    Route::prefix('company')->group(function () {
-        Route::middleware(['role:admin'])->group(function () {
-            Route::get('/', [CompanyController::class, 'index']);
-        });
-
-        Route::get('/{id}', [CompanyController::class, 'show']);
-        Route::put('/{id}', [CompanyController::class, 'update']);
-    });
-
-    // Product
-    Route::prefix('product')->group(function () {
-        Route::get('/', [ProductController::class, 'index']);
-
-        Route::middleware(['role:user'])->group(function () {
-            Route::post('/', [ProductController::class, 'store']);
-        });
-
-        Route::get('/{id}', [ProductController::class, 'show']);
-        Route::put('/{id}', [ProductController::class, 'update']);
-        Route::delete('/{id}', [ProductController::class, 'destroy']);
+Route::controller(AuthController::class)
+    ->group(['middleware' => ['auth.not.authenticated']], function () {
+        Route::post('login', 'login');
+        Route::post('check-verifikasi/{id}/{token}', 'checkVerifikasi');
+        Route::post('forgot-password/', 'forgotPassword');
+        Route::post('reset-password/{id}/{token}', 'resetPassword');
     });
 
 
-    // Invoice
-    Route::prefix('invoice')->group(function () {
+Route::controller(AuthController::class)
+    ->group(['middleware' => ['auth:sanctum']], function () {
+        Route::post('logout', 'logout');
+        Route::post('send-verifikasi/', 'sendVerifikasi');
 
-        Route::get('/', [InvoiceController::class, 'index']);
+        // User
+        Route::controller(UserController::class)
+            ->prefix('user')
+            ->group(function () {
+                Route::middleware(['role:admin'])
+                    ->group(function () {
+                        Route::get('/', 'index');
+                        Route::post('/', 'store');
+                        Route::delete('/{id}', 'destroy');
+                    });
+                Route::get('/{id}', 'show');
+                Route::put('/{id}', 'update');
+            });
 
-        Route::get('/{code}', [InvoiceController::class, 'show']);
-        Route::middleware(['role:user'])->group(function () {
-            Route::post('/', [InvoiceController::class, 'store']);
-        });
-        
-        Route::delete('/{id}', [InvoiceController::class, 'destroy']);
+        // Company
+        Route::controller(CompanyController::class)
+            ->prefix('company')
+            ->group(function () {
+                Route::middleware(['role:admin'])
+                    ->group(function () {
+                        Route::get('/', 'index');
+                    });
+
+                Route::get('/{id}', 'show');
+                Route::put('/{id}', 'update');
+            });
+
+        // Product
+        Route::controller(ProductController::class)
+            ->prefix('product')
+            ->group(function () {
+                Route::get('/', 'index');
+
+                Route::middleware(['role:user'])
+                    ->group(function () {
+                        Route::post('/', 'store');
+                    });
+
+                Route::get('/{id}', 'show');
+                Route::put('/{id}', 'update');
+                Route::delete('/{id}', 'destroy');
+            });
+
+
+        // Invoice
+        Route::controller(InvoiceController::class)
+            ->prefix('invoice')
+            ->group(function () {
+
+                Route::get('/', 'index');
+
+                Route::get('/{code}', 'show');
+                Route::middleware(['role:user'])
+                    ->group(function () {
+                        Route::post('/', 'store');
+                    });
+
+                Route::delete('/{id}', 'destroy');
+            });
     });
-});
