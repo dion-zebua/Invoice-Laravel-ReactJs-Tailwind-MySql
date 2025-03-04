@@ -15,11 +15,11 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory()->create([
             'name' => 'Dion Zebua',
-            'email' => 'zebuadbless@gmail.comm',
+            'email' => 'zebuadbless@gmail.com',
             'password' => 'Password',
             'role' => 'admin',
             'is_verified' => 1,
         ]);
-        \App\Models\User::factory(3)->create();
+        // \App\Models\User::factory(3)->create();
     }
 }

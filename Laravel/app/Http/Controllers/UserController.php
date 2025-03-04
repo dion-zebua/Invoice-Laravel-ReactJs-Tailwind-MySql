@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Mail\Verification;
-use App\Models\Company;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +40,6 @@ class UserController extends Controller
         $orderDirection = $request->input('orderDirection', 'desc');
 
         $user = User::query()->select('id', 'name', 'email', 'role', 'is_verified')
-            ->with('company:users_id,id,name')
             ->when($role, function ($query, $role) {
                 $query->where('role', $role);
             })
@@ -95,10 +93,6 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'token_verified' => Hash::make($tokenVerified),
-        ]);
-
-        $company = Company::create([
-            'users_id' => $user->id,
         ]);
 
         Mail::to($request->email)->send(new Verification($user, $tokenVerified));
