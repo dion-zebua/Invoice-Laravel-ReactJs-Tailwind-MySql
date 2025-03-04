@@ -47,6 +47,7 @@ const Login = () => {
     } catch (err) {
       setIsOpen(true);
       console.log(err.response.data.message);
+      console.log(data);
     }
 
     setLoadingSubmit(false);

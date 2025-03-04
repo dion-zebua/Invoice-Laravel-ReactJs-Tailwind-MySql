@@ -22,11 +22,6 @@ class Invoice extends Model
         return $this->hasMany(InvoiceProduct::class, 'invoices_code', 'code');
     }
 
-    public function company(): BelongsTo
-    {
-        return $this->belongsTo(Company::class, 'companies_id');
-    }
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'users_id');

@@ -19,9 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/as', [\App\Http\Controllers\InvoiceGenerator::class, 'stream']);
-
-Route::middleware('maintenance')->group(function () {
+// Route::middleware('maintenance')->group(function () {
     Route::middleware('auth.not.authenticated')->controller(AuthController::class)
         ->group(function () {
             Route::post('login', 'login');
@@ -46,19 +44,6 @@ Route::middleware('maintenance')->group(function () {
                             Route::post('/', 'store');
                             Route::delete('/{id}', 'destroy');
                         });
-                    Route::get('/{id}', 'show');
-                    Route::put('/{id}', 'update');
-                });
-
-            // Company
-            Route::controller(CompanyController::class)
-                ->prefix('company')
-                ->group(function () {
-                    Route::middleware(['role:admin'])
-                        ->group(function () {
-                            Route::get('/', 'index');
-                        });
-
                     Route::get('/{id}', 'show');
                     Route::put('/{id}', 'update');
                 });
@@ -96,4 +81,4 @@ Route::middleware('maintenance')->group(function () {
                     Route::delete('/{id}', 'destroy');
                 });
         });
-});
+// });

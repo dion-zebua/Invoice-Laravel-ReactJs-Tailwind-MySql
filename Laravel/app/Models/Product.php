@@ -12,15 +12,13 @@ class Product extends Model
 
     protected $table = 'products';
 
-    protected $fillable = [
-        'companies_id',
-        'name',
-        'unit',
-        'price',
+    protected $guarded = [
+        'id',
     ];
 
-    public function company(): BelongsTo
+
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Company::class, 'companies_id');
+        return $this->belongsTo(User::class, 'users_id');
     }
 }

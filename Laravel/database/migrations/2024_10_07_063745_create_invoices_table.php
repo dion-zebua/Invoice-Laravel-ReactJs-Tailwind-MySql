@@ -17,10 +17,6 @@ return new class extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-            $table->foreignId('companies_id')
-                ->references('id')
-                ->on('companies')
-                ->onDelete('cascade');
             $table->string("code")->unique();
             $table->timestamp("expire")->nullable();
             $table->string("to_name");
