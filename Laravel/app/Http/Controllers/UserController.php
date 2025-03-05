@@ -54,7 +54,7 @@ class UserController extends Controller
             ->orderBy($orderBy, $orderDirection)
             ->paginate($perPage);
 
-        $user->appends($validator->validate());
+        $user->appends($validator->validated());
 
         if ($user->count() > 0) {
             return $this->dataFound($user, 'Pengguna');
@@ -189,10 +189,15 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
+
+        if ($id == Auth::id()) {
+            return $this->unauthorizedResponse();
+        }
+
         if (!$user) {
             return $this->dataNotFound('Pengguna');
         }
-        
+
         $user->delete();
 
         return $this->deleteSuccess();

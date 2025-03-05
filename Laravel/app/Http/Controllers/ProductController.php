@@ -53,7 +53,7 @@ class ProductController extends Controller
             ->orderBy($orderBy, $orderDirection)
             ->paginate($perPage);
 
-        $product->appends($validator->validate());
+        $product->appends($validator->validated());
 
         if ($product->count() > 0) {
             return $this->dataFound($product, 'Produk');
@@ -75,18 +75,20 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        $request['companies_id'] = $user->company->id;
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
             'unit' => 'required|string|max:50',
             'price' => 'required|integer|min:0',
         ]);
 
+
         if ($validator->fails()) {
             return $this->unprocessableContent($validator);
         }
+        $validatedData = $validator->validated();
+        $validatedData['users_id'] = $user->id;
 
-        $product = Product::create($request->all());
+        $product = Product::create($validatedData);
         return response()->json([
             'status' => true,
             'message' => 'Berhasil tambah',
