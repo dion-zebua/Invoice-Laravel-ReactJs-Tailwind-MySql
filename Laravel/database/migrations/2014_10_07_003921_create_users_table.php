@@ -22,6 +22,16 @@ return new class extends Migration
             $table->string('token_reset_password')->unique()->nullable();
             $table->boolean('is_verified')->default(false);
             $table->timestamp('email_verified_at')->nullable();
+
+
+            $table->string('sales')->nullable();
+            $table->string('logo')->nullable();
+            $table->string('address')->nullable();
+            $table->string('telephone')->nullable();
+            $table->string('payment_methode')->nullable();
+            $table->string('payment_name')->nullable();
+            $table->string('payment_number')->nullable();
+
             $table->timestamps();
         });
     }

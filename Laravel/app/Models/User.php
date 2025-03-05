@@ -20,15 +20,8 @@ class User extends Authenticatable
      */
     protected $table = 'users';
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-        'token_verified',
-        'token_reset_password',
-        'is_verified',
-        'email_verified_at',
+    protected $guarded = [
+        'id',
     ];
 
     /**
@@ -55,26 +48,4 @@ class User extends Authenticatable
         // 'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::deleting(function ($user) {
-            $company = $user->company;
-            if ($company->logo) {
-                $logoPath = public_path('img/company/' . $company->logo);
-                if (file_exists($logoPath)) {
-                    unlink($logoPath);
-                }
-            }
-            $company->delete();
-        });
-    }
-
-    public function company(): HasOne
-    {
-        return $this->hasOne(Company::class, 'users_id');
-    }
 }

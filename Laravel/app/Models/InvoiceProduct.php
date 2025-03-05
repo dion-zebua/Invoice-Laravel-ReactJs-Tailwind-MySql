@@ -12,9 +12,6 @@ class InvoiceProduct extends Model
 
     protected $table = 'invoice_products';
 
-    // protected $fillable = [
-    //     'invoices_code',
-    // ];
     protected $guarded = [
         'id',
     ];
