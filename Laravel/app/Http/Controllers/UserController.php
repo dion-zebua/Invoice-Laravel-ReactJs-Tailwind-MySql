@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Mail\Verification;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -145,21 +146,39 @@ class UserController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'name' => 'string|max:50',
-            'email' => 'email|unique:users,email,' . $id,
-            'password' => 'string|min:8|max:30',
+            'name' => 'required|string|max:50',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'password' => 'required|string|min:8|max:30',
+
+            'sales' => 'required|string|max:50',
+            'logo' => 'required|image|mimes:jpeg,jpg,png,webp|max:1024',
+            'telephone' => 'required|string|min:6|max:15',
+            'address' => 'required|string|max:100',
+            'payment_methode' => 'required|string|max:100',
+            'payment_name' => 'required|string|max:100',
+            'payment_number' => 'required|string|max:100',
         ]);
 
         if ($validator->fails()) {
             return $this->unprocessableContent($validator);
         }
 
+        $validatedData = $validator->validated();
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $filename = time() . '-' . Str::random(5) . '-' . Str::slug($request->name)  . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('img/company'), $filename);
+
+            $oldImage = public_path($user->logo);
+            if (File::exists($oldImage)) {
+                File::delete($oldImage);
+            }
+
+            $validatedData['logo'] = "img/company/$filename";
+        }
+
+        $user->update($validatedData);
 
         return $this->editSuccess($user);
     }
@@ -173,6 +192,7 @@ class UserController extends Controller
         if (!$user) {
             return $this->dataNotFound('Pengguna');
         }
+        
         $user->delete();
 
         return $this->deleteSuccess();

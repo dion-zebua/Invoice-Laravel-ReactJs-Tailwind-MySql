@@ -29,7 +29,7 @@ use Illuminate\Support\Facades\Route;
         });
 
 
-    Route::middleware('auth:sanctum')->controller(AuthController::class)
+    Route::middleware(['auth:sanctum', 'company'])->controller(AuthController::class)
         ->group(function () {
             Route::post('logout', 'logout');
             Route::post('send-verifikasi/', 'sendVerifikasi');
