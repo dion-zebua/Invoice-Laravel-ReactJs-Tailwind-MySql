@@ -54,10 +54,11 @@ Route::middleware(['auth:sanctum', 'company'])->controller(AuthController::class
             ->group(function () {
                 Route::get('/', 'index');
 
-                // Route::middleware(['role:user'])
-                //     ->group(function () {});
+                Route::middleware(['role:user'])
+                    ->group(function () {
+                        Route::post('/', 'store');
+                    });
 
-                Route::post('/', 'store');
                 Route::get('/{id}', 'show');
                 Route::put('/{id}', 'update');
                 Route::delete('/{id}', 'destroy');
@@ -71,12 +72,13 @@ Route::middleware(['auth:sanctum', 'company'])->controller(AuthController::class
 
                 Route::get('/', 'index');
 
-                Route::get('/{code}', 'show');
-                // Route::middleware(['role:user'])
-                //     ->group(function () {
-                //     });
+                Route::get('/{id}/{code}', 'show');
+                Route::put('/{id}', 'update');
+                Route::middleware(['role:user'])
+                    ->group(function () {
+                        Route::post('/', 'store');
+                    });
 
-                Route::post('/', 'store');
                 Route::delete('/{id}', 'destroy');
             });
     });

@@ -20,10 +20,8 @@ class CompanyMiddleware
     {
 
         if (Auth::check() && Auth::user()->role == "user") {
-            $user = Auth::user();
-
             // Periksa jika profil pengguna tidak lengkap
-            if ($this->isProfileIncomplete($user)) {
+            if ($this->isProfileIncomplete(Auth::user())) {
                 // Redirect ke halaman profil dengan pesan error
                 return response()->json([
                     'status' => 'false',

@@ -36,19 +36,15 @@ class ProductController extends Controller
         $orderDirection = $request->input('orderDirection', 'desc');
 
         $user = Auth::user();
-        $product = Product::query()->select('id', 'companies_id', 'name', 'unit', 'price')
-            ->with('company:id,name')
+        $product = Product::query()->select('id', 'users_id', 'name', 'unit', 'price')
+            ->with('user:id,name')
             ->when($user->role == 'user', function ($q) use ($user) {
-                $q->where('companies_id', $user->company->id);
+                $q->where('users_id', $user->id);
             })
             ->where(function ($q) use ($search) {
-                $q->where('id', 'like', "%{$search}%")
-                    ->orWhere('name', 'like', "%{$search}%")
+                $q->Where('name', 'like', "%{$search}%")
                     ->orWhere('unit', 'like', "%{$search}%")
-                    ->orWhere('price', 'like', "%{$search}%")
-                    ->orWhereHas('company', function ($query) use ($search) {
-                        $query->Where('name', 'like', "%{$search}%");
-                    });
+                    ->orWhere('price', 'like', "%{$search}%");
             })
             ->orderBy($orderBy, $orderDirection)
             ->paginate($perPage);
@@ -109,11 +105,10 @@ class ProductController extends Controller
         }
 
         $userLogin = Auth::user();
-        if ($userLogin->role != 'admin' && $product->company->users_id != $userLogin->id) {
+        if ($userLogin->role != 'admin' && $product->users_id != $userLogin->id) {
             return $this->unauthorizedResponse();
         }
 
-        $product->makeHidden('company');
         return $this->dataFound($product, 'Produk');
     }
 
@@ -137,7 +132,7 @@ class ProductController extends Controller
         }
 
         $userLogin = Auth::user();
-        if ($userLogin->role != 'admin' && $product->company->users_id != $userLogin->id) {
+        if ($userLogin->role != 'admin' && $product->users_id != $userLogin->id) {
             return $this->unauthorizedResponse();
         }
 
@@ -151,7 +146,7 @@ class ProductController extends Controller
             return $this->unprocessableContent($validator);
         }
 
-        $product->update($validator->valid());
+        $product->update($validator->validated());
         return $this->editSuccess($product);
     }
 
@@ -167,7 +162,7 @@ class ProductController extends Controller
         }
 
         $userLogin = Auth::user();
-        if ($userLogin->role != 'admin' && $product->company->users_id != $userLogin->id) {
+        if ($userLogin->role != 'admin' && $product->users_id != $userLogin->id) {
             return $this->unauthorizedResponse();
         }
 

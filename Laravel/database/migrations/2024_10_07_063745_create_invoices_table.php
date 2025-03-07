@@ -19,8 +19,8 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string("code")->unique();
             $table->timestamp("expire")->nullable();
+            $table->string("to_sales");
             $table->string("to_name");
-            $table->string("to_company");
             $table->string("to_address");
             $table->integer("to_telephone");
             $table->string("to_email");

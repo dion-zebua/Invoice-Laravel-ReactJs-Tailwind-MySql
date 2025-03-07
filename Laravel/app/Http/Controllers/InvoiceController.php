@@ -24,7 +24,7 @@ class InvoiceController extends Controller
             'perPage' => 'nullable|integer|in:5,10,20,50,100',
             'search' => 'nullable|string',
             'status' => 'nullable|string|in:paid,unpaid',
-            'orderBy' => 'nullable|string|in:id,companies_id,code,to_name,to_email',
+            'orderBy' => 'nullable|string|in:id,users_id,code,to_name,to_telephone,to_email,status,down_payment,paid_off,grand_total',
             'orderDirection' => 'nullable|string|in:asc,desc',
         ]);
 
@@ -42,18 +42,16 @@ class InvoiceController extends Controller
         $invoice = Invoice::query()->select(
             'id',
             'users_id',
-            'companies_id',
             'code',
             'to_name',
-            'to_company',
-            'to_address',
             'to_telephone',
             'to_email',
             'status',
             'down_payment',
+            'paid_off',
             'grand_total'
         )
-            ->with('company:id,name,email,telephone,address,sales')
+            ->with('user:id,name,email,telephone')
             ->when($status, function ($query, $status) {
                 $query->where('status', $status);
             })
@@ -64,13 +62,9 @@ class InvoiceController extends Controller
                 $q->where('code', 'like', "%{$search}%")
                     ->orWhere('to_email', 'like', "%{$search}%")
                     ->orWhere('to_name', 'like', "%{$search}%")
-                    ->orWhere('to_address', 'like', "%{$search}%")
                     ->orWhere('to_telephone', 'like', "%{$search}%")
-                    ->orWhere('to_company', 'like', "%{$search}%")
-                    ->orWhereHas('company', function ($query) use ($search) {
-                        $query->where('address', 'like', "%{$search}%")
-                            ->orWhere('sales', 'like', "%{$search}%")
-                            ->orWhere('telephone', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($query) use ($search) {
+                        $query->where('telephone', 'like', "%{$search}%")
                             ->orWhere('email', 'like', "%{$search}%")
                             ->orWhere('name', 'like', "%{$search}%");
                     });
@@ -112,7 +106,6 @@ class InvoiceController extends Controller
         $request['products'] = $productRes->toArray();
         $request['code'] = $code;
         $request['users_id'] = $user->id;
-        $request['companies_id'] = $user->company->id;
 
         $subTotal = $productRes->sum('amount');
         $request['sub_total'] = $subTotal;
@@ -191,9 +184,12 @@ class InvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($code)
+    public function show($id, $code)
     {
-        $invoice = Invoice::with('invoiceProducts')->where('code', $code)->first();
+        $invoice = Invoice::with('user:id,name,telephone')
+            ->where('id', $id)
+            ->where('code', $code)
+            ->first();
 
         if (!$invoice) {
             return $this->dataNotFound('Invoice');
@@ -212,9 +208,36 @@ class InvoiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateInvoiceRequest $request, Invoice $invoice)
+    public function update(Request $request, $id)
     {
-        //
+        $invoice = Invoice::find($id);
+
+        if (!$invoice) {
+            return $this->dataNotFound('Invoice');
+        }
+
+        $userLogin = Auth::user();
+        if ($userLogin->role != 'admin' && $invoice->users_id != $userLogin->id) {
+            return $this->unauthorizedResponse();
+        }
+
+        if ($invoice->status == 'paid') {
+            return response()->json([
+                'status' => 'false',
+                'message' => 'Invoice paid! Tidak bisa edit.',
+            ], 403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:paid',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->unprocessableContent($validator);
+        }
+
+        $invoice->update($validator->validated());
+        return $this->editSuccess($invoice);
     }
 
     /**

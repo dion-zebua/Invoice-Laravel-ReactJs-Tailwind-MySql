@@ -25,7 +25,7 @@ class UserController extends Controller
             'verified' => 'nullable|boolean',
             'search' => 'nullable|string',
             'role' => 'nullable|string|in:admin,user',
-            'orderBy' => 'nullable|string|in:id,name,email',
+            'orderBy' => 'nullable|string|in:id,name,sales,telephone,invoice_count',
             'orderDirection' => 'nullable|string|in:asc,desc',
         ]);
 
@@ -40,7 +40,8 @@ class UserController extends Controller
         $orderBy = $request->input('orderBy', 'id');
         $orderDirection = $request->input('orderDirection', 'desc');
 
-        $user = User::query()->select('id', 'name', 'email', 'role', 'is_verified')
+        $user = User::query()->select('id', 'name', 'sales', 'role', 'telephone', 'is_verified')
+            ->withCount('invoice')
             ->when($role, function ($query, $role) {
                 $query->where('role', $role);
             })
@@ -48,8 +49,7 @@ class UserController extends Controller
                 $query->where('is_verified', $is_verified);
             })->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                    ->orWhere('email', 'like', "%{$search}%")
-                    ->orWhere('id', 'like', "%{$search}%");
+                    ->orWhere('sales', 'like', "%{$search}%");
             })
             ->orderBy($orderBy, $orderDirection)
             ->paginate($perPage);
