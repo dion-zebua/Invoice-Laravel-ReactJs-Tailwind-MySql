@@ -21,7 +21,7 @@ class CompanyMiddleware
 
         if (Auth::check() && Auth::user()->role == "user") {
             // Periksa jika profil pengguna tidak lengkap
-            if ($this->isProfileIncomplete(Auth::user())) {
+            if (!$this->isProfileIncomplete(Auth::user())) {
                 // Redirect ke halaman profil dengan pesan error
                 return response()->json([
                     'status' => 'false',
@@ -34,7 +34,7 @@ class CompanyMiddleware
 
     protected function isProfileIncomplete($user)
     {
-        // Memeriksa jika semua field profil lengkap
+       // Memeriksa jika semua field profil lengkap
         return !$user->nama ||
             !$user->phone ||
             !$user->jenis_kelamin ||

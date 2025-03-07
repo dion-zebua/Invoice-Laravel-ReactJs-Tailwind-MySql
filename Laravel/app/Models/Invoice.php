@@ -26,4 +26,10 @@ class Invoice extends Model
     {
         return $this->belongsTo(User::class, 'users_id');
     }
+
+
+    public function getPaidOffAttribute($value)
+    {
+        return $this->status === 'paid' ? $this->grand_total : $value;
+    }
 }

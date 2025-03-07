@@ -190,7 +190,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
 
-        if ($id == Auth::id()) {
+        if ($id == Auth::id() || $id == 1) {
             return $this->unauthorizedResponse();
         }
 

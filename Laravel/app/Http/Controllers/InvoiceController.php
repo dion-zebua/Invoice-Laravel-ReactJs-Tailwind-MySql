@@ -99,7 +99,7 @@ class InvoiceController extends Controller
         $productCollect = collect($request->products);
 
         $productRes = $productCollect->map(function ($item) {
-            $item['amount'] = $item['price'] * $item['quantity'];
+            $item['amount'] = ($item['price'] ?? 0) * ($item['quantity'] ?? 0);
             return $item;
         });
 
@@ -187,6 +187,7 @@ class InvoiceController extends Controller
     public function show($id, $code)
     {
         $invoice = Invoice::with('user:id,name,telephone')
+            ->with('invoiceProducts:invoices_code,name,unit,price,quantity,amount')
             ->where('id', $id)
             ->where('code', $code)
             ->first();

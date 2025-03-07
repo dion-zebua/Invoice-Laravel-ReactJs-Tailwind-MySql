@@ -8,10 +8,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class InvoiceGenerator extends Controller
 {
-    public function stream($code)
+    public function stream($id, $code)
     {
-
-        $invoice = Invoice::with('invoiceProducts')->where('code', $code)->first();
+        $invoice = Invoice::with('invoiceProducts')
+            ->where('id', $id)
+            ->where('code', $code)
+            ->first();
 
         if (!$invoice) {
             return $this->dataNotFound('Invoice');
@@ -20,7 +22,6 @@ class InvoiceGenerator extends Controller
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.invoice', [
             'data' => $invoice->with('invoiceProducts')->first(),
         ]);
-        // return $pdf->download('invoice.pdf');
         return $pdf->stream('invoice.pdf');
 
         // return $this->dataFound($invoice, 'Invoice');

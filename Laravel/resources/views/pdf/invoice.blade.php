@@ -37,6 +37,7 @@
         .page-break {
             page-break-after: always;
         }
+
         #bg {
             position: absolute;
             top: 0;
@@ -44,6 +45,7 @@
             width: 100%;
             height: 100%;
         }
+
         .status {
             background: rgb(93, 161, 224);
             position: fixed;
@@ -124,7 +126,7 @@
 </head>
 
 <body class="poppins-regular" style="font-size: 16px;">
-    <img id="bg" src="{{public_path('img/bg-invoice.jpg')}}" alt="background">
+    <img id="bg" src="{{ public_path('img/bg-invoice.jpg') }}" alt="background">
     <div id="container">
         <div class="status">
             @for ($i = 0; $i < 3; $i++)
@@ -137,7 +139,7 @@
                 <tbody>
                     <tr>
                         <td style="width: 50%;">
-                            <img src="{{ public_path('img/company/' . $data->company->logo) }}" alt="logo">
+                            <img src="{{ public_path($data->logo) }}" alt="logo">
                             <p>Generator invoice</p>
                         </td>
                         <td style="width: 50%; text-align: right;">
@@ -170,16 +172,16 @@
                                 From : {{ $data->user->name }}
                             </div>
                             <p>
-                                {{ $data->company->name }}
+                                {{ $data->name }}
                             </p>
                             <p>
-                                {{ $data->company->address }}
+                                {{ $data->address }}
                             </p>
                             <p>
-                                {{ $data->company->email }}
+                                {{ $data->email }}
                             </p>
                             <p>
-                                {{ $data->company->telephone }}
+                                {{ $data->telephone }}
                             </p>
                         </td>
                         <td style="text-align: right; padding-left: 30px;">
