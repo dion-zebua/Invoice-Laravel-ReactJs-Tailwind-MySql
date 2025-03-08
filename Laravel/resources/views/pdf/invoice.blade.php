@@ -24,7 +24,7 @@
         }
 
         body {
-            padding: 60px 0;
+            padding: 60px 0 40px 0;
         }
 
         .poppins-regular {
@@ -170,7 +170,7 @@
         }
 
         #footer table {
-            margin: 100px 0 0px 0;
+            margin: 50px 0 0px 0;
             width: 100%;
             border-collapse: collapse;
             table-layout: fixed;
