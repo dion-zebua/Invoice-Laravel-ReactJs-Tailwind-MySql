@@ -17,6 +17,8 @@ class Invoice extends Model
         'id',
     ];
 
+    protected $appends = ['numberToWords'];
+
     public function invoiceProducts(): HasMany
     {
         return $this->hasMany(InvoiceProduct::class, 'invoices_code', 'code');
@@ -27,9 +29,13 @@ class Invoice extends Model
         return $this->belongsTo(User::class, 'users_id');
     }
 
-
-    public function getPaidOffAttribute($value)
+    public function getNumberToWordsattribute()
     {
-        return $this->status === 'paid' ? $this->grand_total : $value;
+        return numberToWords($this->grand_total);
+    }
+
+    public function getRemainingBalanceAttribute($value)
+    {
+        return $this->status === 'paid' ? 0 : $value;
     }
 }

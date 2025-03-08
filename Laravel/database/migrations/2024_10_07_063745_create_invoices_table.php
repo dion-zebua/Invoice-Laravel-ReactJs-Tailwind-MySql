@@ -18,11 +18,11 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade');
             $table->string("code")->unique();
-            $table->timestamp("expire")->nullable();
+            $table->timestamp("expire");
             $table->string("to_sales");
             $table->string("to_name");
             $table->string("to_address");
-            $table->integer("to_telephone");
+            $table->string("to_telephone");
             $table->string("to_email");
             $table->integer("sub_total");
             $table->integer("discount");
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->boolean("tax");
             $table->integer("grand_total");
             $table->integer("down_payment");
-            $table->integer("paid_off");
+            $table->integer("remaining_balance");
             $table->enum('status', ['paid', 'unpaid']);
             $table->timestamps();
         });
