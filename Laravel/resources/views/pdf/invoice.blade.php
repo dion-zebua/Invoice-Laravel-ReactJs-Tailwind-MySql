@@ -177,6 +177,12 @@
             text-align: center;
         }
 
+        #footer img {
+            width: 100px;
+            margin: 20px 0 15px 0;
+        }
+
+
         h1 {
             opacity: .60;
             font-size: 17x px;
@@ -387,14 +393,18 @@
             <table>
                 <tbody>
                     <tr>
-                        <td style="padding-bottom: 10px;">
-                            <img src="{{ $qrCode }}" width="100" alt="QR">
-                        </td>
-                        <td style="padding-bottom: 80px;">{{ Str::limit($data->to_name, 30, '...') }}</td>
+                        <td></td>
+                        <td>{{ Str::limit($data->to_name, 30, '...') }}</td>
                     </tr>
                     <tr>
-                        <td>Thank You</td>
-                        <td style="opacity: 0.6;">. . . . . . . . . . . . . . . . . . . . . . .</td>
+                        <td>Thank you</td>
+                        <td>
+                            <img src="{{ $qrCode }}"  alt="QR">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="opacity: 0.6;">Head of Sales</td>
                     </tr>
                 </tbody>
             </table>
