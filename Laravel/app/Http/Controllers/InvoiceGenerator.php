@@ -24,10 +24,13 @@ class InvoiceGenerator extends Controller
             $invoiceProducts[$i] = $invoice->invoiceProducts[0];
         }
 
+        $qrCode = GenerateQrCodeController::getQrCode(env('APP_URL_FRONTEND') . "invoice/$invoice->id/$invoice->code/");
+
         // return view('pdf.invoice', ['data' => $invoice]);
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.invoice', [
             'data' => $invoice,
             'products' => $invoiceProducts,
+            'qrCode' => $qrCode,
         ]);
 
         // $pdf->setOptions([

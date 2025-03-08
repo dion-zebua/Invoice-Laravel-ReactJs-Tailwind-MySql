@@ -387,7 +387,9 @@
             <table>
                 <tbody>
                     <tr>
-                        <td style="padding-bottom: 80px;">R</td>
+                        <td style="padding-bottom: 10px;">
+                            <img src="{{ $qrCode }}" width="100" alt="QR">
+                        </td>
                         <td style="padding-bottom: 80px;">{{ Str::limit($data->to_name, 30, '...') }}</td>
                     </tr>
                     <tr>
