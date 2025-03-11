@@ -59,7 +59,7 @@ class AuthController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        
+
         /** @var PersonalAccessToken $user */
         $user->currentAccessToken()->delete();
         return response()->json([
@@ -182,5 +182,10 @@ class AuthController extends Controller
             'status' => true,
             'message' => 'Reset password berhasil.',
         ], 200);
+    }
+
+    public function checkLogin()
+    {
+        return $this->dataFound(Auth::user(), 'Pengguna');
     }
 }
