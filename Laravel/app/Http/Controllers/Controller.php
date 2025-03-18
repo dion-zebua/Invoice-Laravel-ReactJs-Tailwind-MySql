@@ -21,7 +21,7 @@ class Controller extends BaseController
     public function unprocessableContent($validator)
     {
         return response()->json([
-            'success' => false,
+            'status' => false,
             'message' => $validator->errors(),
         ], 422);
     }
@@ -68,5 +68,21 @@ class Controller extends BaseController
             'status' => true,
             'message' => 'Berhasil hapus.',
         ], 200);
+    }
+
+    public function limitTime($teks, $time)
+    {
+        return response()->json([
+            'status' => false,
+            'message' => "Silahkan $teks setelah $time.",
+        ], 429);
+    }
+
+    public function tokenExpired()
+    {
+        return response()->json([
+            'status' => false,
+            'message' => "Token kadaluarsa.",
+        ], 400);
     }
 }

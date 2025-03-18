@@ -83,6 +83,11 @@ class AuthController extends Controller
             return $this->dataNotFound('Email');
         }
 
+        $tokenTime = Carbon::parse($user->token_reset__before_at);
+        if ($user->token_reset__before_at && $tokenTime->isPast()) {
+            return $this->limitTime('reset password', $tokenTime->format('H:i:s'));
+        }
+
         $tokenVerified = Str::random(60);
 
         $user->update([
@@ -138,11 +143,18 @@ class AuthController extends Controller
             return $this->dataNotFound('Email');
         }
 
+        $tokenTime = Carbon::parse($user->token_reset__before_at);
+
+        if ($user->token_reset__before_at && $tokenTime->isPast()) {
+            return $this->limitTime('reset password', $tokenTime->format('H:i:s'));
+        }
+
         $tokenVerified = Str::random(60);
 
 
         $user->update([
             'token_reset_password' => Hash::make($tokenVerified),
+            'token_reset__password_before_at' => now()->addMinutes(30),
         ]);
 
         Mail::to($user->email)->send(new ResetPassword($user, $tokenVerified));
@@ -173,8 +185,14 @@ class AuthController extends Controller
             return $this->dataNotFound('Token / Pengguna');
         }
 
+        $tokenTime = Carbon::parse($user->token_reset__before_at);
+        if ($user->token_reset__before_at && $tokenTime->isPast()) {
+            return $this->tokenExpired();
+        }
+
         $user->update([
             'token_reset_password' => NULL,
+            'token_reset__password_before_at' => NULL,
             'password' => Hash::make($request->password),
         ]);
 
