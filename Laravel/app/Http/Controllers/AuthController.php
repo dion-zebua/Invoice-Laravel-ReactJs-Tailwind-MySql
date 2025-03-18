@@ -85,13 +85,14 @@ class AuthController extends Controller
 
         $tokenTime = Carbon::parse($user->token_reset__before_at);
         if ($user->token_reset__before_at && $tokenTime->isPast()) {
-            return $this->limitTime('reset password', $tokenTime->format('H:i:s'));
+            return $this->limitTime('verifikasi email', $tokenTime->format('H:i:s'));
         }
 
         $tokenVerified = Str::random(60);
 
         $user->update([
             'token_verified' => Hash::make($tokenVerified),
+            'token_verified_before_at' => now()->addMinutes(30),
             'is_verified' => false,
             'email_verified_at' => NULL,
         ]);
@@ -113,6 +114,11 @@ class AuthController extends Controller
 
         if (!$user || !Hash::check($token, $user->token_verified)) {
             return $this->dataNotFound('Token / Pengguna');
+        }
+
+        $tokenTime = Carbon::parse($user->token_reset__before_at);
+        if ($user->token_reset__before_at && $tokenTime->isPast()) {
+            return $this->tokenExpired();
         }
 
         $user->update([
