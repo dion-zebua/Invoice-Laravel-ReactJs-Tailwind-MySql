@@ -74,7 +74,7 @@ class Controller extends BaseController
     {
         return response()->json([
             'status' => false,
-            'message' => "Silahkan $teks setelah $time.",
+            'message' => "Kirim ulang $teks setelah $time.",
         ], 429);
     }
 

@@ -83,8 +83,8 @@ class AuthController extends Controller
             return $this->dataNotFound('Email');
         }
 
-        $tokenTime = Carbon::parse($user->token_reset__before_at);
-        if ($user->token_reset__before_at && $tokenTime->isPast()) {
+        $tokenTime = Carbon::parse($user->token_verified_before_at);
+        if ($user->token_verified_before_at && !$tokenTime->isPast()) {
             return $this->limitTime('verifikasi email', $tokenTime->format('H:i:s'));
         }
 
@@ -110,15 +110,11 @@ class AuthController extends Controller
         $user = User::where('id', $id)
             ->where('is_verified', 0)
             ->whereNotNull('token_verified')
+            ->where('token_verified_before_at', '>=', Carbon::now())
             ->first();
 
         if (!$user || !Hash::check($token, $user->token_verified)) {
             return $this->dataNotFound('Token / Pengguna');
-        }
-
-        $tokenTime = Carbon::parse($user->token_reset__before_at);
-        if ($user->token_reset__before_at && $tokenTime->isPast()) {
-            return $this->tokenExpired();
         }
 
         $user->update([
@@ -151,8 +147,7 @@ class AuthController extends Controller
         }
 
         $tokenTime = Carbon::parse($user->token_reset_password_before_at);
-
-        if ($user->token_reset_password_before_at && $tokenTime->isPast()) {
+        if ($user->token_reset_password_before_at && !$tokenTime->isPast()) {
             return $this->limitTime('reset password', $tokenTime->format('H:i:s'));
         }
 
@@ -186,15 +181,11 @@ class AuthController extends Controller
 
         $user = User::where('id', $id)
             ->whereNotNull('token_reset_password')
+            ->where('token_reset_password_before_at', '>=', Carbon::now())
             ->first();
 
-        if (!$user && !Hash::check($token, $user->token_reset_password)) {
+        if (!$user || !Hash::check($token, $user->token_reset_password)) {
             return $this->dataNotFound('Token / Pengguna');
-        }
-
-        $tokenTime = Carbon::parse($user->token_reset__before_at);
-        if ($user->token_reset__before_at && $tokenTime->isPast()) {
-            return $this->tokenExpired();
         }
 
         $user->update([

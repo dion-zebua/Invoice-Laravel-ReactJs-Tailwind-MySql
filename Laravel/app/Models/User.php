@@ -32,7 +32,9 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'token_verified',
+        'token_verified_before_at',
         'token_reset_password',
+        'token_reset_password_before_at',
         'password',
         'remember_token',
         'email_verified_at',

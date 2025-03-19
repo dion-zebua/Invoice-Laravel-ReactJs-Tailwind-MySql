@@ -94,6 +94,7 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'token_verified' => Hash::make($tokenVerified),
+            'token_verified_before_at' => now()->addMinutes(30),
         ]);
 
         Mail::to($request->email)->send(new Verification($user, $tokenVerified));
