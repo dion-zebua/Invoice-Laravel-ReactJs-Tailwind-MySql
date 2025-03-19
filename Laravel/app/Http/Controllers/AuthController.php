@@ -123,6 +123,7 @@ class AuthController extends Controller
 
         $user->update([
             'token_verified' => NULL,
+            'token_verified_before_at' => Null,
             'is_verified' => true,
             'email_verified_at' => Carbon::now(),
         ]);
@@ -149,9 +150,9 @@ class AuthController extends Controller
             return $this->dataNotFound('Email');
         }
 
-        $tokenTime = Carbon::parse($user->token_reset__before_at);
+        $tokenTime = Carbon::parse($user->token_reset_password_before_at);
 
-        if ($user->token_reset__before_at && $tokenTime->isPast()) {
+        if ($user->token_reset_password_before_at && $tokenTime->isPast()) {
             return $this->limitTime('reset password', $tokenTime->format('H:i:s'));
         }
 
@@ -160,7 +161,7 @@ class AuthController extends Controller
 
         $user->update([
             'token_reset_password' => Hash::make($tokenVerified),
-            'token_reset__password_before_at' => now()->addMinutes(30),
+            'token_reset_password_before_at' => now()->addMinutes(30),
         ]);
 
         Mail::to($user->email)->send(new ResetPassword($user, $tokenVerified));
@@ -198,7 +199,7 @@ class AuthController extends Controller
 
         $user->update([
             'token_reset_password' => NULL,
-            'token_reset__password_before_at' => NULL,
+            'token_reset_password_before_at' => NULL,
             'password' => Hash::make($request->password),
         ]);
 
