@@ -32,6 +32,7 @@ Route::middleware('auth.not.authenticated')->controller(AuthController::class)
         Route::post('check-verifikasi/{id}/{token}/', 'checkVerifikasi');
         Route::post('forgot-password//', 'forgotPassword');
         Route::post('reset-password/{id}/{token}/', 'resetPassword');
+        Route::post('send-verifikasi/', 'sendVerifikasi');
     });
 
 
@@ -40,7 +41,6 @@ Route::middleware('auth.not.authenticated')->controller(AuthController::class)
 Route::middleware('auth:sanctum')->controller(AuthController::class)
     ->group(function () {
         Route::post('logout/', 'logout');
-        Route::post('send-verifikasi/', 'sendVerifikasi');
         Route::post('check-login/', 'checkLogin');
 
         // User
@@ -55,6 +55,7 @@ Route::middleware('auth:sanctum')->controller(AuthController::class)
                     });
                 Route::get('/{id}/', 'show');
                 Route::put('/{id}/', 'update');
+                Route::post('/{id}/reset-password/', 'resetPassword');
             });
 
 

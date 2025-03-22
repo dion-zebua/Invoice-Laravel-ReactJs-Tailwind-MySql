@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Mail\Verification;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
@@ -149,7 +150,6 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
             'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'required|string|min:8|max:30',
 
             'sales' => 'required|string|max:50',
             'logo' => 'required|image|mimes:jpeg,jpg,png,webp|max:1024',
@@ -182,6 +182,34 @@ class UserController extends Controller
         $user->update($validatedData);
 
         return $this->editSuccess($user);
+    }
+
+
+    public function resetPassword(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string|min:8|max:30|confirmed',
+            'password_confirmation' => 'required|string|min:8|max:30',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->unprocessableContent($validator);
+        }
+
+        $user = User::where('id', $id)->first();
+
+        if (!$user) {
+            return $this->dataNotFound('Token / Pengguna');
+        }
+
+        $user->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Reset password berhasil.',
+        ], 200);
     }
 
     /**
