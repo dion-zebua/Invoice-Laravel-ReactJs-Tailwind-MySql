@@ -1,9 +1,7 @@
-"use client";
 import Main from "@/components/dashboard/Main";
 import Box from "@/components/other/Box";
 import updateMetadata from "@/lib/meta";
 import React from "react";
-import { toast } from "sonner";
 
 const pageTitle = "Reset Password";
 
@@ -22,11 +20,7 @@ export default function page() {
       <Box
         title="Ubah Password"
         className="col-span-full">
-        <button
-          type="button"
-          onClick={(e) => console.log("as")}>
-          aaa
-        </button>
+        <button type="button">aaa</button>
       </Box>
     </Main>
   );

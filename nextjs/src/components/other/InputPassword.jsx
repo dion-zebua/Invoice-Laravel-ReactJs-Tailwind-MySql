@@ -17,7 +17,7 @@ export default function InputPassword() {
         id="password"
         type={seePassword ? "text" : "password"}
         required
-        className="pr-10"
+        className="pr-10 relative -z-1"
       />
       <div className="absolute !py-5 top-1/2 -translate-y-1/2 right-1">
         <Button
