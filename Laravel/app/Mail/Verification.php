@@ -24,7 +24,7 @@ class Verification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Verifikasi Pengguna',
+            subject: 'Verifikasi Email',
         );
     }
 
@@ -38,9 +38,9 @@ class Verification extends Mailable
             with: [
                 $this->user,
                 'token' => $this->token,
-                'title' => 'Verifikasi Akun',
+                'title' => 'Verifikasi Email',
                 'desc' => 'didaftarkan',
-                'link' => 'verifikasi',
+                'link' => 'verifikasi-email',
             ],
         );
     }
