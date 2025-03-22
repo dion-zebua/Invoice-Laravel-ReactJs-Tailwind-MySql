@@ -1,17 +1,17 @@
 const getMetadata = {
-    title: `Pembuatan Invoice Online - ${process.env.APP_NAME}`,
-    description: `Buat invoice anda dengan mudah sekarang juga! - ${process.env.APP_NAME}`,
-    applicationName: process.env.APP_NAME,
+    title: `Pembuatan Invoice Online - ${process.env.NEXT_PUBLIC_APP_NAME}`,
+    description: `Buat invoice anda dengan mudah sekarang juga! - ${process.env.NEXT_PUBLIC_APP_NAME}`,
+    applicationName: process.env.NEXT_PUBLIC_APP_NAME,
     authors: [{ name: "Dion Zebua", url: "https://dionzebua.com" }],
     publisher: "Dion Zebua",
     openGraph: {
-        siteName: process.env.APP_NAME,
-        title: `Pembuatan Invoice Online - ${process.env.APP_NAME}`,
-        description: `Buat invoice anda dengan mudah sekarang juga! - ${process.env.APP_NAME}`,
-        url: process.env.APP_URL_FRONTEND,
+        siteName: process.env.NEXT_PUBLIC_APP_NAME,
+        title: `Pembuatan Invoice Online - ${process.env.NEXT_PUBLIC_APP_NAME}`,
+        description: `Buat invoice anda dengan mudah sekarang juga! - ${process.env.NEXT_PUBLIC_APP_NAME}`,
+        url: process.env.NEXT_PUBLIC_APP_URL_FRONTEND,
         images: [
             {
-                url: `${process.env.APP_URL_FRONTEND}/image/invoice-logo.jpg`,
+                url: `${process.env.NEXT_PUBLIC_APP_URL_FRONTEND}/image/invoice-logo.jpg`,
                 width: 500,
                 height: 500,
             },

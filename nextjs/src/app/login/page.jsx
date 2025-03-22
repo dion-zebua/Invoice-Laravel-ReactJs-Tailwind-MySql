@@ -16,19 +16,26 @@ const pageTitle = "Login";
 
 export const metadata = updateMetadata({
   title: `Halaman ${pageTitle} - ${process.env.APP_NAME}`,
-  desc: `Halaman ${pageTitle} - ${process.env.APP_NAME}`,
+  description: `Halaman ${pageTitle} - ${process.env.APP_NAME}`,
   openGraph: {
     title: `Halaman ${pageTitle} - ${process.env.APP_NAME}`,
-    desc: `Halaman ${pageTitle} - ${process.env.APP_NAME}`,
+    description: `Halaman ${pageTitle} - ${process.env.APP_NAME}`,
   },
 });
 
-export default function page() {
+export default function Page() {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log("Form submitted");
+  };
+
   return (
     <>
       <NavbarLandingPage />
       <DefaultBaner page={pageTitle} />
-      <FormContainer page={pageTitle}>
+      <FormContainer
+        page={pageTitle}
+        onSubmit={handleSubmit}>
         <div className="grid gap-2">
           <div className="flex items-center">
             <Label htmlFor="email">Email</Label>
@@ -68,7 +75,7 @@ export default function page() {
           href="https://api.whatsapp.com/send/?phone=6288289317870&text=Saya+ingin+daftar+https://invoices.my.id">
           <Button
             className="w-full lg:!px-5"
-            variant={"outline"}>
+            variant="outline">
             <UserPlus /> Daftar
           </Button>
         </Link>
