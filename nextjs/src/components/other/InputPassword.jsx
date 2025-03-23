@@ -5,7 +5,7 @@ import { Input } from "../ui/input";
 import { Eye, EyeOff } from "@deemlol/next-icons";
 import { Button } from "../ui/button";
 
-export default function InputPassword() {
+export default function InputPassword({ id }) {
   const [seePassword, setSeePassword] = useState(false);
 
   const handleInputPassword = () => {
@@ -14,10 +14,10 @@ export default function InputPassword() {
   return (
     <div className="relative">
       <Input
-        id="password"
+        id={id}
         type={seePassword ? "text" : "password"}
         required
-        className="pr-10 relative -z-1"
+        className="pr-14 relative z-0"
       />
       <div className="absolute !py-5 top-1/2 -translate-y-1/2 right-1">
         <Button

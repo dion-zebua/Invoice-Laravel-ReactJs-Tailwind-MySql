@@ -2,9 +2,9 @@ import Main from "@/components/dashboard/Main";
 import Box from "@/components/other/Box";
 import updateMetadata from "@/lib/meta";
 import React from "react";
-import ResetPasswordForm from "./ResetPasswordForm";
+import ProfilForm from "./ProfilForm";
 
-const pageTitle = "Reset Password";
+const pageTitle = "Profil";
 
 export const metadata = updateMetadata({
   title: `Halaman ${pageTitle} - ${process.env.NEXT_PUBLIC_APP_NAME}`,
@@ -21,7 +21,7 @@ export default function page() {
       <Box
         title="Ubah Password"
         className="col-span-full">
-        <ResetPasswordForm pageTitle={pageTitle} />
+        <ProfilForm pageTitle={pageTitle} />
       </Box>
     </Main>
   );

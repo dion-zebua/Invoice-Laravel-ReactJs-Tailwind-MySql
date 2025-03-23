@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import FormContainer from "@/components/other/FormContainer";
+import FormLandingPage from "@/components/other/FormLandingPage";
 import Link from "next/link";
 import { UserPlus } from "@deemlol/next-icons";
 import { Label } from "@/components/ui/label";
@@ -16,7 +16,7 @@ export default function LoginForm({ pageTitle }) {
   };
 
   return (
-    <FormContainer
+    <FormLandingPage
       page={pageTitle}
       onSubmit={handleSubmit}>
       <div className="grid gap-2">
@@ -62,6 +62,6 @@ export default function LoginForm({ pageTitle }) {
           <UserPlus /> Daftar
         </Button>
       </Link>
-    </FormContainer>
+    </FormLandingPage>
   );
 }

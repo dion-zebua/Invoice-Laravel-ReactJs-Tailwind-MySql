@@ -18,7 +18,7 @@ export default function MenuLandingPage(props) {
         className="w-full"
         id="nav-mobile">
         <div
-          className={`lg:static lg:hidden fixed bg-slate-950/90 inset-0 transition-all ${
+          className={`lg:static lg:hidden fixed bg-slate-950/90 inset-0 transition-all z-1 ${
             isOpen ? "" : "hidden"
           }`}></div>
         <div

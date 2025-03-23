@@ -233,7 +233,7 @@ function SidebarTrigger({ className, onClick, ...props }) {
   return (
     <Button
       variant="outline"
-      className="border border-primary custom-focus !px-2 [&_svg]:!w-5 [&_svg]:!h-5 [&_svg]:text-primary hover:bg-slate-100"
+      className="border border-primary custom-focus w-8 h-8 [&_svg]:!w-4 [&_svg]:!h-4 [&_svg]:text-primary hover:bg-slate-100"
       data-sidebar="trigger"
       data-slot="sidebar-trigger"
       // variant="ghost"

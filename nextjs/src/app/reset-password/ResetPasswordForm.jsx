@@ -1,13 +1,13 @@
 import React from "react";
-import FormContainer from "@/components/other/FormContainer";
+import FormLandingPage from "@/components/other/FormLandingPage";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import LinkLabel from "@/components/other/LinkLabel";
 import InputPassword from "@/components/other/InputPassword";
 
-export default function ResetPasswordForm({pageTitle}) {
+export default function ResetPasswordForm({ pageTitle }) {
   return (
-    <FormContainer page={pageTitle}>
+    <FormLandingPage page={pageTitle}>
       <div className="grid gap-2">
         <div className="flex items-center">
           <Label htmlFor="password">Password</Label>
@@ -29,6 +29,6 @@ export default function ResetPasswordForm({pageTitle}) {
         href="/login"
         text="Sudah reset?"
       />
-    </FormContainer>
+    </FormLandingPage>
   );
 }

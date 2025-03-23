@@ -1,5 +1,5 @@
 import React from "react";
-import FormContainer from "@/components/other/FormContainer";
+import FormLandingPage from "@/components/other/FormLandingPage";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,7 @@ import LinkLabel from "@/components/other/LinkLabel";
 
 export default function VerifyEmailForm({ pageTitle }) {
   return (
-    <FormContainer page={pageTitle}>
+    <FormLandingPage page={pageTitle}>
       <div className="grid gap-2">
         <div className="flex items-center">
           <Label htmlFor="email">Email</Label>
@@ -27,6 +27,6 @@ export default function VerifyEmailForm({ pageTitle }) {
         href="/login"
         text="Sudah verifikasi?"
       />
-    </FormContainer>
+    </FormLandingPage>
   );
 }

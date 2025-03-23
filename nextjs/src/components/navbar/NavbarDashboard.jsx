@@ -64,14 +64,20 @@ export default function NavbarDashboard() {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 text-slate-600 !mr-4">
             <DropdownMenuGroup>
+              <Link href="/dashboard/profil">
+                <DropdownMenuItem className="cursor-pointer hover:!text-primary">
+                  Profil
+                </DropdownMenuItem>
+              </Link>
+              <Link href="/dashboard/reset-password">
+                <DropdownMenuItem className="cursor-pointer hover:!text-primary">
+                  Ubah Password
+                </DropdownMenuItem>
+              </Link>
+              <Separator className="my-1" />
               <DropdownMenuItem className="cursor-pointer hover:!text-primary">
-                <Link href="/dashboard/profil">Profil</Link>
+                Logout
               </DropdownMenuItem>
-              <DropdownMenuItem className="cursor-pointer hover:!text-primary">
-                <Link href="/dashboard/reset-password">Ubah Password</Link>
-              </DropdownMenuItem>
-              <Separator className="my-1"/>
-              <DropdownMenuItem className="cursor-pointer hover:!text-primary">Logout</DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
