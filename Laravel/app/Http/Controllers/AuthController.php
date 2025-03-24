@@ -68,7 +68,7 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function sendVerifikasi(Request $request)
+    public function sendVerification(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
@@ -105,7 +105,7 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function checkVerifikasi($id, $token)
+    public function checkVerification($id, $token)
     {
         $user = User::where('id', $id)
             ->where('is_verified', 0)
@@ -130,7 +130,7 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function forgotPassword(Request $request)
+    public function sendForgotPassword(Request $request)
     {
 
         $validator = Validator::make($request->all(), [
@@ -164,6 +164,24 @@ class AuthController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Email Reset Password telah terkirim.',
+        ], 200);
+    }
+
+    public function checkResetPassword(Request $request, $id, $token)
+    {
+
+        $user = User::where('id', $id)
+            ->whereNotNull('token_reset_password')
+            ->where('token_reset_password_before_at', '>=', Carbon::now())
+            ->first();
+
+        if (!$user || !Hash::check($token, $user->token_reset_password)) {
+            return $this->dataNotFound('Token / Pengguna');
+        }
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Token Reset password valid.',
         ], 200);
     }
 

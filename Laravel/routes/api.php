@@ -29,10 +29,11 @@ Route::prefix('invoice')->group(function () {
 Route::middleware('auth.not.authenticated')->controller(AuthController::class)
     ->group(function () {
         Route::post('login/', 'login');
-        Route::post('check-verifikasi/{id}/{token}/', 'checkVerifikasi');
-        Route::post('forgot-password//', 'forgotPassword');
+        Route::post('send-verification/', 'sendVerification');
+        Route::get('check-verification/{id}/{token}/', 'checkVerification');
+        Route::post('send-forgot-password/', 'sendForgotPassword');
+        Route::get('check-reset-password/{id}/{token}/', 'checkResetPassword');
         Route::post('reset-password/{id}/{token}/', 'resetPassword');
-        Route::post('send-verifikasi/', 'sendVerifikasi');
     });
 
 
