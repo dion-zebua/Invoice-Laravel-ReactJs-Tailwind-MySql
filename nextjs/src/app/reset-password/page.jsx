@@ -19,7 +19,7 @@ export default function page() {
   return (
     <>
       <NavbarLandingPage />
-      <DefaultBaner page={pageTitle} />
+      <DefaultBaner pageTitle={pageTitle} />
       <ResetPasswordForm pageTitle={pageTitle} />
       <Footer />
     </>

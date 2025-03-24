@@ -8,7 +8,7 @@ import Logo from "../other/Logo";
 import Link from "next/link";
 
 export default function NavbarLandingPage(props) {
-  const { page } = props;
+  const { pageTitle } = props;
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggleNav = () => {
@@ -30,7 +30,7 @@ export default function NavbarLandingPage(props) {
         <Logo />
       </Link>
       <MenuLandingPage
-        page={page}
+        pageTitle={pageTitle}
         isOpen={isOpen}
       />
       <Button

@@ -6,7 +6,7 @@ import Footer from "@/components/footer/Footer";
 export default function Home() {
   return (
     <>
-      <NavbarLandingPage page="Beranda" />
+      <NavbarLandingPage pageTitle="Beranda" />
       <Baner />
       <Cta />
       <Footer />

@@ -37,7 +37,7 @@ export default function LoginForm({ pageTitle }) {
 
   return (
     <FormLandingPage
-      page={pageTitle}
+      pageTitle={pageTitle}
       onSubmit={handleSubmit}>
       <div className="grid gap-2">
         <div className="flex items-center">

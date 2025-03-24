@@ -40,7 +40,7 @@ export default function ResetPasswordForm({ pageTitle }) {
   };
   return (
     <FormLandingPage
-      page={pageTitle}
+      pageTitle={pageTitle}
       onSubmit={handleSubmit}>
       <div className="grid gap-2">
         <div className="flex items-center">
@@ -55,6 +55,7 @@ export default function ResetPasswordForm({ pageTitle }) {
         />
       </div>
       <Button
+        disabled={loadingSubmit}
         type="submit"
         className="w-full">
         {loadingSubmit && <Spin />}

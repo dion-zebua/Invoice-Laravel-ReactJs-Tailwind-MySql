@@ -40,8 +40,8 @@ export default async function page({ params }) {
   return (
     <>
       <NavbarLandingPage />
-      <DefaultBaner page={pageTitle} />
-      <FormLandingPage page={pageTitle}>
+      <DefaultBaner pageTitle={pageTitle} />
+      <FormLandingPage pageTitle={pageTitle}>
         <p>{message}</p>
       </FormLandingPage>
       <Footer />

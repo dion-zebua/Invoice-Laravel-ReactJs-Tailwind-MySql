@@ -2,13 +2,11 @@ import NotFound from "@/app/not-found";
 import Footer from "@/components/footer/Footer";
 import NavbarLandingPage from "@/components/navbar/NavbarLandingPage";
 import DefaultBaner from "@/components/other/DefaultBaner";
-import FormLandingPage from "@/components/other/FormLandingPage";
-import error from "@/lib/error";
 import fetch from "@/lib/fetch";
 import updateMetadata from "@/lib/meta";
 import React from "react";
 import { toast } from "sonner";
-import ResetPasswordForm2 from "./ResetPasswordForm2";
+import ResetPasswordForm from "./ResetPasswordForm";
 
 const pageTitle = "Verifikasi Email";
 
@@ -41,8 +39,8 @@ export default async function page({ params }) {
   return (
     <>
       <NavbarLandingPage />
-      <DefaultBaner page={pageTitle} />
-      <ResetPasswordForm2 pageTitle={pageTitle} />
+      <DefaultBaner pageTitle={pageTitle} />
+      <ResetPasswordForm pageTitle={pageTitle} />
       <Footer />
     </>
   );

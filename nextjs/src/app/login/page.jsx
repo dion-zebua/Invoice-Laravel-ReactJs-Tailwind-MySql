@@ -25,7 +25,7 @@ export default function Page() {
   return (
     <>
       <NavbarLandingPage />
-      <DefaultBaner page={pageTitle} />
+      <DefaultBaner pageTitle={pageTitle} />
       <LoginForm pageTitle={pageTitle} />
       <Footer />
     </>

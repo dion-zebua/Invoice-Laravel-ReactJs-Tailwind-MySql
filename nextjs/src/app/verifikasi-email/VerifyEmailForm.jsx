@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import fetch from "@/lib/fetch";
 import Spin from "@/components/other/Spin";
 import error from "@/lib/error";
+import ButtonSubmit from "@/components/other/ButtonSubmit";
 
 export default function VerifyEmailForm({ pageTitle }) {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
@@ -40,7 +41,7 @@ export default function VerifyEmailForm({ pageTitle }) {
   };
   return (
     <FormLandingPage
-      page={pageTitle}
+      pageTitle={pageTitle}
       onSubmit={handleSubmit}>
       <div className="grid gap-2">
         <div className="flex items-center">
@@ -54,12 +55,11 @@ export default function VerifyEmailForm({ pageTitle }) {
           onChange={handleChange}
         />
       </div>
-      <Button
-        type="submit"
-        className="w-full">
-        {loadingSubmit && <Spin />}
-        {pageTitle}
-      </Button>
+      <ButtonSubmit
+        pageTitle={pageTitle}
+        className="!w-full"
+        loadingSubmit={loadingSubmit}
+      />
       <LinkLabel
         href="/login"
         text="Sudah verifikasi?"

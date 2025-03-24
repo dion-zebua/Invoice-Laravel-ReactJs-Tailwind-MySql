@@ -18,8 +18,8 @@ export const metadata = updateMetadata({
 export default function page() {
   return (
     <>
-      <NavbarLandingPage page={pageTitle} />
-      <DefaultBaner page={pageTitle} />
+      <NavbarLandingPage pageTitle={pageTitle} />
+      <DefaultBaner pageTitle={pageTitle} />
       <div className="custom-container">
         <div className="-z-1 lg:z-1 relative flex flex-col items-center lg:items-start mx-auto lg:flex-row lg:mt-12">
           <div className="w-full h-72 sm:h-80 lg:h-[580px] lg:w-1/2 rounded-t-lg shadow-md sm:rounded-lg overflow-hidden">

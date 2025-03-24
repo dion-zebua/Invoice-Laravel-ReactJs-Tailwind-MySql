@@ -10,7 +10,8 @@ const menu = [
 ];
 
 export default function MenuLandingPage(props) {
-  const { isOpen, page } = props;
+  const { isOpen, pageTitle } = props;
+
 
   return (
     <>
@@ -30,7 +31,7 @@ export default function MenuLandingPage(props) {
               <li key={i}>
                 <Link
                   className={`mb-5 lg:mb-0 block text-slate-600 hover:text-primary ${
-                    page == item[1] ? "!text-primary" : ""
+                    pageTitle == item[1] ? "!text-primary" : ""
                   }`}
                   href={item[0]}>
                   {item[1]}

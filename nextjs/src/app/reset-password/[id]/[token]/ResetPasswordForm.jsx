@@ -11,7 +11,7 @@ import error from "@/lib/error";
 import InputPassword from "@/components/other/InputPassword";
 import { useParams, useRouter } from "next/navigation";
 
-export default function ResetPasswordForm2({ pageTitle }) {
+export default function ResetPasswordForm({ pageTitle }) {
   const router = useRouter();
   const params = useParams();
   const { id, token } = params;
@@ -37,7 +37,8 @@ export default function ResetPasswordForm2({ pageTitle }) {
       .post(`reset-password/${id}/${token}/`, data)
       .then((response) => {
         toast.success(
-          response.data.message + " Redirect otomatis ke halaman login dalam 5 detik!"
+          response.data.message +
+            " Redirect otomatis ke halaman login dalam 5 detik!"
         );
         const timeout = setTimeout(() => {
           router.push("/login");
@@ -52,7 +53,7 @@ export default function ResetPasswordForm2({ pageTitle }) {
   };
   return (
     <FormLandingPage
-      page={pageTitle}
+      pageTitle={pageTitle}
       onSubmit={handleSubmit}>
       <div className="grid gap-2">
         <div className="flex items-center">
@@ -78,6 +79,7 @@ export default function ResetPasswordForm2({ pageTitle }) {
         />
       </div>
       <Button
+        disabled={loadingSubmit}
         type="submit"
         className="w-full">
         {loadingSubmit && <Spin />}
