@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import FormLandingPage from "@/components/other/FormLandingPage";
 import Link from "next/link";
 import { UserPlus } from "@deemlol/next-icons";
@@ -8,11 +8,31 @@ import { Input } from "@/components/ui/input";
 import InputPassword from "@/components/other/InputPassword";
 import { Button } from "@/components/ui/button";
 import LinkLabel from "@/components/other/LinkLabel";
+import fetch from "@/lib/fetch";
+import Spin from "@/components/other/Spin";
+import { toast } from "sonner";
+import error from "@/lib/error";
 
 export default function LoginForm({ pageTitle }) {
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Form submitted");
+    setLoadingSubmit(true);
+    fetch
+      .post("login/", {
+        email: "zebuadbless@gmail.com",
+        password: "Password",
+      })
+      .then((response) => {
+        toast.success(response.data.message);
+      })
+      .catch((err) => {
+        error(err);
+      })
+      .finally(() => {
+        setLoadingSubmit(false);
+      });
   };
 
   return (
@@ -23,7 +43,7 @@ export default function LoginForm({ pageTitle }) {
         <div className="flex items-center">
           <Label htmlFor="email">Email</Label>
           <LinkLabel
-            href="/verify-email"
+            href="/verifikasi-email"
             text="Lupa verifikasi?"
           />
         </div>
@@ -46,6 +66,7 @@ export default function LoginForm({ pageTitle }) {
       <Button
         type="submit"
         className="w-full">
+        {loadingSubmit && <Spin />}
         {pageTitle}
       </Button>
       <div className="-z-1 relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">

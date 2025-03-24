@@ -4,15 +4,22 @@ import FormLandingPage from "@/components/other/FormLandingPage";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import LinkLabel from "@/components/other/LinkLabel";
-import fetch from "@/lib/fetch";
 import { toast } from "sonner";
-import error from "@/lib/error";
-import { Input } from "@/components/ui/input";
+import fetch from "@/lib/fetch";
 import Spin from "@/components/other/Spin";
+import error from "@/lib/error";
+import InputPassword from "@/components/other/InputPassword";
+import { useParams, useRouter } from "next/navigation";
 
-export default function ResetPasswordForm({ pageTitle }) {
+export default function ResetPasswordForm2({ pageTitle }) {
+  const router = useRouter();
+  const params = useParams();
+  const { id, token } = params;
   const [loadingSubmit, setLoadingSubmit] = useState(false);
-  const [data, setData] = useState({ email: "" });
+  const [data, setData] = useState({
+    password: "",
+    password_confirmation: "",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,9 +34,14 @@ export default function ResetPasswordForm({ pageTitle }) {
 
     setLoadingSubmit(true);
     fetch
-      .post("send-forgot-password/", data)
+      .post(`reset-password/${id}/${token}/`, data)
       .then((response) => {
-        toast.success(response.data.message);
+        toast.success(
+          response.data.message + " Redirect otomatis ke halaman login dalam 5 detik!"
+        );
+        const timeout = setTimeout(() => {
+          router.push("/login");
+        }, 5000);
       })
       .catch((err) => {
         error(err);
@@ -44,14 +56,25 @@ export default function ResetPasswordForm({ pageTitle }) {
       onSubmit={handleSubmit}>
       <div className="grid gap-2">
         <div className="flex items-center">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="password">Password</Label>
+          <LinkLabel
+            href="/reset-password"
+            text="Lupa password?"
+          />
         </div>
-        <Input
-          id="email"
-          type="email"
-          required
-          name="email"
+        <InputPassword onChange={handleChange} />
+      </div>
+      <div className="grid gap-2">
+        <div className="flex items-center">
+          <Label htmlFor="password-confirmation">Password</Label>
+          <LinkLabel
+            href="/reset-password"
+            text="Lupa password?"
+          />
+        </div>
+        <InputPassword
           onChange={handleChange}
+          id="password_confirmation"
         />
       </div>
       <Button
@@ -62,7 +85,7 @@ export default function ResetPasswordForm({ pageTitle }) {
       </Button>
       <LinkLabel
         href="/login"
-        text="Sudah reset?"
+        text="Sudah verifikasi?"
       />
     </FormLandingPage>
   );
