@@ -16,6 +16,7 @@ export const metadata = updateMetadata({
   },
 });
 export default function page() {
+
   return (
     <>
       <NavbarLandingPage />

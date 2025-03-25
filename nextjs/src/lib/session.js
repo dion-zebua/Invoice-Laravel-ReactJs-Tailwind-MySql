@@ -12,7 +12,6 @@ export async function encrypt(payload) {
         .setIssuedAt()
         .setExpirationTime('720m')
         .sign(encodedKey)
-
 }
 
 export async function decrypt(session) {
@@ -26,14 +25,29 @@ export async function decrypt(session) {
     }
 }
 
-export async function login(req) {
-
-    const encryptedSessionData = await encrypt(req)
-    const cookieStore = await cookies()
-    cookieStore.set('session', encryptedSessionData, {
+export async function login(data) {
+    const encryptedSessionData = await encrypt(data)
+    const cookie = await cookies()
+    cookie.set('session', encryptedSessionData, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         maxAge: 60 * 60 * 12, // 12 hours
         path: '/',
     })
+}
+
+
+export async function getSession() {
+    const cookie = await cookies()
+    const sessionToken = cookie.get('session')?.value
+
+    if (!sessionToken) return null
+
+    const user = await decrypt(sessionToken)
+
+    const now = Math.floor(Date.now() / 1000)
+    // if (user.exp < now) return null
+    if (user.exp < now) return null
+
+    return user
 }
