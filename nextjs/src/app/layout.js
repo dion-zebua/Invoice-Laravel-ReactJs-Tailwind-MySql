@@ -12,7 +12,6 @@ const poppins = Poppins({
 
 export const metadata = updateMetadata
 
-
 export default function RootLayout({ children }) {
 
   return (

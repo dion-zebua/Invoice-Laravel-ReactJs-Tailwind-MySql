@@ -13,6 +13,7 @@ import {
 import { ChevronDown } from "@deemlol/next-icons";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
+import Logout from "../other/Logout";
 
 export default function NavbarDashboard() {
   return (
@@ -20,23 +21,6 @@ export default function NavbarDashboard() {
       <div className="flex items-center justify-between px-4 w-full">
         <div className="flex items-center justify-between gap-2">
           <SidebarTrigger />
-          {/* <Separator
-              orientation="vertical"
-              className="mr-2 h-4"
-            />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Building Your Application
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb> */}
           <Link
             href="/dashboard"
             className="m-2">
@@ -75,8 +59,9 @@ export default function NavbarDashboard() {
                 </DropdownMenuItem>
               </Link>
               <Separator className="my-1" />
-              <DropdownMenuItem className="cursor-pointer hover:!text-primary">
-                Logout
+
+              <DropdownMenuItem className="cursor-pointer hover:!text-primary p-0 pl-1.5 [&_button]:py-1.5">
+                <Logout />
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>

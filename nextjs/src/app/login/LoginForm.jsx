@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import error from "@/lib/error";
 import ButtonSubmit from "@/components/other/ButtonSubmit";
 import { login } from "@/lib/session";
+import { redirect } from "next/navigation";
 
 export default function LoginForm({ pageTitle }) {
   const [loadingSubmit, setLoadingSubmit] = useState(false);

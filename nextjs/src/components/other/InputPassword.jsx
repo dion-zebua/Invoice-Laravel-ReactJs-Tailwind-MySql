@@ -29,7 +29,7 @@ export default function InputPassword(props) {
           size="sm"
           className="border  border-slate-300"
           variant="secondary">
-          {seePassword ? <EyeOff size={16} /> : <Eye size={16} />}
+          {seePassword ? <Eye size={16} /> : <EyeOff size={16} />}
         </Button>
       </div>
     </div>

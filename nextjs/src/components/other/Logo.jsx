@@ -10,7 +10,7 @@ export default function Logo() {
         src="/image/invoice.png"
         width={100}
         height={25}
-        alt={"logo" + process.env.NEXT_PUBLIC_APP_URL_FRONTEND}
+        alt={"logo " + process.env.NEXT_PUBLIC_APP_NAME}
       />
     </div>
   );

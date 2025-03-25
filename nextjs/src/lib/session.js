@@ -2,6 +2,7 @@
 import 'server-only'
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 const secretKey = process.env.SESSION_SECRET
 const encodedKey = new TextEncoder().encode(secretKey)
@@ -34,6 +35,13 @@ export async function login(data) {
         maxAge: 60 * 60 * 12, // 12 hours
         path: '/',
     })
+    redirect("/dashboard");
+}
+
+export async function logout() {
+    const cookie = await cookies()
+    cookie.delete('session')
+    redirect("/login");
 }
 
 

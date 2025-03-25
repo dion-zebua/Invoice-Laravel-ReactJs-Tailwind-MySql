@@ -1,3 +1,3 @@
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
   return <>{children}</>;
 }
