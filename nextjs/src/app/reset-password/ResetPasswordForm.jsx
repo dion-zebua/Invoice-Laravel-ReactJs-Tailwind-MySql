@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import error from "@/lib/error";
 import { Input } from "@/components/ui/input";
 import Spin from "@/components/other/Spin";
+import ButtonSubmit from "@/components/other/ButtonSubmit";
 
 export default function ResetPasswordForm({ pageTitle }) {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
@@ -54,13 +55,11 @@ export default function ResetPasswordForm({ pageTitle }) {
           onChange={handleChange}
         />
       </div>
-      <Button
-        disabled={loadingSubmit}
-        type="submit"
-        className="w-full">
-        {loadingSubmit && <Spin />}
-        {pageTitle}
-      </Button>
+      <ButtonSubmit
+        pageTitle={pageTitle}
+        className="!w-full"
+        loadingSubmit={loadingSubmit}
+      />
       <LinkLabel
         href="/login"
         text="Sudah reset?"

@@ -10,6 +10,7 @@ import Spin from "@/components/other/Spin";
 import error from "@/lib/error";
 import InputPassword from "@/components/other/InputPassword";
 import { useParams, useRouter } from "next/navigation";
+import ButtonSubmit from "@/components/other/ButtonSubmit";
 
 export default function ResetPasswordForm({ pageTitle }) {
   const router = useRouter();
@@ -78,13 +79,11 @@ export default function ResetPasswordForm({ pageTitle }) {
           id="password_confirmation"
         />
       </div>
-      <Button
-        disabled={loadingSubmit}
-        type="submit"
-        className="w-full">
-        {loadingSubmit && <Spin />}
-        {pageTitle}
-      </Button>
+      <ButtonSubmit
+        pageTitle={pageTitle}
+        className="!w-full"
+        loadingSubmit={loadingSubmit}
+      />
       <LinkLabel
         href="/login"
         text="Sudah verifikasi?"

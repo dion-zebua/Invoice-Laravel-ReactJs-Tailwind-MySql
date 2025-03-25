@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
     <html lang="id">
       <body className={`${poppins.className} md:overflow-y-auto text-slate-800 overflow-x-visible`}>
         {children}
-        <Toaster richColors offset={{ bottom: '16px', left: "16px" }} closeButton />
+        <Toaster position="bottom-left" richColors offset={{ bottom: '16px', left: "16px" }} closeButton />
       </body>
     </html>
   );

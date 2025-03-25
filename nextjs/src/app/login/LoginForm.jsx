@@ -9,23 +9,32 @@ import InputPassword from "@/components/other/InputPassword";
 import { Button } from "@/components/ui/button";
 import LinkLabel from "@/components/other/LinkLabel";
 import fetch from "@/lib/fetch";
-import Spin from "@/components/other/Spin";
 import { toast } from "sonner";
 import error from "@/lib/error";
+import ButtonSubmit from "@/components/other/ButtonSubmit";
+import { encrypt, login } from "@/lib/session";
 
 export default function LoginForm({ pageTitle }) {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [data, setData] = useState({ email: "", password: "" });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     setLoadingSubmit(true);
     fetch
-      .post("login/", {
-        email: "zebuadbless@gmail.com",
-        password: "Password",
-      })
+      .post("login/", data)
       .then((response) => {
-        toast.success(response.data.message);
+        toast.success(response.data.message, response);
+        login(response.data.data);
       })
       .catch((err) => {
         error(err);
@@ -48,8 +57,10 @@ export default function LoginForm({ pageTitle }) {
           />
         </div>
         <Input
+          onChange={handleChange}
           id="email"
           type="email"
+          name="email"
           required
         />
       </div>
@@ -61,14 +72,13 @@ export default function LoginForm({ pageTitle }) {
             text="Lupa password?"
           />
         </div>
-        <InputPassword />
+        <InputPassword onChange={handleChange} />
       </div>
-      <Button
-        type="submit"
-        className="w-full">
-        {loadingSubmit && <Spin />}
-        {pageTitle}
-      </Button>
+      <ButtonSubmit
+        pageTitle={pageTitle}
+        className="!w-full"
+        loadingSubmit={loadingSubmit}
+      />
       <div className="-z-1 relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
         <span className="relative z-10 bg-background px-2 text-muted-foreground">
           atau
