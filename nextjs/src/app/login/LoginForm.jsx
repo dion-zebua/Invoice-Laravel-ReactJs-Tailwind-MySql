@@ -12,12 +12,13 @@ import fetch from "@/lib/fetch";
 import { toast } from "sonner";
 import error from "@/lib/error";
 import ButtonSubmit from "@/components/other/ButtonSubmit";
-import { login } from "@/lib/session";
-import { redirect } from "next/navigation";
+import { getSession, login } from "@/lib/session";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm({ pageTitle }) {
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [data, setData] = useState({ email: "", password: "" });
+  const router = useRouter();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,8 +35,9 @@ export default function LoginForm({ pageTitle }) {
     fetch
       .post("login/", data)
       .then((response) => {
-        toast.success(response.data.message, response);
+        toast.success(response.data.message);
         login(response.data.data);
+        router.push("/dashboard");
       })
       .catch((err) => {
         error(err);
@@ -44,6 +46,10 @@ export default function LoginForm({ pageTitle }) {
         setLoadingSubmit(false);
       });
   };
+
+  // const user = getSession();
+  // console.log(user);
+  
 
   return (
     <FormLandingPage
@@ -76,7 +82,7 @@ export default function LoginForm({ pageTitle }) {
         <InputPassword onChange={handleChange} />
       </div>
       <ButtonSubmit
-        pageTitle={pageTitle}
+        label={pageTitle}
         className="!w-full"
         loadingSubmit={loadingSubmit}
       />

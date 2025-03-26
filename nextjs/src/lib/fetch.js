@@ -2,7 +2,7 @@ import axios from "axios";
 import { getSession } from "./session";
 
 const fetch = axios.create({
-    // baseURL: "http://127.0.0.1:8000/api/",
+    baseURL: "http://127.0.0.1:8000/api/",
     headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
@@ -15,7 +15,6 @@ const fetch = axios.create({
 fetch.interceptors.request.use(async (config) => {
     const user = await getSession();
     if (user?.token) {
-        // config.baseURL = `/${user.id}`;
         config.headers.Authorization = `Bearer ${user.token}`;
     }
     return config;

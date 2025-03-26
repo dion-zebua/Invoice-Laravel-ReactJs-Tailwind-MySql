@@ -56,7 +56,7 @@ Route::middleware('auth:sanctum')->controller(AuthController::class)
                     });
                 Route::get('/{id}/', 'show');
                 Route::put('/{id}/', 'update');
-                Route::post('/{id}/reset-password/', 'resetPassword');
+                Route::post('/reset-password/', 'resetPassword');
             });
 
 

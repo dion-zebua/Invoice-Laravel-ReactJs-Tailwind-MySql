@@ -6,6 +6,7 @@ import FormLandingPage from "@/components/other/FormLandingPage";
 import error from "@/lib/error";
 import fetch from "@/lib/fetch";
 import updateMetadata from "@/lib/meta";
+import { redirect } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 
@@ -33,6 +34,13 @@ export default async function page({ params }) {
       return <NotFound />;
     }
     message = response.data.message;
+    toast.success(
+      response.data.message +
+        " Redirect otomatis ke halaman login dalam 5 detik!"
+    );
+    const timeout = setTimeout(() => {
+      redirect("/login");
+    }, 5000);
   } catch (err) {
     return <NotFound />;
   }

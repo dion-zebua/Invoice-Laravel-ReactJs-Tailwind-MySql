@@ -185,8 +185,14 @@ class UserController extends Controller
     }
 
 
-    public function resetPassword(Request $request, $id)
+    public function resetPassword(Request $request)
     {
+
+        $user = User::where('id', Auth::id())->first();
+        if (!$user) {
+            return $this->dataNotFound('Token / Pengguna');
+        }
+
         $validator = Validator::make($request->all(), [
             'password' => 'required|string|min:8|max:30|confirmed',
             'password_confirmation' => 'required|string|min:8|max:30',
@@ -194,12 +200,6 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return $this->unprocessableContent($validator);
-        }
-
-        $user = User::where('id', $id)->first();
-
-        if (!$user) {
-            return $this->dataNotFound('Token / Pengguna');
         }
 
         $user->update([

@@ -22,7 +22,9 @@ export async function middleware(request) {
         return NextResponse.redirect(new URL('/dashboard', request.url));
     }
 
-    const response = NextResponse.next()
+    const data = await getSession()
+
+    const response = NextResponse.next(data)
 
     return response
 }

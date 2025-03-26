@@ -46,12 +46,12 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('apiToken')->plainTextToken;
+        $user['token'] = $token;
 
         return response()->json([
             'status' => true,
             'message' => 'Berhasil login.',
             'data' => $user,
-            'token' => $token,
         ], 200);
     }
 

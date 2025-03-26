@@ -7,6 +7,7 @@ import updateMetadata from "@/lib/meta";
 import React from "react";
 import { toast } from "sonner";
 import ResetPasswordForm from "./ResetPasswordForm";
+import { redirect } from "next/navigation";
 
 const pageTitle = "Verifikasi Email";
 
@@ -24,14 +25,19 @@ export const metadata = updateMetadata({
 
 export default async function page({ params }) {
   const { id, token } = await params;
-  let message = "";
 
   try {
     const response = await fetch.get(`check-reset-password/${id}/${token}/`);
     if (response.status != 200) {
       return <NotFound />;
     }
-    message = response.data.message;
+    toast.success(
+      response.data.message +
+        " Redirect otomatis ke halaman login dalam 5 detik!"
+    );
+    const timeout = setTimeout(() => {
+      redirect("/login");
+    }, 5000);
   } catch (err) {
     return <NotFound />;
   }

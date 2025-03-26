@@ -35,13 +35,11 @@ export async function login(data) {
         maxAge: 60 * 60 * 12, // 12 hours
         path: '/',
     })
-    redirect("/dashboard");
 }
 
 export async function logout() {
     const cookie = await cookies()
     cookie.delete('session')
-    redirect("/login");
 }
 
 
@@ -54,8 +52,7 @@ export async function getSession() {
     const user = await decrypt(sessionToken)
 
     const now = Math.floor(Date.now() / 1000)
-    // if (user.exp < now) return null
-    if (user.exp < now) return null
+    if (user?.exp < now) return null
 
     return user
 }

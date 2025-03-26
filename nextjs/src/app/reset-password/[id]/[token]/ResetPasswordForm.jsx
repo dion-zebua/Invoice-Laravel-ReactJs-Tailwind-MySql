@@ -52,41 +52,30 @@ export default function ResetPasswordForm({ pageTitle }) {
         setLoadingSubmit(false);
       });
   };
+  
   return (
     <FormLandingPage
       pageTitle={pageTitle}
       onSubmit={handleSubmit}>
       <div className="grid gap-2">
-        <div className="flex items-center">
-          <Label htmlFor="password">Password</Label>
-          <LinkLabel
-            href="/reset-password"
-            text="Lupa password?"
-          />
-        </div>
+        <Label htmlFor="password">Password</Label>
         <InputPassword onChange={handleChange} />
       </div>
       <div className="grid gap-2">
-        <div className="flex items-center">
-          <Label htmlFor="password-confirmation">Password</Label>
-          <LinkLabel
-            href="/reset-password"
-            text="Lupa password?"
-          />
-        </div>
+        <Label htmlFor="password-confirmation">Password</Label>
         <InputPassword
           onChange={handleChange}
           id="password_confirmation"
         />
       </div>
       <ButtonSubmit
-        pageTitle={pageTitle}
+        label={pageTitle}
         className="!w-full"
         loadingSubmit={loadingSubmit}
       />
       <LinkLabel
         href="/login"
-        text="Sudah verifikasi?"
+        text="Sudah reset?"
       />
     </FormLandingPage>
   );

@@ -44,9 +44,7 @@ export default function VerifyEmailForm({ pageTitle }) {
       pageTitle={pageTitle}
       onSubmit={handleSubmit}>
       <div className="grid gap-2">
-        <div className="flex items-center">
-          <Label htmlFor="email">Email</Label>
-        </div>
+        <Label htmlFor="email">Email</Label>
         <Input
           id="email"
           type="email"
@@ -56,7 +54,7 @@ export default function VerifyEmailForm({ pageTitle }) {
         />
       </div>
       <ButtonSubmit
-        pageTitle={pageTitle}
+        label={pageTitle}
         className="!w-full"
         loadingSubmit={loadingSubmit}
       />
