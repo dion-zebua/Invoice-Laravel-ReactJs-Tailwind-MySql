@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceGenerator;
 use App\Http\Controllers\ProductController;
@@ -59,31 +58,33 @@ Route::middleware('auth:sanctum')->controller(AuthController::class)
                 Route::post('/reset-password/', 'resetPassword');
             });
 
+        // Product
+        Route::controller(ProductController::class)
+            ->prefix('product')
+            ->group(function () {
+                Route::get('/', 'index');
+                Route::get('/{id}/', 'show');
 
-        Route::middleware('company')->group(function () {
-            // Product
-            Route::controller(ProductController::class)
-                ->prefix('product')
-                ->group(function () {
-                    Route::get('/', 'index');
-
+                Route::middleware('company')->group(function () {
                     Route::middleware(['role:user'])
                         ->group(function () {
                             Route::post('/', 'store');
                         });
 
-                    Route::get('/{id}/', 'show');
                     Route::put('/{id}/', 'update');
                     Route::delete('/{id}/', 'destroy');
                 });
+            });
 
 
-            // Invoice
-            Route::controller(InvoiceController::class)
-                ->prefix('invoice')
-                ->group(function () {
+        // Invoice
+        Route::controller(InvoiceController::class)
+            ->prefix('invoice')
+            ->group(function () {
 
-                    Route::get('/', 'index');
+                Route::get('/', 'index');
+                Route::middleware('company')->group(function () {
+
 
                     // Route::get('/{id}/{code}/', 'show');
                     Route::put('/{id}/', 'update');
@@ -94,5 +95,5 @@ Route::middleware('auth:sanctum')->controller(AuthController::class)
 
                     Route::delete('/{id}/', 'destroy');
                 });
-        });
+            });
     });

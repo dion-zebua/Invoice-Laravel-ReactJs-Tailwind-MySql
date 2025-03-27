@@ -31,7 +31,7 @@ class Controller extends BaseController
     {
         return response()->json([
             'status' => false,
-            'message' => ($teks ?? 'Data') . ' tidak ditemukan'
+            'message' => ($teks ?? 'Data') . ' tidak ditemukan.'
         ], 404);
     }
 
