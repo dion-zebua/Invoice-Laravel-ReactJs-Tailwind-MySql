@@ -35,8 +35,8 @@ export default function LoginForm({ pageTitle }) {
     fetch
       .post("login/", data)
       .then((response) => {
-        toast.success(response.data.message);
         login(response.data.data);
+        toast.success(response.data.message);
         router.push("/dashboard");
       })
       .catch((err) => {
@@ -49,7 +49,6 @@ export default function LoginForm({ pageTitle }) {
 
   // const user = getSession();
   // console.log(user);
-  
 
   return (
     <FormLandingPage

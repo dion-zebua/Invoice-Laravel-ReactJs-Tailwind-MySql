@@ -13,14 +13,12 @@ export default function Logout() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    toast.warning("Sedang logout...");
-
     fetch
       .post("logout/")
       .then((response) => {
         const timeout = setTimeout(() => {
-          toast.success(response.data.message);
           logout();
+          toast.success(response.data.message);
           router.push("/login");
         }, 100);
       })

@@ -3,12 +3,11 @@ import Footer from "@/components/footer/Footer";
 import NavbarLandingPage from "@/components/navbar/NavbarLandingPage";
 import DefaultBaner from "@/components/other/DefaultBaner";
 import FormLandingPage from "@/components/other/FormLandingPage";
-import error from "@/lib/error";
+import LinkLabel from "@/components/other/LinkLabel";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import fetch from "@/lib/fetch";
 import updateMetadata from "@/lib/meta";
-import { redirect } from "next/navigation";
 import React from "react";
-import { toast } from "sonner";
 
 const pageTitle = "Verifikasi Email";
 
@@ -21,6 +20,11 @@ export const metadata = updateMetadata({
   },
   robots: {
     index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
   },
 });
 
@@ -29,20 +33,10 @@ export default async function page({ params }) {
   let message = "";
 
   try {
-    const response = await fetch.post(`check-verification/${id}/${token}/`);
-    if (response.status != 200) {
-      return <NotFound />;
-    }
+    const response = await fetch.get(`check-verification/${id}/${token}/`);
     message = response.data.message;
-    toast.success(
-      response.data.message +
-        " Redirect otomatis ke halaman login dalam 5 detik!"
-    );
-    const timeout = setTimeout(() => {
-      redirect("/login");
-    }, 5000);
   } catch (err) {
-    return <NotFound />;
+    message = err.response.data.message ?? err.message;
   }
 
   return (
@@ -50,7 +44,20 @@ export default async function page({ params }) {
       <NavbarLandingPage />
       <DefaultBaner pageTitle={pageTitle} />
       <FormLandingPage pageTitle={pageTitle}>
-        <p>{message}</p>
+        <Alert>
+          <AlertDescription>{message}</AlertDescription>
+        </Alert>
+        <div className="text-right [&>*]:ml-0 text-sm opacity-80">
+          <LinkLabel
+            href="/login"
+            text="Sudah verifikasi?"
+          />
+          <span>&nbsp;atau&nbsp;</span>
+          <LinkLabel
+            href="/verifikasi-email"
+            text="Kirim ulang?"
+          />
+        </div>
       </FormLandingPage>
       <Footer />
     </>

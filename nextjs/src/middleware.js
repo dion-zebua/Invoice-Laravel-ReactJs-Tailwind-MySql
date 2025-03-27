@@ -24,7 +24,7 @@ export async function middleware(request) {
 
     const data = await getSession()
 
-    const response = NextResponse.next(data)
+    const response = NextResponse.next()
 
     return response
 }

@@ -17,8 +17,12 @@ export const metadata = updateMetadata({
 export default function page() {
   return (
     <Main page={pageTitle}>
-      <Box isLoading title="Total Invoice"></Box>
-      <Box isLoading title="Total Pengguna"></Box>
+      <Box
+        isLoading
+        title="Total Invoice"></Box>
+      <Box
+        isLoading
+        title="Total Pengguna"></Box>
       <Box isLoading>Test</Box>
       <Box
         isLoading={true}
