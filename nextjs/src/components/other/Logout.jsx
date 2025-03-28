@@ -16,13 +16,12 @@ export default function Logout() {
     fetch
       .post("logout/")
       .then((response) => {
-        const timeout = setTimeout(() => {
-          logout();
-          toast.success(response.data.message);
-          router.push("/login");
-        }, 100);
+        toast.success(response.data.message);
+        logout();
+        router.push("/login");
       })
       .catch((err) => {
+        console.log(err);
         if (err.status == 401) {
           logout();
           redirect("/login");
