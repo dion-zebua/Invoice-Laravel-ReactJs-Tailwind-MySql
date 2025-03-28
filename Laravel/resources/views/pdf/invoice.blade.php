@@ -222,7 +222,7 @@
                     <tr>
                         <td style="width: 50%;">
                             <img style="max-width: 110px; max-height: 70px;" class="logo"
-                                src="{{ public_path($data->user->logo) }}" alt="logo">
+                                src="{{ public_path($data->user->logo['result']) }}" alt="logo">
                             {{-- <p>Generator invoice</p> --}}
                         </td>
                         <td style="width: 50%; text-align: right;">
@@ -399,7 +399,7 @@
                     <tr>
                         <td>Thank you</td>
                         <td>
-                            <img src="{{ $qrCode }}"  alt="QR">
+                            <img src="{{ $qrCode }}" alt="QR">
                         </td>
                     </tr>
                     <tr>

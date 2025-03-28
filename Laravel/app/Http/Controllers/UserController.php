@@ -150,9 +150,8 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:50',
             'email' => 'required|email|unique:users,email,' . $id,
-
             'sales' => 'required|string|max:50',
-            'logo' => 'required|image|mimes:jpeg,jpg,png,webp|max:1024',
+            'logo' => 'required|image|mimes:jpeg,jpg,png,webp|max:3072',
             'telephone' => 'required|string|min:6|max:15',
             'address' => 'required|string|max:100',
             'payment_methode' => 'required|string|max:100',

@@ -61,13 +61,17 @@ class User extends Authenticatable
     public function getLogoAttribute($value)
     {
         $img = public_path($value);
-        $ImgResult = '';
-        if (File::exists($img)) {
-            $ImgResult = $value;
+        $path = '';
+        if ($value && File::exists($value)) {
+            $path = $value;
+            $result = asset($path);
+        } else {
+            $path = null;
+            $result = env('APP_LOGO');
         }
         return [
-            'path' => $ImgResult ? $ImgResult : null,
-            'result' => $ImgResult ? asset($ImgResult) : null,
+            'path' => $path,
+            'result' => $result,
         ];
     }
 
