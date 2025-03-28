@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { SidebarTrigger } from "../ui/sidebar";
 import Link from "next/link";
@@ -14,8 +15,11 @@ import { ChevronDown } from "@deemlol/next-icons";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import Logout from "../other/Logout";
+import { useSession } from "@/context/SessionContext";
 
 export default function NavbarDashboard() {
+  const session = useSession();
+
   return (
     <header className="flex min-h-16 max-h-16 items-center border-b bg-white">
       <div className="flex items-center justify-between px-4 w-full">
@@ -38,7 +42,7 @@ export default function NavbarDashboard() {
                 </Avatar>
               </Button>
               <div className="group-hover:text-slate-800 max-w-[100px] line-clamp-1 text-sm ml-2 mr-1">
-                Dion Zebua
+                {session?.name || "Tanpa Nama"}
               </div>
               <ChevronDown
                 size={13}

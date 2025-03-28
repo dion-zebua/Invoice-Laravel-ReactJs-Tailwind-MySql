@@ -1,27 +1,27 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-    // devIndicators: true,
-    // experimental: {
-    //     turboMode: false,
-    // },
-};
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//     // devIndicators: true,
+//     // experimental: {
+//     //     turboMode: false,
+//     // },
+// };
 
-export default nextConfig;
+// export default nextConfig;
 
-// import bundleAnalyzer from '@next/bundle-analyzer';
+import bundleAnalyzer from '@next/bundle-analyzer';
 
-// const withBundleAnalyzer = bundleAnalyzer({
-//     enabled: process.env.ANALYZE === 'true',
-// });
+const withBundleAnalyzer = bundleAnalyzer({
+    enabled: process.env.ANALYZE === 'true',
+});
 
-// const nextConfig = withBundleAnalyzer({
-//     reactStrictMode: true,
-//     swcMinify: true, // Menggunakan SWC untuk mempercepat build
-//     compiler: {
-//         removeConsole: process.env.NODE_ENV === 'production', // Hapus console.log di production
-//     },
-// });
+const nextConfig = withBundleAnalyzer({
+    reactStrictMode: true,
+    swcMinify: true, // Menggunakan SWC untuk mempercepat build
+    compiler: {
+        removeConsole: process.env.NODE_ENV === 'production', // Hapus console.log di production
+    },
+});
 
-// export default withBundleAnalyzer({
-//     reactStrictMode: true,
-// });
+export default withBundleAnalyzer({
+    reactStrictMode: true,
+});

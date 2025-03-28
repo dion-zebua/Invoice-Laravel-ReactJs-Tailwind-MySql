@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 export default function UploadImage(props) {
-  const { onUpload, image } = props;
+  const { onUpload, image, required } = props;
   const inputImage = useRef(null);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function UploadImage(props) {
             <input
               ref={inputImage}
               onChange={uploadImageHandle}
-              required={!image}
+              required={required}
               id="logo"
               accept="image/*"
               name="thumbnail"

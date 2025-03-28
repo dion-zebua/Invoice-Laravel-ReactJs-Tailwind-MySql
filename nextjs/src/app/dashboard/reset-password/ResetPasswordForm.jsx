@@ -1,4 +1,5 @@
 "use client";
+import Box from "@/components/other/Box";
 import FormDasboard from "@/components/other/FormDasboard";
 import InputPassword from "@/components/other/InputPassword";
 import { Label } from "@/components/ui/label";
@@ -40,24 +41,28 @@ export default function ResetPasswordForm({ pageTitle }) {
   };
 
   return (
-    <FormDasboard
-      pageTitle={pageTitle}
-      loadingSubmit={loadingSubmit}
-      onSubmit={handleSubmit}>
-      <div className="sm:!col-span-6">
-        <Label htmlFor="password">Password</Label>
-        <InputPassword
-          onChange={handleChange}
-          id="password"
-        />
-      </div>
-      <div className="sm:!col-span-6">
-        <Label htmlFor="password_confirmation">Konfirmasi Password</Label>
-        <InputPassword
-          onChange={handleChange}
-          id="password_confirmation"
-        />
-      </div>
-    </FormDasboard>
+    <Box
+      title={pageTitle}
+      className="col-span-full">
+      <FormDasboard
+        pageTitle={pageTitle}
+        loadingSubmit={loadingSubmit}
+        onSubmit={handleSubmit}>
+        <div className="sm:!col-span-6">
+          <Label htmlFor="password">Password</Label>
+          <InputPassword
+            onChange={handleChange}
+            id="password"
+          />
+        </div>
+        <div className="sm:!col-span-6">
+          <Label htmlFor="password_confirmation">Konfirmasi Password</Label>
+          <InputPassword
+            onChange={handleChange}
+            id="password_confirmation"
+          />
+        </div>
+      </FormDasboard>
+    </Box>
   );
 }

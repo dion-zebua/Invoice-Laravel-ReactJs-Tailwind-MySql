@@ -2,6 +2,7 @@ import React from "react";
 
 export default function PreviewImage(props) {
   const { image } = props;
+
   return (
     <div className="relative overflow-hidden mt-1 flex justify-center items-center rounded-lg border border-dashed border-gray-900/25 h-52">
       {image ? (

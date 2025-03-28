@@ -22,11 +22,7 @@ export default async function page() {
 
   return (
     <Main page={pageTitle}>
-      <Box
-        title="Ubah Password"
-        className="col-span-full">
-        <ResetPasswordForm pageTitle={pageTitle} />
-      </Box>
+      <ResetPasswordForm pageTitle={pageTitle} />
     </Main>
   );
 }

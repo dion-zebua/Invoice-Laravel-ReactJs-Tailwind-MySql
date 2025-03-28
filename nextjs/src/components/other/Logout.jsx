@@ -3,7 +3,7 @@
 import error from "@/lib/error";
 import fetch from "@/lib/fetch";
 import { logout } from "@/lib/session";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
 
@@ -23,7 +23,13 @@ export default function Logout() {
         }, 100);
       })
       .catch((err) => {
-        error(err);
+        if (err.status == 401) {
+          logout();
+          redirect("/login");
+          toast.success("Berhasil logout.");
+        } else {
+          error(err);
+        }
       });
   };
 
