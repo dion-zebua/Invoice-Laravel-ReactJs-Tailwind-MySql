@@ -171,7 +171,7 @@ class UserController extends Controller
             $filename = time() . '-' . Str::random(5) . '-' . Str::slug($request->name)  . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('img/company'), $filename);
 
-            $oldImage = public_path($user->logo);
+            $oldImage = public_path($user->logo['path']);
             if (File::exists($oldImage)) {
                 File::delete($oldImage);
             }

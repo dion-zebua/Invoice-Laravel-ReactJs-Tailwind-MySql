@@ -41,7 +41,7 @@ Route::middleware('auth.not.authenticated')->controller(AuthController::class)
 Route::middleware('auth:sanctum')->controller(AuthController::class)
     ->group(function () {
         Route::post('logout/', 'logout');
-        Route::post('check-login/', 'checkLogin');
+        Route::get('check-login/', 'checkLogin');
 
         // User
         Route::controller(UserController::class)
