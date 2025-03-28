@@ -76,8 +76,8 @@ class User extends Authenticatable
         parent::boot();
 
         static::deleting(function ($user) {
-            if (file_exists($user->logo)) {
-                unlink($user->logo);
+            if (file_exists($user->logo['path'])) {
+                unlink($user->logo['path']);
             }
         });
     }
