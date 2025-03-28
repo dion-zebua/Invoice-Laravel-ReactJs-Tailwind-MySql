@@ -17,7 +17,7 @@ import Logout from "../other/Logout";
 
 export default function NavbarDashboard() {
   return (
-    <header className="flex min-h-16 max-h-16 items-center border-b">
+    <header className="flex min-h-16 max-h-16 items-center border-b bg-white">
       <div className="flex items-center justify-between px-4 w-full">
         <div className="flex items-center justify-between gap-2">
           <SidebarTrigger />

@@ -37,13 +37,7 @@ export default function ResetPasswordForm({ pageTitle }) {
     fetch
       .post(`reset-password/${id}/${token}/`, data)
       .then((response) => {
-        toast.success(
-          response.data.message +
-            " Redirect otomatis ke halaman login dalam 5 detik!"
-        );
-        const timeout = setTimeout(() => {
-          router.push("/login");
-        }, 5000);
+        toast.success(response.data.message);
       })
       .catch((err) => {
         error(err);
@@ -52,7 +46,7 @@ export default function ResetPasswordForm({ pageTitle }) {
         setLoadingSubmit(false);
       });
   };
-  
+
   return (
     <FormLandingPage
       pageTitle={pageTitle}

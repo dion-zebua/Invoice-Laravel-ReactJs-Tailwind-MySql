@@ -3,6 +3,7 @@ import Box from "@/components/other/Box";
 import updateMetadata from "@/lib/meta";
 import React from "react";
 import ResetPasswordForm from "./ResetPasswordForm";
+import { getSession } from "@/lib/session";
 
 const pageTitle = "Reset Password";
 
@@ -15,7 +16,10 @@ export const metadata = updateMetadata({
   },
 });
 
-export default function page() {
+export default async function page() {
+  // const user = await getSession();
+  // console.log(user);
+
   return (
     <Main page={pageTitle}>
       <Box

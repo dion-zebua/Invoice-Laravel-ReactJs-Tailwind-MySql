@@ -45,11 +45,11 @@ export async function logout() {
 
 export async function getSession() {
     const cookie = await cookies()
-    const sessionToken = cookie.get('session')?.value
+    const session = cookie.get('session')?.value
 
-    if (!sessionToken) return null
+    if (!session) return null
 
-    const user = await decrypt(sessionToken)
+    const user = await decrypt(session)
 
     const now = Math.floor(Date.now() / 1000)
     if (user?.exp < now) return null
