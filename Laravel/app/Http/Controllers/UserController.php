@@ -6,9 +6,9 @@ use App\Models\User;
 use App\Mail\Verification;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -151,7 +151,7 @@ class UserController extends Controller
             'name' => 'required|string|max:50',
             'email' => 'required|email|unique:users,email,' . $id,
             'sales' => 'required|string|max:50',
-            'logo' => 'required|image|mimes:jpeg,jpg,png,webp|max:3072',
+            'logo' => (!File::exists($user->logo['path']) ? "required" : 'nullable') . '|image|mimes:jpeg,jpg,png,webp|max:3072',
             'telephone' => 'required|string|min:6|max:15',
             'address' => 'required|string|max:100',
             'payment_methode' => 'required|string|max:100',
