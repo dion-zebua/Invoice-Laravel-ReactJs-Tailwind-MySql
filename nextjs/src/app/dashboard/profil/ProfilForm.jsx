@@ -110,7 +110,9 @@ export default function ProfilForm(props) {
         onSubmit={handleSubmit}>
         <RadioGroup
           className="sm:!col-span-full"
+          required
           defaultValue={data?.role ?? "role"}>
+          <Label htmlFor="name">Role</Label>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value={data?.role ?? "role"}

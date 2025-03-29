@@ -12,7 +12,7 @@ import fetch from "@/lib/fetch";
 import { toast } from "sonner";
 import error from "@/lib/error";
 import ButtonSubmit from "@/components/other/ButtonSubmit";
-import { getSession, login } from "@/lib/session";
+import { login } from "@/lib/session";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm({ pageTitle }) {

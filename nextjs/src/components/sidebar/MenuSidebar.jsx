@@ -19,14 +19,12 @@ import {
 } from "@/components/ui/sidebar";
 import { Box, FileText, House, Users } from "@deemlol/next-icons";
 import { useSession } from "@/context/SessionContext";
+import Link from "next/link";
 
-const role = () => {
+export function MenuSidebar() {
   const session = useSession();
-  return session.role;
-};
 
-const menu = () => {
-  return [
+  const menu = [
     {
       title: "Dashboard",
       url: "/dashboard",
@@ -36,89 +34,87 @@ const menu = () => {
     },
     {
       title: "Pengguna",
-      url: role() == "admin" ? "/pengguna" : "#",
+      url: "#",
       role: ["admin"],
       icon: <Users size={16} />,
       subMenu: [
         {
           title: "Semua Pengguna",
-          url: "/pengguna",
+          url: "/dashboard/pengguna",
           role: ["admin"],
         },
         {
           title: "Tambah Pengguna",
-          url: "/pengguna/tambah",
+          url: "/dashboard/pengguna/tambah",
           role: ["admin"],
         },
       ],
     },
     {
       title: "Produk",
-      url: role() == "admin" ? "/produk" : "#",
+      url: session?.role == "admin" ? "/produk" : "#",
       role: ["user", "admin"],
       icon: <Box size={16} />,
       subMenu: [
         {
           title: "Semua Produk",
-          url: "/produk",
+          url: "/dashboard/produk",
           role: ["user"],
         },
         {
           title: "Tambah Produk",
-          url: "/produk/tambah",
+          url: "/dashboard/produk/tambah",
           role: ["user"],
         },
       ],
     },
     {
       title: "Invoice",
-      url: role() == "admin" ? "/invoice" : "#",
+      url: session?.role == "admin" ? "/invoice" : "#",
       role: ["user", "admin"],
       icon: <FileText size={16} />,
       subMenu: [
         {
           title: "Semua Invoice",
-          url: "/invoice",
+          url: "/dashboard/invoice",
           role: ["user"],
         },
         {
           title: "Tambah Invoice",
-          url: "/invoice/tambah",
+          url: "/dashboard/invoice/tambah",
           role: ["user"],
         },
       ],
     },
   ];
-};
 
-export function MenuSidebar({ subMenu }) {
   return (
     <SidebarGroup>
       <SidebarMenu className="!gap-y-3">
-        {menu()
-          .filter((item) => item.role.includes(role()))
+        {menu
+          .filter((item) => item.role.includes(session?.role))
           .map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 asChild
                 isActive={item.isActive}>
-                <a
+                <Link
                   href={item.url}
                   className="[&_svg]:opacity-85 [&_svg]:text-sidebar-foreground hover:[&_svg]:text-sidebar-accent-foreground [&_svg]:mr-1 data-[active=true]:[&_svg]:text-sidebar-accent-foreground">
                   {item.icon}
                   {item.title}
-                </a>
+                </Link>
               </SidebarMenuButton>
               {item.subMenu?.length ? (
                 <SidebarMenuSub>
                   {item.subMenu
-                    .filter((item) => item.role.includes(role()))
+                    .filter((item) => item.role.includes(session?.role))
                     .map((item) => (
                       <SidebarMenuSubItem key={item.title}>
                         <SidebarMenuSubButton
                           asChild
                           isActive={item.isActive}>
-                          <a href={item.url}>{item.title}</a>
+                          <Link href={item.url}>{item.title}</Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     ))}

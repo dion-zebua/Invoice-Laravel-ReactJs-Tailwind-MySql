@@ -31,7 +31,7 @@ export async function login(data) {
     const cookie = await cookies()
     cookie.set('session', encryptedSessionData, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         maxAge: 60 * 60 * 12, // 12 hours
         path: '/',
     })

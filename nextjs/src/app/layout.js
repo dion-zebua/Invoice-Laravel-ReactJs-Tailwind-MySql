@@ -16,6 +16,7 @@ export const metadata = updateMetadata
 
 export default async function RootLayout({ children }) {
   const session = await getSession()
+
   return (
     <html lang="id">
       <body className={`${poppins.className} md:overflow-y-auto text-slate-800 overflow-x-visible`}>

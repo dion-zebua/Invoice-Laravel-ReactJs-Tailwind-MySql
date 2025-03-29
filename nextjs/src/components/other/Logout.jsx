@@ -6,6 +6,17 @@ import { logout } from "@/lib/session";
 import { redirect, useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function Logout() {
   const router = useRouter();
@@ -33,14 +44,20 @@ export default function Logout() {
   };
 
   return (
-    <form
-      className="w-full"
-      onSubmit={handleSubmit}>
-      <button
-        type="submit"
-        className="w-full text-left">
-        Logout
-      </button>
-    </form>
+    <AlertDialog>
+      <AlertDialogTrigger>Logout</AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Anda yakin logout?</AlertDialogTitle>
+          <AlertDialogDescription></AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Tidak</AlertDialogCancel>
+          <form onSubmit={handleSubmit}>
+            <AlertDialogAction type="submit">Ya</AlertDialogAction>
+          </form>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

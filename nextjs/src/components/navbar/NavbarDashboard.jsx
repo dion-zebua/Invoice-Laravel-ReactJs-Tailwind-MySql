@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { SidebarTrigger } from "../ui/sidebar";
 import Link from "next/link";
 import Logo from "../other/Logo";
@@ -16,6 +16,7 @@ import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import Logout from "../other/Logout";
 import { useSession } from "@/context/SessionContext";
+import { useEffect } from "react";
 
 export default function NavbarDashboard() {
   const session = useSession();
@@ -42,7 +43,7 @@ export default function NavbarDashboard() {
                 </Avatar>
               </Button>
               <div className="group-hover:text-slate-800 max-w-[100px] line-clamp-1 text-sm ml-2 mr-1">
-                {session?.name || "Tanpa Nama"}
+                {session?.name}
               </div>
               <ChevronDown
                 size={13}
@@ -64,9 +65,11 @@ export default function NavbarDashboard() {
               </Link>
               <Separator className="my-1" />
 
-              <DropdownMenuItem className="cursor-pointer hover:!text-primary p-0 pl-1.5 [&_button]:py-1.5">
+              {/* <DropdownMenuItem className="cursor-pointer hover:!text-primary p-0 pl-2 [&_button]:py-1.5 [&_button]:w-full [&_button]:text-left"> */}
+              <div className="cursor-pointer hover:!text-primary p-0 pl-2 [&_button]:py-1.5 [&_button]:w-full [&_button]:text-left text-sm">
                 <Logout />
-              </DropdownMenuItem>
+              </div>
+              {/* </DropdownMenuItem> */}
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>

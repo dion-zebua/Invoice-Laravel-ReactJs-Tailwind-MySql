@@ -1,9 +1,10 @@
 import Main from "@/components/dashboard/Main";
 import updateMetadata from "@/lib/meta";
 import React from "react";
-import ProfilForm from "./ProfilForm";
+import { getSession } from "@/lib/session";
+import TambahForm from "./TambahForm";
 
-const pageTitle = "Profil";
+const pageTitle = "Tambah Pengguna";
 
 export const metadata = updateMetadata({
   title: `Halaman ${pageTitle} - ${process.env.NEXT_PUBLIC_APP_NAME}`,
@@ -15,9 +16,11 @@ export const metadata = updateMetadata({
 });
 
 export default async function page() {
+  const session = await getSession();
+
   return (
     <Main page={pageTitle}>
-      <ProfilForm pageTitle={pageTitle} />
+      <TambahForm pageTitle={pageTitle} />
     </Main>
   );
 }
