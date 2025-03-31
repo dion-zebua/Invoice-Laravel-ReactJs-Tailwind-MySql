@@ -27,19 +27,20 @@ export default function TambahForm(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(data);
 
     setLoadingSubmit(true);
-    fetch
-      .post(`user/`)
-      .then((response) => {
-        toast.success(response.data.message);
-      })
-      .catch((err) => {
-        error(err);
-      })
-      .finally((e) => {
-        setLoadingSubmit(false);
-      });
+    // fetch
+    //   .post(`user/`, data)
+    //   .then((response) => {
+    //     toast.success(response.data.message);
+    //   })
+    //   .catch((err) => {
+    //     error(err);
+    //   })
+    //   .finally((e) => {
+    //     setLoadingSubmit(false);
+    //   });
   };
 
   const handleChange = (e) => {
