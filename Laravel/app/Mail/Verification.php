@@ -16,7 +16,7 @@ class Verification extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public $user, public $token) {}
+    public function __construct(public $user, public $token, public $password = null) {}
 
     /**
      * Get the message envelope.
@@ -41,6 +41,7 @@ class Verification extends Mailable
                 'title' => 'Verifikasi Email',
                 'desc' => 'didaftarkan',
                 'link' => 'verifikasi-email',
+                'password' => $this->password,
             ],
         );
     }
