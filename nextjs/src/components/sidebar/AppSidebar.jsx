@@ -1,11 +1,6 @@
 "use client";
 
-import * as React from "react";
-
-// import { NavMain } from "@/components/nav-main";
-// import { NavProjects } from "@/components/nav-projects";
-// import { NavUser } from "@/components/nav-user";
-// import { TeamSwitcher } from "@/components/team-switcher";
+import React from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -17,7 +12,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { MenuSidebar } from "./MenuSidebar";
+import { MenuLayout } from "./MenuLayout";
 import Logo from "../other/Logo";
 
 export function AppSidebar({ ...props }) {
@@ -41,7 +36,7 @@ export function AppSidebar({ ...props }) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <MenuSidebar />
+        <MenuLayout />
       </SidebarContent>
       <SidebarFooter>{/* <NavUser user={data.user} /> */}</SidebarFooter>
       <SidebarRail />

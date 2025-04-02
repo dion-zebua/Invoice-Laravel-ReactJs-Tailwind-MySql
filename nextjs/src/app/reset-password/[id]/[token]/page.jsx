@@ -35,11 +35,10 @@ export default async function page({ params }) {
   let found = false;
 
   try {
-    const response = await fetch.get(`check-reset-password/${id}/${token}/`);
+    const response = await fetch.post(`check-reset-password/${id}/${token}/`);
+    message = response.data.message;
 
     if (response.status == 200) found = true;
-
-    message = response.data.message;
   } catch (err) {
     message = err.response.data.message ?? err.message;
   }

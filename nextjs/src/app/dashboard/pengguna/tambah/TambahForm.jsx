@@ -2,45 +2,44 @@
 import Box from "@/components/other/Box";
 import FormDasboard from "@/components/other/FormDasboard";
 import InputPassword from "@/components/other/InputPassword";
-import PreviewImage from "@/components/other/PreviewImage";
-import UploadImage from "@/components/other/UploadImage";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Textarea } from "@/components/ui/textarea";
 import error from "@/lib/error";
 import fetch from "@/lib/fetch";
-import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import { toast } from "sonner";
 
 export default function TambahForm(props) {
+  const router = useRouter();
   const { pageTitle } = props;
 
   const [data, setData] = useState({
     name: "",
     email: "",
     password: "",
-    role: "",
+    role: "user",
   });
 
   const [loadingSubmit, setLoadingSubmit] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(data);
 
     setLoadingSubmit(true);
-    // fetch
-    //   .post(`user/`, data)
-    //   .then((response) => {
-    //     toast.success(response.data.message);
-    //   })
-    //   .catch((err) => {
-    //     error(err);
-    //   })
-    //   .finally((e) => {
-    //     setLoadingSubmit(false);
-    //   });
+    fetch
+      .post(`user/`, data)
+      .then((response) => {
+        toast.success(response.data.message);
+        router.push("/dashboard/pengguna/");
+      })
+      .catch((err) => {
+        error(err);
+      })
+      .finally((e) => {
+        setLoadingSubmit(false);
+      });
   };
 
   const handleChange = (e) => {
@@ -51,16 +50,26 @@ export default function TambahForm(props) {
     }));
   };
 
+  const handleChangeRole = (value) => {
+    setData((prevData) => ({
+      ...prevData,
+      role: value,
+    }));
+  };
+
   return (
     <Box
-      title={"Edit " + pageTitle}
+      title={pageTitle}
       className="col-span-full">
       <FormDasboard
         loadingSubmit={loadingSubmit}
         className="sm:[&>div]:col-span-6"
         onSubmit={handleSubmit}>
+        {data.role}
         <RadioGroup
-          defaultValue="user"
+          defaultValue={data.role}
+          onValueChange={handleChangeRole}
+          id="role"
           className="sm:!col-span-full">
           <Label htmlFor="name">Role</Label>
           <div className="flex items-center space-x-2">

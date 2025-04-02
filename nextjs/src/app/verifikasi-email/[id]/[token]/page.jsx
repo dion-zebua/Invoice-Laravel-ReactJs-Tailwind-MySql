@@ -33,7 +33,7 @@ export default async function page({ params }) {
   let message = "";
 
   try {
-    const response = await fetch.get(`check-verification/${id}/${token}/`);
+    const response = await fetch.post(`check-verification/${id}/${token}/`);
     message = response.data.message;
   } catch (err) {
     message = err.response.data.message ?? err.message;

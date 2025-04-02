@@ -42,7 +42,7 @@ export default function NavbarDashboard() {
                   <AvatarImage src="/image/user.webp" />
                 </Avatar>
               </Button>
-              <div className="group-hover:text-slate-800 max-w-[100px] line-clamp-1 text-sm ml-2 mr-1">
+              <div className="hidden sm:[display:-webkit-box] group-hover:text-slate-800 max-w-[100px] line-clamp-1 text-sm ml-2 mr-1">
                 {session?.name}
               </div>
               <ChevronDown
