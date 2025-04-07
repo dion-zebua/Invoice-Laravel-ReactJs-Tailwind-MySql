@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, FileText, House, Users } from "@deemlol/next-icons";
 
-export default function MenuItem({ session = {}, flatten }) {
+export default function MenuItem({ session = {} }) {
   const menu = [
     {
       title: "Dashboard",
@@ -64,23 +64,6 @@ export default function MenuItem({ session = {}, flatten }) {
       ],
     },
   ];
-
-  if (flatten) {
-    let flatMenu = [];
-
-    menu.forEach((item) => {
-      const { subMenu, ...rest } = item;
-      flatMenu.push(rest);
-
-      if (subMenu && Array.isArray(subMenu)) {
-        subMenu.forEach((subItem) => {
-          flatMenu.push(subItem);
-        });
-      }
-    });
-
-    return flatMenu;
-  }
 
   return menu;
 }
