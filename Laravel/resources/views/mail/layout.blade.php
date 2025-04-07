@@ -26,7 +26,7 @@
         <p style="color: #a9a9a9;">Email <span style="color: #367cf5;">{{ $user['email'] }}</span> telah
             {{ $desc }} dan
             segera lakukan {{ $title }}, token berakhir 30 menit kedepan!!!</p>
-        @if ($password)
+        @if (!empty($password))
             <p style="color:#c9c9c9;margin: 20px 0;">Password : {{ $password }}</p>
         @endif
         <p style="color: #a9a9a9;margin:10px 0">Klik tombol dibawah ini untuk {{ $title }}</p>

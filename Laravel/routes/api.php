@@ -18,7 +18,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
 Route::prefix('invoice')->group(function () {
     Route::get('{id}/{code}/stream/', [InvoiceGenerator::class, 'stream']);
     Route::get('{id}/{code}/', [InvoiceController::class, 'show']);
@@ -29,9 +28,9 @@ Route::middleware('auth.not.authenticated')->controller(AuthController::class)
     ->group(function () {
         Route::post('login/', 'login');
         Route::post('send-verification/', 'sendVerification');
-        Route::get('check-verification/{id}/{token}/', 'checkVerification');
+        Route::post('check-verification/{id}/{token}/', 'checkVerification');
         Route::post('send-forgot-password/', 'sendForgotPassword');
-        Route::get('check-reset-password/{id}/{token}/', 'checkResetPassword');
+        Route::post('check-reset-password/{id}/{token}/', 'checkResetPassword');
         Route::post('reset-password/{id}/{token}/', 'resetPassword');
     });
 
