@@ -18,14 +18,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::get('test', function () {
-    return response()->json([
-        'status' => true,
-        'message' => 'Berhasil edit.',
-    ], 200);
-});
-
 Route::prefix('invoice')->group(function () {
     Route::get('{id}/{code}/stream/', [InvoiceGenerator::class, 'stream']);
     Route::get('{id}/{code}/', [InvoiceController::class, 'show']);

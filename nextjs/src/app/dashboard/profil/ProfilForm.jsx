@@ -24,7 +24,7 @@ export default function ProfilForm(props) {
     name: initialData?.name ?? "",
     email: initialData?.email ?? "",
     sales: initialData?.sales ?? "",
-    logo: "",
+    logo: null,
     telephone: initialData?.telephone ?? "",
     address: initialData?.address ?? "",
     payment_methode: initialData?.payment_methode ?? "",
