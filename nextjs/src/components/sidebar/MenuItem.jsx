@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, FileText, House, Users } from "@deemlol/next-icons";
 
-export default function MenuItem({ session = {} }) {
+export default function MenuItem(session = {}) {
   const menu = [
     {
       title: "Dashboard",

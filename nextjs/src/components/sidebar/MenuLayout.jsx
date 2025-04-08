@@ -21,7 +21,7 @@ export function MenuLayout() {
 
   const path = usePathname();
 
-  const menu = MenuItem(session ?? {});
+  const menu = MenuItem(session);
 
   return (
     <SidebarGroup>

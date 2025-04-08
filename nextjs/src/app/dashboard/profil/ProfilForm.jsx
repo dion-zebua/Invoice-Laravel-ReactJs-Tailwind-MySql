@@ -10,7 +10,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useSession } from "@/context/SessionContext";
 import error from "@/lib/error";
 import fetch from "@/lib/fetch";
-import { login } from "@/lib/session";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -49,7 +48,10 @@ export default function ProfilForm(props) {
         setInitialData(newData);
         setData((prevData) => ({
           ...prevData,
-          ...newData,
+          // ...newData,
+          ...Object.fromEntries(
+            Object.entries(newData).filter(([key, value]) => value != null)
+          ),
           logo: null,
         }));
         setImage(newData?.logo?.path ? newData?.logo?.result : null);
