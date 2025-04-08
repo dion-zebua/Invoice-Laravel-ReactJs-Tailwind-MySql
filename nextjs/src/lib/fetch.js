@@ -1,16 +1,18 @@
 import axios from "axios";
 import { getSession } from "./session";
 
-const fetch = axios.create({
+export const fetch = axios.create({
     baseURL: "http://127.0.0.1:8000/api/",
-    headers: new Headers({
+    headers: {
+        // Authorization: `Bearer [token]`,
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Headers":
             "Origin, X-Requested-With, Content-Type, Accept, Authorization",
-    }),
+    },
     withCredentials: true,
 });
+
 
 fetch.interceptors.request.use(async (config) => {
     const user = await getSession();

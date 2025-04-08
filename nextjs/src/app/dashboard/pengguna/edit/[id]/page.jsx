@@ -2,7 +2,7 @@ import Main from "@/components/dashboard/Main";
 import updateMetadata from "@/lib/meta";
 import React from "react";
 import { getSession } from "@/lib/session";
-import axios from "axios";
+import fetch from "@/lib/fetch";
 // import EditForm from "./EditForm";
 // import fetch from "@/lib/fetch";
 
@@ -22,15 +22,8 @@ export default async function page({ params }) {
 
   const { id } = await params;
 
-  console.log(user.token);
-
   try {
-    const res = await axios.get("http://127.0.0.1:8000/api/check-login", {
-      headers: {
-        Authorization:
-          "Bearer 2|rQiQ7tAXtKsew9hqSqI8M3V24VtVvGcP5t6fVSkE1c906f33",
-      },
-    });
+    const res = await fetch.get("check-login");
     console.log(res.data);
   } catch (error) {
     console.error(error);
