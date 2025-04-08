@@ -49,8 +49,6 @@ trait HasApiTokens
 
         $token = $this->tokens()->create([
             'name' => $name,
-            'ip' => request()->ip(),
-            'user_agent' => request()->userAgent(),
             'token' => hash('sha256', $plainTextToken),
             'abilities' => $abilities,
             'expires_at' => $expiresAt,

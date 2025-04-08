@@ -26,8 +26,6 @@ class PersonalAccessToken extends Model implements HasAbilities
     protected $fillable = [
         'name',
         'token',
-        'ip',
-        'user_agent',
         'abilities',
         'expires_at',
     ];
@@ -79,7 +77,7 @@ class PersonalAccessToken extends Model implements HasAbilities
     public function can($ability)
     {
         return in_array('*', $this->abilities) ||
-            array_key_exists($ability, array_flip($this->abilities));
+               array_key_exists($ability, array_flip($this->abilities));
     }
 
     /**

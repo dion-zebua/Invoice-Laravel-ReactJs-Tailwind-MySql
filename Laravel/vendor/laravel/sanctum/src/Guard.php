@@ -66,10 +66,8 @@ class Guard
 
             $accessToken = $model::findToken($token);
 
-            if (
-                ! $this->isValidAccessToken($accessToken) ||
-                ! $this->supportsTokens($accessToken->tokenable)
-            ) {
+            if (! $this->isValidAccessToken($accessToken) ||
+                ! $this->supportsTokens($accessToken->tokenable)) {
                 return;
             }
 
@@ -79,10 +77,8 @@ class Guard
 
             event(new TokenAuthenticated($accessToken));
 
-            if (
-                method_exists($accessToken->getConnection(), 'hasModifiedRecords') &&
-                method_exists($accessToken->getConnection(), 'setRecordModificationState')
-            ) {
+            if (method_exists($accessToken->getConnection(), 'hasModifiedRecords') &&
+                method_exists($accessToken->getConnection(), 'setRecordModificationState')) {
                 tap($accessToken->getConnection()->hasModifiedRecords(), function ($hasModifiedRecords) use ($accessToken) {
                     $accessToken->forceFill(['last_used_at' => now()])->save();
 
@@ -162,7 +158,7 @@ class Guard
         $isValid =
             (! $this->expiration || $accessToken->created_at->gt(now()->subMinutes($this->expiration)))
             && (! $accessToken->expires_at || ! $accessToken->expires_at->isPast())
-            && $this->hasValidProvider($accessToken->tokenable) && $accessToken->ip == request()->ip() && $accessToken->user_agent == request()->userAgent();
+            && $this->hasValidProvider($accessToken->tokenable);
 
         if (is_callable(Sanctum::$accessTokenAuthenticationCallback)) {
             $isValid = (bool) (Sanctum::$accessTokenAuthenticationCallback)($accessToken, $isValid);
