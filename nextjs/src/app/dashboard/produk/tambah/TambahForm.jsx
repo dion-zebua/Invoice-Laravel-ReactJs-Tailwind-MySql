@@ -17,9 +17,8 @@ export default function TambahForm(props) {
 
   const [data, setData] = useState({
     name: "",
-    email: "",
-    password: "",
-    role: "user",
+    unit: "",
+    price: "",
   });
 
   const [loadingSubmit, setLoadingSubmit] = useState(false);
@@ -29,10 +28,10 @@ export default function TambahForm(props) {
 
     setLoadingSubmit(true);
     fetch
-      .post(`user/`, data)
+      .post(`product/`, data)
       .then((response) => {
         toast.success(response.data.message);
-        router.push(`/dashboard/pengguna/edit/${response.data.data.id}`);
+        router.push(`/dashboard/produk/edit/${response.data.data.id}`);
       })
       .catch((err) => {
         error(err);
@@ -50,13 +49,6 @@ export default function TambahForm(props) {
     }));
   };
 
-  const handleChangeRole = (value) => {
-    setData((prevData) => ({
-      ...prevData,
-      role: value,
-    }));
-  };
-
   return (
     <Box
       title={pageTitle}
@@ -65,30 +57,8 @@ export default function TambahForm(props) {
         loadingSubmit={loadingSubmit}
         className="sm:[&>div]:col-span-6"
         onSubmit={handleSubmit}>
-        <RadioGroup
-          defaultValue={data.role}
-          onValueChange={handleChangeRole}
-          id="role"
-          className="sm:!col-span-full">
-          <Label htmlFor="name">Role</Label>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="admin"
-              id="admin"
-            />
-            <Label htmlFor="admin">admin</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem
-              value="user"
-              id="user"
-            />
-            <Label htmlFor="user">user</Label>
-          </div>
-        </RadioGroup>
-
         {/* nama */}
-        <div>
+        <div className="sm:!col-span-full">
           <Label htmlFor="name">Nama</Label>
           <Input
             id="name"
@@ -98,24 +68,26 @@ export default function TambahForm(props) {
           />
         </div>
 
-        {/* email */}
+        {/* unit */}
         <div>
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="unit">Unit</Label>
           <Input
-            type="email"
-            id="email"
+            id="unit"
             onChange={handleChange}
             required
-            value={data.email}
+            value={data.unit}
           />
         </div>
 
-        {/* password */}
-        <div className="sm:!col-span-full">
-          <Label htmlFor="password">Password</Label>
-          <InputPassword
+        {/* price */}
+        <div>
+          <Label htmlFor="price">Harga</Label>
+          <Input
+            type="number"
+            id="price"
             onChange={handleChange}
-            id="password"
+            required
+            value={data.price}
           />
         </div>
       </FormDasboard>

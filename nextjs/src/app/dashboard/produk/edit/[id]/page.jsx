@@ -5,7 +5,7 @@ import fetch from "@/lib/fetch";
 import { redirect } from "next/navigation";
 import EditForm from "./EditForm";
 
-const pageTitle = "Edit Pengguna";
+const pageTitle = "Edit Produk";
 
 export const metadata = updateMetadata({
   title: `Halaman ${pageTitle} - ${process.env.NEXT_PUBLIC_APP_NAME}`,
@@ -21,10 +21,10 @@ export default async function page({ params }) {
   let data = {};
 
   try {
-    const res = await fetch.get(`user/${id}`);
+    const res = await fetch.get(`product/${id}`);
     data = res.data.data;
   } catch (err) {
-    redirect("/dashboard/pengguna");
+    redirect("/dashboard/produk");
   }
 
   return (

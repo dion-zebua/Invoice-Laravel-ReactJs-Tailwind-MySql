@@ -32,12 +32,10 @@ export default function EditForm(props) {
     _method: "PUT",
   });
 
-  console.log(data);
   const handleSubmit = (e) => {
     e.preventDefault();
 
     setLoadingSubmit(true);
-    console.log(data);
     fetch
       .post(`user/${initialData?.id}`, data, {
         headers: {
@@ -73,7 +71,7 @@ export default function EditForm(props) {
 
   return (
     <Box
-      title={"Edit " + pageTitle}
+      title={pageTitle}
       className="col-span-full">
       <FormDasboard
         loadingSubmit={loadingSubmit}
