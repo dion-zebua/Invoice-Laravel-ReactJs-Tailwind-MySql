@@ -14,7 +14,8 @@ export const metadata = updateMetadata({
   },
 });
 
-export default function page() {
+export default async function page() {
+
   return (
     <Main page={pageTitle}>
       <Box

@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useSession } from "@/context/SessionContext";
 import error from "@/lib/error";
 import fetch from "@/lib/fetch";
+import { updateSession } from "@/lib/session";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -75,6 +76,7 @@ export default function ProfilForm(props) {
         },
       })
       .then((response) => {
+        updateSession(response.data.data);
         toast.success(response.data.message);
       })
       .catch((err) => {

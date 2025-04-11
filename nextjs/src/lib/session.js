@@ -2,7 +2,6 @@
 import 'server-only'
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
 
 const secretKey = process.env.SESSION_SECRET
 const encodedKey = new TextEncoder().encode(secretKey)
@@ -42,7 +41,6 @@ export async function logout() {
     cookie.delete('session')
 }
 
-
 export async function getSession() {
     const cookie = await cookies()
     const session = cookie.get('session')?.value
@@ -55,4 +53,34 @@ export async function getSession() {
     if (user?.exp < now) return null
 
     return user
+}
+
+export async function updateSession(data) {
+    const cookie = await cookies()
+    const session = cookie.get('session')
+
+    if (!session) return null
+
+    const user = await decrypt(session?.value)
+
+
+    const now = Math.floor(Date.now() / 1000)
+    if (user?.exp < now) return null
+
+    const newData = {
+        ...user,
+        ...data
+    }
+
+    const encryptedSessionData = await encrypt(newData)
+    cookie.set('session', encryptedSessionData, {
+        httpOnly: session.httpOnly,
+        secure: session.secure,
+        maxAge: session.maxAge,
+        path: session.path,
+    })
+
+    console.log(user);
+    console.log(session);
+
 }
