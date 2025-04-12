@@ -1,6 +1,7 @@
 import Main from "@/components/dashboard/Main";
 import Box from "@/components/other/Box";
 import updateMetadata from "@/lib/meta";
+import { getSession } from "@/lib/session";
 import React from "react";
 
 const pageTitle = "Dashboard";
