@@ -17,8 +17,6 @@ export const metadata = updateMetadata({
 });
 
 export default async function page() {
-  // const user = await getSession();
-  // console.log(user);
 
   return (
     <Main page={pageTitle}>

@@ -21,7 +21,7 @@ export default async function page({ params }) {
   let data = {};
 
   try {
-    const res = await fetch.get(`product/${id}`);
+    const res = await fetch.get(`product/${id}/`);
     data = res.data.data;
   } catch (err) {
     redirect("/dashboard/produk");

@@ -21,6 +21,7 @@ export default async function page() {
   return (
     <Main page={pageTitle}>
       <Box
+        isLoading
         className="col-span-full"
         title={pageTitle}>
         <table></table>

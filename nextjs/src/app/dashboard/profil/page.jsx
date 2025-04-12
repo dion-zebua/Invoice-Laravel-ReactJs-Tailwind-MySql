@@ -1,7 +1,9 @@
 import Main from "@/components/dashboard/Main";
 import updateMetadata from "@/lib/meta";
 import React from "react";
-import ProfilForm from "./ProfilForm";
+import EditForm from "../pengguna/edit/[id]/EditForm";
+import { redirect } from "next/navigation";
+import fetch from "@/lib/fetch";
 
 const pageTitle = "Profil";
 
@@ -15,9 +17,21 @@ export const metadata = updateMetadata({
 });
 
 export default async function page() {
+  let data = {};
+
+  try {
+    const res = await fetch.get(`check-login/`);
+    data = res.data.data;
+  } catch (err) {
+    redirect("/dashboard/pengguna");
+  }
+
   return (
     <Main page={pageTitle}>
-      <ProfilForm pageTitle={pageTitle} />
+      <EditForm
+        pageTitle={pageTitle}
+        initialData={data}
+      />
     </Main>
   );
 }
