@@ -10,7 +10,7 @@ export async function encrypt(payload) {
     return new SignJWT(payload)
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
-        .setExpirationTime('720m')
+        .setExpirationTime('86400s')
         .sign(encodedKey)
 }
 
@@ -31,7 +31,7 @@ export async function login(data) {
     cookie.set('session', encryptedSessionData, {
         httpOnly: true,
         secure: true,
-        maxAge: 60 * 60 * 12, // 12 hours
+        maxAge: 60 * 60 * 24,
         path: '/',
     })
 }
@@ -50,7 +50,10 @@ export async function getSession() {
     const user = await decrypt(session)
 
     const now = Math.floor(Date.now() / 1000)
-    if (user?.exp < now) return null
+    if (user?.exp < now) {
+        cookie.delete('session')
+        return null
+    }
 
     return user
 }
@@ -65,7 +68,6 @@ export async function updateSession(data) {
 
 
     const now = Math.floor(Date.now() / 1000)
-    if (user?.exp < now) return null
 
     const newData = {
         ...user,
@@ -74,13 +76,9 @@ export async function updateSession(data) {
 
     const encryptedSessionData = await encrypt(newData)
     cookie.set('session', encryptedSessionData, {
-        httpOnly: session.httpOnly,
-        secure: session.secure,
-        maxAge: session.maxAge,
-        path: session.path,
-    })
-
-    console.log(user);
-    console.log(session);
-
+        httpOnly: true,
+        secure: true,
+        maxAge: user?.exp - now,
+        path: '/',
+    });
 }
