@@ -32,10 +32,7 @@ class AuthController extends Controller
         $user = User::where('email', $request['email'])->first();
 
         if ($user && !$user->is_verified) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Anda belum verifikasi!'
-            ], 403);
+            return $this->unverified();
         }
 
         if (!$user || !Hash::check($request['password'], $user->password)) {

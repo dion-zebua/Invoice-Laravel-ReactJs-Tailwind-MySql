@@ -85,4 +85,12 @@ class Controller extends BaseController
             'message' => "Token kadaluarsa.",
         ], 400);
     }
+
+    public function unverified()
+    {
+        return response()->json([
+            'status' => false,
+            'message' => 'Anda belum verifikasi!'
+        ], 403);
+    }
 }

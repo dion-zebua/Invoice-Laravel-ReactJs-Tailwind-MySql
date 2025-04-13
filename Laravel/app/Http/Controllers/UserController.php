@@ -178,7 +178,26 @@ class UserController extends Controller
             $validatedData['logo'] = "img/company/$filename";
         }
 
+        if ($user->email != $validatedData['email']) {
+
+            $tokenTime = Carbon::parse($user->token_verified_before_at);
+            if ($user->token_verified_before_at && !$tokenTime->isPast()) {
+                return $this->limitTime('verifikasi email', $tokenTime->format('H:i:s'));
+            }
+
+            $tokenVerified = Str::random(60);
+
+            $validatedData['id'] = $id;
+            $validatedData['token_verified'] = Hash::make($tokenVerified);
+            $validatedData['token_verified_before_at'] = now()->addMinutes(30);
+            $validatedData['is_verified'] = false;
+            $validatedData['email_verified_at'] = NULL;
+
+            Mail::to($validatedData['email'])->send(new Verification($validatedData, $tokenVerified));
+        }
+
         $user->update($validatedData);
+
 
         return $this->editSuccess($user);
     }

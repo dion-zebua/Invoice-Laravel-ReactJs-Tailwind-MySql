@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 Route::prefix('invoice')->group(function () {
     Route::get('{id}/{code}/stream/', [InvoiceGenerator::class, 'stream']);
     Route::get('{id}/{code}/', [InvoiceController::class, 'show']);
@@ -37,7 +38,7 @@ Route::middleware('auth.not.authenticated')->controller(AuthController::class)
 
 // 
 
-Route::middleware('auth:sanctum')->controller(AuthController::class)
+Route::middleware(['auth:sanctum', 'unverified'])->controller(AuthController::class)
     ->group(function () {
         Route::post('logout/', 'logout');
         Route::get('check-login/', 'checkLogin');

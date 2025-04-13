@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Setting;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,17 +18,14 @@ class CompanyMiddleware
     public function handle($request, Closure $next, ...$guards)
     {
 
-        if (Auth::check() && Auth::user()->role == "user") {
-            
-            // Periksa jika profil pengguna tidak lengkap
-            if (!$this->isProfileIncomplete(Auth::user())) {
-                // Redirect ke halaman profil dengan pesan error
-                return response()->json([
-                    'status' => 'false',
-                    'message' => 'Lengkapi profil bisnis anda.',
-                ], 403);
-            }
+        if (Auth::check() && Auth::user()->role == "user" && !$this->isProfileIncomplete(Auth::user())) {
+
+            return response()->json([
+                'status' => 'false',
+                'message' => 'Lengkapi profil anda.',
+            ], 403);
         }
+
         return $next($request);
     }
 
