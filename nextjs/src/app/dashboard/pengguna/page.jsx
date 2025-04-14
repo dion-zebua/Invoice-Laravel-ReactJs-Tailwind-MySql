@@ -1,19 +1,9 @@
 import Main from "@/components/dashboard/Main";
 import updateMetadata from "@/lib/meta";
 import React from "react";
-import { getSession } from "@/lib/session";
 import Box from "@/components/other/Box";
-
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { DataTable } from "@/components/other/DataTable";
+import fetch from "@/lib/fetch";
+import IndexTable from "./IndexTable";
 
 const pageTitle = "Semua Pengguna";
 
@@ -27,14 +17,25 @@ export const metadata = updateMetadata({
 });
 
 export default async function page() {
-  const session = await getSession();
+  let data = {};
+  let message = null;
+
+  try {
+    const res = await fetch.get("user/?search=");
+    data = res.data.data.data;
+  } catch (err) {
+    message = err.response.data.message ?? err.message;
+  }
 
   return (
     <Main page={pageTitle}>
       <Box
         className="col-span-full"
         title={pageTitle}>
-        <DataTable />
+        <IndexTable
+          data={data}
+          message={message}
+        />
       </Box>
     </Main>
   );

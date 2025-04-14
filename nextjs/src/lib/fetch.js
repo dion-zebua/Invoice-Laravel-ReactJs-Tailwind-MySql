@@ -2,7 +2,7 @@ import axios from "axios";
 import { getSession } from "./session";
 
 export const fetch = axios.create({
-    baseURL: "http://127.0.0.1:8000/api/",
+    baseURL: process.env.NEXT_PUBLIC_APP_URL_BACKEND,
     headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
