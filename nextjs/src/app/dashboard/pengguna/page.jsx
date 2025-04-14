@@ -4,6 +4,17 @@ import React from "react";
 import { getSession } from "@/lib/session";
 import Box from "@/components/other/Box";
 
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { DataTable } from "@/components/other/DataTable";
+
 const pageTitle = "Semua Pengguna";
 
 export const metadata = updateMetadata({
@@ -21,10 +32,9 @@ export default async function page() {
   return (
     <Main page={pageTitle}>
       <Box
-        isLoading
         className="col-span-full"
         title={pageTitle}>
-        <table></table>
+        <DataTable />
       </Box>
     </Main>
   );

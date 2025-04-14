@@ -16,18 +16,17 @@ export const metadata = updateMetadata({
 });
 
 export default async function page() {
-
   return (
     <Main page={pageTitle}>
       <Box
-        isLoading
+        loadingBox
         title="Total Invoice"></Box>
       <Box
-        isLoading
+        loadingBox
         title="Total Pengguna"></Box>
-      <Box isLoading>Test</Box>
+      <Box loadingBox>Test</Box>
       <Box
-        isLoading={true}
+        loadingBox={true}
         className="col-span-full h-80">
         Test
       </Box>
