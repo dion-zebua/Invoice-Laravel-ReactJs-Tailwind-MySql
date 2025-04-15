@@ -3,7 +3,7 @@ import DataTable from "@/components/other/DataTable";
 import React from "react";
 
 export default function IndexTable(props) {
-  const { data, message, path, model } = props;
+  const { data, message, path, model, params } = props;
   const column = [
     { key: "id", header: "No", sortable: true },
     { key: "name", header: "Nama", sortable: true },
@@ -26,13 +26,14 @@ export default function IndexTable(props) {
         );
       },
     },
-    { key: "is_verified", header: "Status", sortable: true },
+    { key: "is_verified", header: "Status", selector: true },
     { key: "invoice_count", header: "Jumlah Invoice", sortable: true },
     { header: "Action", action: { edit: true, delete: true } },
   ];
 
   return (
     <DataTable
+      params={params}
       data={data}
       message={message}
       column={column}

@@ -245,7 +245,7 @@ class UserController extends Controller
             return $this->dataNotFound('Pengguna');
         }
 
-        $user->delete();
+        // $user->delete();
 
         return $this->deleteSuccess();
     }

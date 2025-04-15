@@ -16,102 +16,29 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "../ui/button";
-import {
-  ChevronDown,
-  ChevronRight,
-  Edit,
-  Eye,
-  Trash,
-} from "@deemlol/next-icons";
+import { ChevronDown, ChevronRight } from "@deemlol/next-icons";
 import { ChevronUp } from "lucide-react";
-import Link from "next/link";
-import { toast } from "sonner";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { redirect } from "next/navigation";
-import error from "@/lib/error";
-import fetch from "@/lib/fetch";
 
-const Delete = (props) => {
-  const { route } = props;
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    fetch
-      .delete(route)
-      .then((response) => {
-        toast.success(response.data.message);
-      })
-      .catch((err) => {
-        error(err);
-      });
-  };
-
-  return (
-    <AlertDialog>
-      <AlertDialogTrigger
-        variant="destructive"
-        className="border-rose-500 hover:bg-rose-500 bg-rose-700">
-        <Trash />
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Anda yakin hapus?</AlertDialogTitle>
-          <AlertDialogDescription></AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Tidak</AlertDialogCancel>
-          <form onSubmit={handleSubmit}>
-            <AlertDialogAction type="submit">Ya</AlertDialogAction>
-          </form>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-};
-
-const Action = (props) => {
-  const { path, model, id, action } = props;
-
-  return (
-    <div className="flex gap-x-2 [&_button]:rounded-sm [&_button]:!p-[3px] [&_button]:h-auto [&_button]:border-2 [&_button]:text-red-50 [&_svg]:!w-3 [&_svg]:!h-3">
-      {action?.show && (
-        <Link href={`${path}/${id}`}>
-          <Button
-            variant="destructive"
-            className="border-emerald-500 hover:bg-emerald-500 bg-emerald-700">
-            <Eye />
-          </Button>
-        </Link>
-      )}
-
-      {action?.edit && (
-        <Link href={`${path}/edit/${id}`}>
-          <Button
-            variant="destructive"
-            className="border-yellow-500 hover:bg-yellow-500 bg-yellow-700">
-            <Edit />
-          </Button>
-        </Link>
-      )}
-
-      {action?.edit && <Delete route={`${model}/${id}/`} />}
-    </div>
-  );
-};
+import Action from "./Action";
 
 export default function DataTable(props) {
   const { data, message, column, path, model } = props;
+
+  let newMessage = null;
+  if (message && typeof message == "object") {
+    const messageFlat = Object.values(message).flat();
+    newMessage = (
+      <>
+        <ul className="">
+          {messageFlat.map((msg, index) => (
+            <li key={index}>{msg}</li>
+          ))}
+        </ul>
+      </>
+    );
+  } else {
+    newMessage = message || "Data Tidak Ditemukan!";
+  }
 
   return (
     <div className="w-full">
@@ -213,7 +140,7 @@ export default function DataTable(props) {
                 <TableCell
                   colSpan={column.length}
                   className="h-24 text-center">
-                  {message || "Data Tidak Ditemukan!"}
+                  {newMessage}
                 </TableCell>
               </TableRow>
             )}

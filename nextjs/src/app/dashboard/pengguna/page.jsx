@@ -20,8 +20,17 @@ export default async function page() {
   let data = {};
   let message = null;
 
+  const params = {
+    perPage: 5,
+    verified: null,
+    search: null,
+    role: null,
+    orderBy: "id",
+    orderDirection: "desc",
+  };
+
   try {
-    const res = await fetch.get("user/?search=");
+    const res = await fetch.get(`user/`, { params: params });
     data = res.data.data;
   } catch (err) {
     message = err.response.data.message ?? err.message;
@@ -33,6 +42,7 @@ export default async function page() {
         className="col-span-full"
         title={pageTitle}>
         <IndexTable
+          params={params}
           data={data}
           message={message}
           path="pengguna"
