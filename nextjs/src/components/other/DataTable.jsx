@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import {
   DropdownMenu,
@@ -20,58 +20,63 @@ import { ChevronDown, ChevronRight } from "@deemlol/next-icons";
 import { ChevronUp } from "lucide-react";
 
 import Action from "./Action";
+import { Skeleton } from "../ui/skeleton";
 
 export default function DataTable(props) {
-  const { data, message, column, path, model } = props;
+  const { data, message, column, path, model, isLoadingData } = props;
+  const [newMessage, setNewMessage] = useState(message);
 
-  let newMessage = null;
-  if (message && typeof message == "object") {
-    const messageFlat = Object.values(message).flat();
-    newMessage = (
-      <>
-        <ul className="">
-          {messageFlat.map((msg, index) => (
-            <li key={index}>{msg}</li>
-          ))}
-        </ul>
-      </>
-    );
-  } else {
-    newMessage = message || "Data Tidak Ditemukan!";
-  }
+  useEffect(() => {
+    if (message && typeof message == "object") {
+      const messageFlat = Object.values(message).flat();
+      setNewMessage(
+        <>
+          <ul className="">
+            {messageFlat.map((msg, index) => (
+              <li key={index}>{msg}</li>
+            ))}
+          </ul>
+        </>
+      );
+    } else {
+      setNewMessage(message || "Data Tidak Ditemukan!");
+    }
+  }, [message]);
 
   return (
     <div className="w-full">
-      <div className="flex flex-wrap items-center py-4 gap-5">
-        <Input
-          placeholder=""
-          className="max-w-sm"
-        />
+      {data?.data && data?.data.length > 0 && (
+        <div className="flex flex-wrap items-center py-4 gap-5">
+          <Input
+            placeholder=""
+            className="max-w-sm"
+          />
 
-        {/* KOLOM */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className="ml-auto">
-              Kolom
-              <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {column.map((col, i) => {
-              return (
-                <DropdownMenuCheckboxItem
-                  key={i}
-                  checked
-                  className="capitalize">
-                  {col.header}
-                </DropdownMenuCheckboxItem>
-              );
-            })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+          {/* KOLOM */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button className="ml-auto">
+                Kolom
+                <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {column.map((col, i) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={i}
+                    checked
+                    className="capitalize">
+                    {col.header}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      )}
       <div className="rounded-md border">
-        <Table>
+        <Table className="table-auto">
           <TableHeader>
             <TableRow>
               {column.map((col, i) => {
@@ -79,7 +84,8 @@ export default function DataTable(props) {
                   <TableHead
                     key={i}
                     className={
-                      (col?.sortable || col?.selector) && "cursor-pointer"
+                      (col?.sortable || col?.selector) &&
+                      `cursor-pointer ${col?.className}`
                     }>
                     <div className="flex gap-x-2 whitespace-nowrap">
                       {col.header}
@@ -108,62 +114,87 @@ export default function DataTable(props) {
           </TableHeader>
 
           <TableBody>
-            {data?.data && data?.data.length > 0 ? (
-              data?.data.map((item, index) => {
-                return (
-                  <TableRow key={index}>
-                    {column.map((col, i) => {
-                      return (
-                        <TableCell key={i}>
-                          {col?.key == "id" ? (
-                            index + 1
-                          ) : col.header == "Action" ? (
-                            <Action
-                              model={model}
-                              path={path}
-                              id={item.id}
-                              action={col?.action}
-                            />
-                          ) : col.cell ? (
-                            col.cell({ data: item[col.key] })
-                          ) : (
-                            item[col.key] ?? "-"
-                          )}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })
-            ) : (
+            {/* Buat Skeleton */}
+            {(isLoadingData && (
               <TableRow>
-                <TableCell
-                  colSpan={column.length}
-                  className="h-24 text-center">
-                  {newMessage}
-                </TableCell>
+                {column.map((col, i) => {
+                  return (
+                    <TableCell key={i}>
+                      <Skeleton className="rounded-sm h-5 w-3/4 bg-slate-100 duration-1000" />
+                    </TableCell>
+                  );
+                })}
               </TableRow>
-            )}
+            )) ||
+              // Data tersedia
+              (data?.data && data?.data.length > 0 ? (
+                data?.data.map((item, index) => {
+                  return (
+                    <TableRow key={index}>
+                      {/* Tampilkan Kolom */}
+                      {column.map((col, i) => {
+                        return (
+                          <TableCell
+                            className="whitespace-normal max-w-36"
+                            key={i}>
+                            <div className="line-clamp-1">
+                              {/* Tampilkan Nomor */}
+                              {col?.key == "id" ? (
+                                index + 1
+                              ) : // Tampilkan aksi
+                              col.header == "Action" ? (
+                                <Action
+                                  model={model}
+                                  path={path}
+                                  id={item.id}
+                                  action={col?.action}
+                                />
+                              ) : // Tampilkan Kolom yang memiliki custom
+                              col.cell ? (
+                                col.cell({ data: item[col.key] })
+                              ) : (
+                                // Tampilkan default kolom
+                                item[col.key] ?? "-"
+                              )}
+                            </div>
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })
+              ) : (
+                // Data tidak tersedia
+                <TableRow>
+                  <TableCell
+                    colSpan={column.length}
+                    className="h-24 text-center">
+                    {newMessage}
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          1 of 5 row(s) selected.
+      {data?.data && data?.data.length > 0 && (
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <div className="flex-1 text-sm text-muted-foreground">
+            {data?.from ?? 0} - {data?.to ?? 0} dari {data?.total ?? 0} {path}.
+          </div>
+          <div className="space-x-2">
+            <Button
+              variant="outline"
+              size="sm">
+              Previous
+            </Button>
+            <Button
+              variant="outline"
+              size="sm">
+              Next
+            </Button>
+          </div>
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm">
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm">
-            Next
-          </Button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

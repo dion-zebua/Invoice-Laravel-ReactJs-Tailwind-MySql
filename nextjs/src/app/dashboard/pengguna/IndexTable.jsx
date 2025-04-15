@@ -1,12 +1,36 @@
 "use client";
 import DataTable from "@/components/other/DataTable";
-import React from "react";
+import fetch from "@/lib/fetch";
+import React, { useEffect, useState } from "react";
 
 export default function IndexTable(props) {
-  const { data, message, path, model, params } = props;
+  const [data, setData] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  const [isLoadingAction, setIsLoadingAction] = useState(false);
+  const [params, setParams] = useState({
+    perPage: 5,
+    verified: null,
+    search: null,
+    role: null,
+    orderBy: "id",
+    orderDirection: "asc",
+  });
+
+  useEffect(() => {
+    setIsLoadingData(true);
+    fetch
+      .get("user/", { params: params })
+      .then((res) => setData(res.data.data))
+      .catch((err) => setMessage(err.response.data.message ?? err.message))
+      .finally(() => {
+        setIsLoadingData(false);
+      });
+  }, [params]);
+
   const column = [
     { key: "id", header: "No", sortable: true },
-    { key: "name", header: "Nama", sortable: true },
+    { key: "name", header: "Nama", sortable: true, className: "min-w-36" },
     { key: "sales", header: "Sales", sortable: true },
     { key: "telephone", header: "Telephone" },
     {
@@ -16,7 +40,7 @@ export default function IndexTable(props) {
       cell: function ({ data }) {
         return (
           <div
-            className={`font-medium border-2 text-slate-100 inline px-1 rounded-sm ${
+            className={`inline-block font-medium border-2 text-slate-100 px-1 rounded-sm ${
               data == "user"
                 ? "bg-amber-700 border-amber-500"
                 : "bg-teal-700 border-teal-500"
@@ -27,7 +51,7 @@ export default function IndexTable(props) {
       },
     },
     { key: "is_verified", header: "Status", selector: true },
-    { key: "invoice_count", header: "Jumlah Invoice", sortable: true },
+    { key: "invoice_count", header: "Invoice", sortable: true },
     { header: "Action", action: { edit: true, delete: true } },
   ];
 
@@ -37,8 +61,9 @@ export default function IndexTable(props) {
       data={data}
       message={message}
       column={column}
-      path={path}
-      model={model}
+      path="pengguna"
+      model="user"
+      isLoadingData={isLoadingData}
     />
   );
 }
