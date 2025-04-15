@@ -3,17 +3,12 @@ import DataTable from "@/components/other/DataTable";
 import React from "react";
 
 export default function IndexTable(props) {
-  const { data, message } = props;
+  const { data, message, path, model } = props;
   const column = [
-    {
-      key: "id",
-      header: "No",
-      sortable: true,
-    },
+    { key: "id", header: "No", sortable: true },
     { key: "name", header: "Nama", sortable: true },
     { key: "sales", header: "Sales", sortable: true },
     { key: "telephone", header: "Telephone" },
-    { key: "invoice_count", header: "Jumlah Invoice", sortable: true },
     {
       key: "role",
       header: "Role",
@@ -31,6 +26,9 @@ export default function IndexTable(props) {
         );
       },
     },
+    { key: "is_verified", header: "Status", sortable: true },
+    { key: "invoice_count", header: "Jumlah Invoice", sortable: true },
+    { header: "Action", action: { edit: true, delete: true } },
   ];
 
   return (
@@ -38,6 +36,8 @@ export default function IndexTable(props) {
       data={data}
       message={message}
       column={column}
+      path={path}
+      model={model}
     />
   );
 }

@@ -23,6 +23,7 @@ export default function EditForm(props) {
     name: initialData?.name ?? "",
     email: initialData?.email ?? "",
     sales: initialData?.sales ?? "",
+    role: initialData?.role ?? "",
     logo: null,
     telephone: initialData?.telephone ?? "",
     address: initialData?.address ?? "",

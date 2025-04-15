@@ -22,7 +22,7 @@ export default async function page() {
 
   try {
     const res = await fetch.get("user/?search=");
-    data = res.data.data.data;
+    data = res.data.data;
   } catch (err) {
     message = err.response.data.message ?? err.message;
   }
@@ -35,6 +35,8 @@ export default async function page() {
         <IndexTable
           data={data}
           message={message}
+          path="pengguna"
+          model="user"
         />
       </Box>
     </Main>

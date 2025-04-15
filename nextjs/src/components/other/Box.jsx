@@ -6,7 +6,10 @@ export default function Box(props) {
   const { className, loadingBox, children, title } = props;
 
   return (
-    <div className={`${className ?? ""} bg-white min-h-40 border-[1px] p-4`}>
+    <div
+      className={`${
+        className ?? ""
+      } bg-white min-h-40 border-[1px] p-4 overflow-x-auto`}>
       {loadingBox ? (
         <div className="flex flex-col items-start gap-y-5 min-h-[inherit] h-full">
           <Skeleton className="rounded-none h-7 w-3/5 bg-slate-100 duration-1000"></Skeleton>

@@ -34,8 +34,8 @@ export default function Logout() {
       .catch((err) => {
         if (err.status == 401) {
           logout();
-          redirect("/login");
           toast.success("Berhasil logout.");
+          redirect("/login");
         } else {
           error(err);
         }
