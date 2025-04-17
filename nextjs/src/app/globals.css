@@ -136,7 +136,7 @@
   }
 
   h2.subtitle {
-    @apply text-xl font-semibold;
+    @apply text-xl font-semibold text-slate-600;
   }
 
   form label {
@@ -149,5 +149,8 @@
   button,
   a {
     @apply cursor-pointer;
+  }
+  td, th {
+    @apply !py-4;
   }
 }

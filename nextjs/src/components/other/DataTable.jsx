@@ -23,8 +23,26 @@ import Action from "./Action";
 import { Skeleton } from "../ui/skeleton";
 
 export default function DataTable(props) {
-  const { data, message, column, path, model, isLoadingData } = props;
+  const {
+    data,
+    message,
+    column,
+    path,
+    model,
+    params,
+    setParams,
+    isLoadingData,
+    setIsLoadingData,
+    isLoadingAction,
+    setIsLoadingAction,
+  } = props;
   const [newMessage, setNewMessage] = useState(message);
+
+  useEffect(() => {
+    console.log(params);
+    console.log(isLoadingData);
+    console.log(isLoadingAction);
+  }, [params]);
 
   useEffect(() => {
     if (message && typeof message == "object") {
@@ -51,59 +69,72 @@ export default function DataTable(props) {
             placeholder=""
             className="max-w-sm"
           />
-
-          {/* KOLOM */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button className="ml-auto">
-                Kolom
-                <ChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {column.map((col, i) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={i}
-                    checked
-                    className="capitalize">
-                    {col.header}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       )}
-      <div className="rounded-md border">
+      <div>
         <Table className="table-auto">
-          <TableHeader>
+          <TableHeader className="bg-gray-100">
             <TableRow>
               {column.map((col, i) => {
                 return (
                   <TableHead
                     key={i}
-                    className={
-                      (col?.sortable || col?.selector) &&
-                      `cursor-pointer ${col?.className}`
-                    }>
-                    <div className="flex gap-x-2 whitespace-nowrap">
-                      {col.header}
+                    className="[&>div]:flex [&>div]:gap-x-2 [&>div]:whitespace-nowrap">
+                    <div
+                      onClick={() =>
+                        col?.sortable
+                          ? setParams((prev) => ({
+                              ...prev,
+                              orderBy: col.key,
+                              orderDirection:
+                                prev.orderBy === col.key
+                                  ? prev.orderDirection === "asc"
+                                    ? "desc"
+                                    : "asc"
+                                  : "asc",
+                            }))
+                          : ""
+                      }
+                      key={i}
+                      className={
+                        (col?.sortable || col?.selector) &&
+                        `[&_svg]:stroke-slate-500 hover:[&_svg]:stroke-slate-900 cursor-pointer ${col?.className}`
+                      }>
+                      <span className="font-semibold text-slate-800">
+                        {col.header}
+                      </span>
                       {col?.sortable && (
                         <div>
                           <ChevronUp
-                            className="top-0.5 relative"
+                            className={`top-0.5 relative ${
+                              params?.orderBy == col?.key &&
+                              params.orderDirection == "desc"
+                                ? "!stroke-slate-700 stroke-[4px]"
+                                : ""
+                            }`}
                             size={10}
                           />
                           <ChevronDown
-                            className="bottom-0.5 relative"
+                            className={`bottom-0.5 relative ${
+                              params?.orderBy == col?.key &&
+                              params.orderDirection == "asc"
+                                ? "!stroke-slate-700 stroke-[4px]"
+                                : ""
+                            }`}
                             size={10}
                           />
                         </div>
                       )}
                       {col?.selector && (
                         <div className="flex items-center">
-                          <ChevronRight size={10} />
+                          <ChevronRight
+                            className={`${
+                              params?.[col?.key]
+                                ? "!stroke-slate-700 stroke-[4px]"
+                                : ""
+                            }`}
+                            size={10}
+                          />
                         </div>
                       )}
                     </div>
@@ -130,7 +161,9 @@ export default function DataTable(props) {
               (data?.data && data?.data.length > 0 ? (
                 data?.data.map((item, index) => {
                   return (
-                    <TableRow key={index}>
+                    <TableRow
+                      key={index}
+                      className="even:bg-gray-50">
                       {/* Tampilkan Kolom */}
                       {column.map((col, i) => {
                         return (
@@ -142,7 +175,7 @@ export default function DataTable(props) {
                               {col?.key == "id" ? (
                                 index + 1
                               ) : // Tampilkan aksi
-                              col.header == "Action" ? (
+                              col.header == true ? (
                                 <Action
                                   model={model}
                                   path={path}

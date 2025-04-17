@@ -34,6 +34,6 @@ class DatabaseSeeder extends Seeder
             "payment_name" => "Dion Elson Famahato Zebua",
             "payment_number" => "203892393889",
         ]);
-        // \App\Models\User::factory(3)->create();
+        \App\Models\User::factory(35)->create();
     }
 }

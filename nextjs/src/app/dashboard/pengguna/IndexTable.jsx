@@ -9,12 +9,12 @@ export default function IndexTable(props) {
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [isLoadingAction, setIsLoadingAction] = useState(false);
   const [params, setParams] = useState({
-    perPage: 5,
+    perPage: 10,
     verified: null,
     search: null,
     role: null,
     orderBy: "id",
-    orderDirection: "asc",
+    orderDirection: "desc", // asc=oldest
   });
 
   useEffect(() => {
@@ -52,11 +52,12 @@ export default function IndexTable(props) {
     },
     { key: "is_verified", header: "Status", selector: true },
     { key: "invoice_count", header: "Invoice", sortable: true },
-    { header: "Action", action: { edit: true, delete: true } },
+    { header: true, action: { edit: true, delete: true } },
   ];
 
   return (
     <DataTable
+      setParams={setParams}
       params={params}
       data={data}
       message={message}
@@ -64,6 +65,9 @@ export default function IndexTable(props) {
       path="pengguna"
       model="user"
       isLoadingData={isLoadingData}
+      setIsLoadingData={setIsLoadingData}
+      isLoadingAction={isLoadingAction}
+      setIsLoadingAction={setIsLoadingAction}
     />
   );
 }
