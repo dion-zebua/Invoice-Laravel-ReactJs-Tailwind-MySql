@@ -18,27 +18,33 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export default function Action(props) {
-  const { path, model, id, action } = props;
+  const { path, model, id, action, setIsLoadingData, setParams } = props;
 
   const Delete = () => {
     const handleSubmit = (e) => {
       e.preventDefault();
 
+      setIsLoadingData(true);
       fetch
         .delete(`${model}/${id}/`)
         .then((response) => {
+          setParams((prevData) => ({
+            ...prevData,
+            timeStamp: Date.now(),
+          }));
           toast.success(response.data.message);
         })
         .catch((err) => {
           error(err);
-        });
+        })
+        .finally(() => setIsLoadingData(false));
     };
 
     return (
       <AlertDialog>
         <AlertDialogTrigger
           variant="destructive"
-          className="border-rose-500 hover:bg-rose-500 bg-rose-700">
+          className="border-rose-200 hover:bg-rose-500 bg-rose-700">
           <Trash />
         </AlertDialogTrigger>
         <AlertDialogContent>
@@ -58,22 +64,12 @@ export default function Action(props) {
   };
 
   return (
-    <div className="flex gap-x-2 [&_button]:rounded-sm [&_button]:!p-[3px] [&_button]:h-auto [&_button]:border-2 [&_button]:text-red-50 [&_svg]:!w-3 [&_svg]:!h-3">
-      {action?.show && (
-        <Link href={`${path}/${id}`}>
-          <Button
-            variant="destructive"
-            className="border-emerald-500 hover:bg-emerald-500 bg-emerald-700">
-            <Eye />
-          </Button>
-        </Link>
-      )}
-
+    <div className="flex gap-x-2 [&_button]:rounded-sm [&_button]:!p-[3px] [&_button]:h-auto [&_button]:border-2 [&_button]:text-red-50 [&_svg]:!w-3.5 [&_svg]:!h-3.5">
       {action?.edit && (
         <Link href={`${path}/edit/${id}`}>
           <Button
             variant="destructive"
-            className="border-yellow-500 hover:bg-yellow-500 bg-yellow-700">
+            className="border-yellow-200 hover:bg-yellow-500 bg-yellow-700">
             <Edit />
           </Button>
         </Link>

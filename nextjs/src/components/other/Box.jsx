@@ -3,7 +3,7 @@ import React from "react";
 import { Skeleton } from "../ui/skeleton";
 
 export default function Box(props) {
-  const { className, loadingBox, children, title } = props;
+  const { className, loadingBox, children, title, side } = props;
 
   return (
     <div
@@ -16,8 +16,11 @@ export default function Box(props) {
           <Skeleton className="rounded-none min-h-[inherit] h-full w-full bg-slate-100 duration-1000"></Skeleton>
         </div>
       ) : (
-        <div className="">
-          <h2 className="subtitle mb-5">{title}</h2>
+        <div>
+          <div className="mb-5 flex justify-between items-center flex-nowrap">
+            <h2 className="subtitle">{title}</h2>
+            {side}
+          </div>
           {children}
         </div>
       )}

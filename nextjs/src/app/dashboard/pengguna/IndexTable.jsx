@@ -1,33 +1,7 @@
 "use client";
-import DataTable from "@/components/other/DataTable";
-import fetch from "@/lib/fetch";
-import React, { useEffect, useState } from "react";
+import DataTable from "@/components/other/Table/DataTable";
 
 export default function IndexTable(props) {
-  const [data, setData] = useState(null);
-  const [message, setMessage] = useState(null);
-  const [isLoadingData, setIsLoadingData] = useState(true);
-  const [isLoadingAction, setIsLoadingAction] = useState(false);
-  const [params, setParams] = useState({
-    perPage: 10,
-    verified: null,
-    search: null,
-    role: null,
-    orderBy: "id",
-    orderDirection: "desc", // asc=oldest
-  });
-
-  useEffect(() => {
-    setIsLoadingData(true);
-    fetch
-      .get("user/", { params: params })
-      .then((res) => setData(res.data.data))
-      .catch((err) => setMessage(err.response.data.message ?? err.message))
-      .finally(() => {
-        setIsLoadingData(false);
-      });
-  }, [params]);
-
   const column = [
     { key: "id", header: "No", sortable: true },
     { key: "name", header: "Nama", sortable: true, className: "min-w-36" },
@@ -42,8 +16,8 @@ export default function IndexTable(props) {
           <div
             className={`inline-block font-medium border-2 text-slate-100 px-1 rounded-sm ${
               data == "user"
-                ? "bg-amber-700 border-amber-500"
-                : "bg-teal-700 border-teal-500"
+                ? "bg-violet-700 border-violet-200"
+                : "bg-teal-700 border-teal-200"
             }`}>
             {data}
           </div>
@@ -55,19 +29,22 @@ export default function IndexTable(props) {
     { header: true, action: { edit: true, delete: true } },
   ];
 
+  const defaultParams = {
+    page: 1,
+    perPage: 5,
+    verified: null,
+    search: null,
+    role: null,
+    orderBy: "id",
+    orderDirection: "desc", // asc=oldest
+  };
+
   return (
     <DataTable
-      setParams={setParams}
-      params={params}
-      data={data}
-      message={message}
       column={column}
       path="pengguna"
       model="user"
-      isLoadingData={isLoadingData}
-      setIsLoadingData={setIsLoadingData}
-      isLoadingAction={isLoadingAction}
-      setIsLoadingAction={setIsLoadingAction}
+      defaultParams={defaultParams}
     />
   );
 }
