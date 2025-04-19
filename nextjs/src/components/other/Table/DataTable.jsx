@@ -3,15 +3,23 @@ import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { ChevronDown, ChevronRight } from "@deemlol/next-icons";
 import { ChevronUp } from "lucide-react";
 
-import Action from "../Action";
 import Footer from "./Footer";
 import Header from "./Header";
 import fetch from "@/lib/fetch";
@@ -20,7 +28,7 @@ import DataNotFound from "./DataNotFound";
 import Data from "./Data";
 
 export default function DataTable(props) {
-  const { column, path, model, defaultParams } = props;
+  const { column, path, model, defaultParams, searchColumn } = props;
   const [data, setData] = useState(null);
   const [message, setMessage] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(true);
@@ -33,7 +41,6 @@ export default function DataTable(props) {
       .then((res) => setData(res.data.data))
       .catch((err) => {
         setData(null);
-
         let newMessage = err.response.data.message ?? err.message;
         if (newMessage && typeof newMessage == "object") {
           const messageFlat = Object.values(newMessage).flat();
@@ -59,6 +66,7 @@ export default function DataTable(props) {
         isLoadingData={isLoadingData}
         params={params}
         setParams={setParams}
+        searchColumn={searchColumn}
       />
       <div>
         <Table className="table-auto">
@@ -68,32 +76,38 @@ export default function DataTable(props) {
                 return (
                   <TableHead
                     key={i}
-                    className="[&>div]:flex [&>div]:gap-x-2 [&>div]:whitespace-nowrap">
-                    <div
-                      onClick={() =>
-                        !isLoadingData && col?.sortable
-                          ? setParams((prev) => ({
-                              ...prev,
-                              orderBy: col.key,
-                              orderDirection:
-                                prev.orderBy === col.key
-                                  ? prev.orderDirection === "asc"
-                                    ? "desc"
-                                    : "asc"
-                                  : "asc",
-                            }))
-                          : ""
-                      }
-                      key={i}
-                      className={`${
-                        (col?.sortable || col?.selector) && !isLoadingData
-                          ? "[&_svg]:stroke-slate-500 hover:[&_svg]:stroke-slate-900 cursor-pointer"
-                          : ""
-                      } ${col?.className}`}>
+                    className="[&>div]:flex [&>div]:gap-x-2 [&>div]:whitespace-nowrap pr-7">
+                    {isLoadingData && (
                       <span className="font-semibold text-slate-800">
                         {col.header}
                       </span>
-                      {!isLoadingData && col?.sortable && (
+                    )}
+                    {!isLoadingData && !col?.sortable && !col?.selector && (
+                      <span className="font-semibold text-slate-800">
+                        {col.header}
+                      </span>
+                    )}
+                    {!isLoadingData && col?.sortable && (
+                      <div
+                        onClick={() =>
+                          !isLoadingData && col?.sortable
+                            ? setParams((prev) => ({
+                                ...prev,
+                                orderBy: col.key,
+                                orderDirection:
+                                  prev.orderBy === col.key
+                                    ? prev.orderDirection === "asc"
+                                      ? "desc"
+                                      : "asc"
+                                    : "asc",
+                              }))
+                            : ""
+                        }
+                        key={i}
+                        className={`hover:cursor-pointer hover:[&_svg]:!stroke-slate-700 hover:[&_svg]:!stroke-4 ${col?.className}`}>
+                        <span className="font-semibold text-slate-800">
+                          {col.header}
+                        </span>
                         <div>
                           <ChevronUp
                             className={`top-0.5 relative ${
@@ -114,20 +128,55 @@ export default function DataTable(props) {
                             size={10}
                           />
                         </div>
-                      )}
-                      {col?.selector && (
-                        <div className="flex items-center">
-                          <ChevronRight
-                            className={`${
-                              params?.[col?.key]
-                                ? "!stroke-slate-700 stroke-[4px]"
-                                : ""
-                            }`}
-                            size={10}
-                          />
-                        </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
+                    {!isLoadingData && col?.selector && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <div className="hover:cursor-pointer hover:[&_svg]:!stroke-slate-700 hover:[&_svg]:!stroke-4">
+                            <span className="font-semibold text-slate-800">
+                              {col.header}
+                            </span>
+                            <div className="flex items-center">
+                              <ChevronRight
+                                size={10}
+                                className={
+                                  params?.[col?.key]
+                                    ? "!stroke-slate-700 !stroke-4"
+                                    : ""
+                                }
+                              />
+                            </div>
+                          </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56">
+                          <DropdownMenuLabel>
+                            Pilih {col.header}
+                          </DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuRadioGroup>
+                            {col?.selector &&
+                              col?.selectorItem?.length > 0 &&
+                              col?.selectorItem.map((item, i) => {
+                                return (
+                                  <DropdownMenuCheckboxItem
+                                    key={i}
+                                    checked={item.key == params?.[col?.key]}
+                                    onCheckedChange={() => {
+                                      setParams((prev) => ({
+                                        ...prev,
+                                        [col?.key]: item.key,
+                                      }));
+                                    }}
+                                    value={item.key}>
+                                    {item?.label}
+                                  </DropdownMenuCheckboxItem>
+                                );
+                              })}
+                          </DropdownMenuRadioGroup>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
                   </TableHead>
                 );
               })}

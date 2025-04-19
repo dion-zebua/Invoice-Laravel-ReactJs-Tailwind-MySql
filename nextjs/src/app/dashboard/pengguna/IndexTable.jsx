@@ -1,16 +1,21 @@
 "use client";
 import DataTable from "@/components/other/Table/DataTable";
+import { CheckCircle, XCircle } from "@deemlol/next-icons";
 
 export default function IndexTable(props) {
   const column = [
     { key: "id", header: "No", sortable: true },
     { key: "name", header: "Nama", sortable: true, className: "min-w-36" },
     { key: "sales", header: "Sales", sortable: true },
-    { key: "telephone", header: "Telephone" },
     {
       key: "role",
       header: "Role",
       selector: true,
+      selectorItem: [
+        { key: null, label: "semua" },
+        { key: "admin", label: "admin" },
+        { key: "user", label: "user" },
+      ],
       cell: function ({ data }) {
         return (
           <div
@@ -24,15 +29,38 @@ export default function IndexTable(props) {
         );
       },
     },
-    { key: "is_verified", header: "Status", selector: true },
-    { key: "invoice_count", header: "Invoice", sortable: true },
+    { key: "telephone", header: "Telephone" },
+    {
+      key: "is_verified",
+      header: "Status",
+      selector: true,
+      selectorItem: [
+        { key: null, label: "semua" },
+        { key: 1, label: "terverifikasi" },
+        { key: 0, label: "tidak terverifikasi" },
+      ],
+      cell: function ({ data }) {
+        return data ? (
+          <CheckCircle
+            className="stroke-emerald-500"
+            size={15}
+          />
+        ) : (
+          <XCircle
+            className="stroke-rose-500"
+            size={15}
+          />
+        );
+      },
+    },
+    // { key: "invoice_count", header: "Invoice", sortable: true },
     { header: true, action: { edit: true, delete: true } },
   ];
 
   const defaultParams = {
     page: 1,
     perPage: 5,
-    verified: null,
+    is_verified: null,
     search: null,
     role: null,
     orderBy: "id",
@@ -45,6 +73,7 @@ export default function IndexTable(props) {
       path="pengguna"
       model="user"
       defaultParams={defaultParams}
+      searchColumn={["name", "sales"]}
     />
   );
 }

@@ -23,7 +23,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'perPage' => 'nullable|integer|in:5,10,20,50,100',
-            'verified' => 'nullable|boolean',
+            'is_verified' => 'nullable|in:0,1',
             'search' => 'nullable|string',
             'role' => 'nullable|string|in:admin,user',
             'orderBy' => 'nullable|string|in:id,name,sales,telephone,invoice_count',
@@ -35,7 +35,7 @@ class UserController extends Controller
         }
 
         $perPage = $request->input('perPage', 10);
-        $is_verified = $request->input('verified');
+        $is_verified = $request->input('is_verified');
         $search = $request->input('search', '');
         $role = $request->input('role', '');
         $orderBy = $request->input('orderBy', 'id');
@@ -46,9 +46,13 @@ class UserController extends Controller
             ->when($role, function ($query, $role) {
                 $query->where('role', $role);
             })
-            ->when($is_verified, function ($query, $is_verified) {
-                $query->where('is_verified', $is_verified);
-            })->where(function ($q) use ($search) {
+            ->when($is_verified !== null && $is_verified == "0", function ($query, $is_verified) {
+                $query->where('is_verified', false);
+            })
+            ->when($is_verified !== null && $is_verified == "1", function ($query, $is_verified) {
+                $query->where('is_verified', true);
+            })
+            ->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('sales', 'like', "%{$search}%");
             })

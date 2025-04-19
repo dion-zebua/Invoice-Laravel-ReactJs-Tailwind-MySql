@@ -7,7 +7,7 @@ import Link from "next/link";
 import React from "react";
 import IndexTable from "./IndexTable";
 
-const pageTitle = "Semua Produk";
+const pageTitle = "Semua Invoice";
 
 export const metadata = updateMetadata({
   title: `Halaman ${pageTitle} - ${process.env.NEXT_PUBLIC_APP_NAME}`,
@@ -20,11 +20,11 @@ export const metadata = updateMetadata({
 
 const Side = () => {
   return (
-    <Link href="./produk/tambah">
+    <Link href="./invoice/tambah">
       <Button
         className="w-full lg:!px-5"
         variant="outline">
-        <Plus /> Produk
+        <Plus /> Invoice
       </Button>
     </Link>
   );

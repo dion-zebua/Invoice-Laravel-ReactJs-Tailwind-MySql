@@ -10,9 +10,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { AlertCircle } from "@deemlol/next-icons";
 
 export default function Header(props) {
-  const { params, setParams, isLoadingData } = props;
+  const { params, setParams, isLoadingData, searchColumn } = props;
   const baris = [5, 10, 20, 50, 100];
 
   const handleSearch = (e) => {
@@ -65,11 +72,31 @@ export default function Header(props) {
       <form
         onSubmit={handleSearch}
         className="flex flex-nowrap items-center gap-3 max-w-sm w-full sm:w-80">
-        <Input
-          autoFocus
-          placeholder="cari..."
-          disabled={isLoadingData}
-        />
+        <div className="relative">
+          <Input
+            autoFocus
+            placeholder="cari..."
+            disabled={isLoadingData}
+          />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger className="absolute right-3 top-1/2 -translate-y-1/2">
+                <AlertCircle
+                  size={15}
+                  className="stroke-slate-400"
+                />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  {searchColumn &&
+                    searchColumn.map((item, i) => {
+                      return <span key={i}>{item}&nbsp;</span>;
+                    })}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
         <Button
           disabled={isLoadingData}
           className="px-3"
