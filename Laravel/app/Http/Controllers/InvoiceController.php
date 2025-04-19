@@ -24,7 +24,7 @@ class InvoiceController extends Controller
             'perPage' => 'nullable|integer|in:5,10,20,50,100',
             'search' => 'nullable|string',
             'status' => 'nullable|string|in:paid,unpaid',
-            'orderBy' => 'nullable|string|in:id,users_id,code,to_name,to_telephone,to_email,status,down_payment,remaining_balance,grand_total',
+            'orderBy' => 'nullable|string|in:id,users_id,code,to_name,grand_total',
             'orderDirection' => 'nullable|string|in:asc,desc',
         ]);
 
@@ -47,8 +47,6 @@ class InvoiceController extends Controller
             'to_telephone',
             'to_email',
             'status',
-            'down_payment',
-            'remaining_balance',
             'grand_total'
         )
             ->with('user:id,name,email,telephone')
@@ -62,11 +60,10 @@ class InvoiceController extends Controller
                 $q->where('code', 'like', "%{$search}%")
                     ->orWhere('to_email', 'like', "%{$search}%")
                     ->orWhere('to_name', 'like', "%{$search}%")
-                    ->orWhere('to_telephone', 'like', "%{$search}%")
                     ->orWhereHas('user', function ($query) use ($search) {
-                        $query->where('telephone', 'like', "%{$search}%")
-                            ->orWhere('email', 'like', "%{$search}%")
-                            ->orWhere('name', 'like', "%{$search}%");
+                        //     $query->where('telephone', 'like', "%{$search}%")
+                        //         ->orWhere('email', 'like', "%{$search}%")
+                        $query->where('name', 'like', "%{$search}%");
                     });
             })
             ->orderBy($orderBy, $orderDirection)
@@ -122,7 +119,7 @@ class InvoiceController extends Controller
 
         $validator = Validator::make($request->all(), [
             'code' => 'required|string|unique:invoices,code',
-            'expire' => 'required|date|after:now',
+            'expire' => 'required|date|after_or_equal:today',
             'to_name' => 'required|string|max:30',
             'to_sales' => 'required|string|max:30',
             'to_address' => 'required|string|max:70',

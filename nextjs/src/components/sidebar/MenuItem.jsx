@@ -29,7 +29,7 @@ export default function MenuItem(session = {}) {
     },
     {
       title: "Produk",
-      url: session?.role == "admin" ? "/produk" : "#",
+      url: session?.role == "admin" ? "/dashboard/produk" : "#",
       role: ["user", "admin"],
       icon: <Box size={16} />,
       subMenu: [
@@ -47,7 +47,7 @@ export default function MenuItem(session = {}) {
     },
     {
       title: "Invoice",
-      url: session?.role == "admin" ? "/invoice" : "#",
+      url: session?.role == "admin" ? "/dashboard/invoice" : "#",
       role: ["user", "admin"],
       icon: <FileText size={16} />,
       subMenu: [

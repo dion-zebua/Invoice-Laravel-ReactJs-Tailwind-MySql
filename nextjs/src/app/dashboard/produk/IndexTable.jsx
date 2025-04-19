@@ -1,9 +1,25 @@
 "use client";
 import DataTable from "@/components/other/Table/DataTable";
+import Link from "next/link";
 
 export default function IndexTable(props) {
   const column = [
     { key: "id", header: "No", sortable: true },
+    {
+      key: "user",
+      header: "Perusahaan Penjual",
+      sortable: true,
+      cell: function ({ data }) {
+        return (
+          <Link
+            className="underline"
+            href={`./pengguna/${data?.id}`}>
+            {data?.name}
+          </Link>
+        );
+      },
+      role: "admin",
+    },
     { key: "name", header: "Nama", sortable: true, className: "min-w-36" },
     { key: "unit", header: "Unit", sortable: true },
     {

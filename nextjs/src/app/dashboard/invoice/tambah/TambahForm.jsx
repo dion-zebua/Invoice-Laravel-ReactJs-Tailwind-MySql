@@ -32,7 +32,7 @@ export default function TambahForm(props) {
   const [data, setData] = useState({
     // Form Atas
     expire: "",
-    status: "",
+    status: "paid",
     to_name: "",
     to_sales: "",
     to_address: "",
@@ -101,25 +101,6 @@ export default function TambahForm(props) {
     );
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(data);
-
-    // setLoadingSubmit(true);
-    // fetch
-    //   .post(`invoice/`, data)
-    //   .then((response) => {
-    //     toast.success(response.data.message);
-    //     router.push(`/dashboard/invoice/edit/${response.data.data.id}`);
-    //   })
-    //   .catch((err) => {
-    //     error(err);
-    //   })
-    //   .finally((e) => {
-    //     setLoadingSubmit(false);
-    //   });
-  };
-
   const handleChange = (e) => {
     const { id, value } = e.target;
     setData((prevData) => ({
@@ -155,6 +136,25 @@ export default function TambahForm(props) {
     setProductInvoice(productInvoice.filter((item) => item.idRow !== idRow));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(data);
+
+    setLoadingSubmit(true);
+    fetch
+      .post(`invoice/`, data)
+      .then((response) => {
+        toast.success(response.data.message);
+        // router.push(`/dashboard/invoice/edit/${response.data.data.id}`);
+      })
+      .catch((err) => {
+        error(err);
+      })
+      .finally((e) => {
+        setLoadingSubmit(false);
+      });
+  };
+
   useEffect(() => {
     const sub_total = productInvoice.reduce(
       (total, item) => total + Number(item.amount),
@@ -173,6 +173,7 @@ export default function TambahForm(props) {
       tax_price: tax_price,
       grand_total: grand_total,
       remaining_balance: remaining_balance,
+      products: productInvoice,
     }));
   }, [productInvoice, data.discount, data.tax, data.down_payment]);
 
@@ -212,8 +213,16 @@ export default function TambahForm(props) {
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Baris</SelectLabel>
-                <SelectItem value="paid">Lunas</SelectItem>
-                <SelectItem value="unpaid">Belum Lunas</SelectItem>
+                <SelectItem
+                  selected={data.status == "paid"}
+                  value="paid">
+                  Lunas
+                </SelectItem>
+                <SelectItem
+                  selected={data.status == "unpaid"}
+                  value="unpaid">
+                  Belum Lunas
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -232,7 +241,7 @@ export default function TambahForm(props) {
 
         {/* to_sales */}
         <div>
-          <Label htmlFor="to_sales">Nama Sales</Label>
+          <Label htmlFor="to_sales">Nama Penerima</Label>
           <Input
             id="to_sales"
             onChange={handleChange}
@@ -423,6 +432,7 @@ export default function TambahForm(props) {
               disabled
               required
               value={data?.sub_total}
+              autoComplete="off"
             />
           </div>
 
@@ -435,6 +445,7 @@ export default function TambahForm(props) {
               id="discount"
               required
               value={data?.discount}
+              autoComplete="off"
             />
           </div>
 
@@ -447,6 +458,7 @@ export default function TambahForm(props) {
               disabled
               required
               value={data?.total}
+              autoComplete="off"
             />
           </div>
 
@@ -471,6 +483,7 @@ export default function TambahForm(props) {
                 disabled
                 required
                 value={data?.tax_price}
+                autoComplete="off"
               />
             </div>
           </div>
@@ -484,6 +497,7 @@ export default function TambahForm(props) {
               disabled
               required
               value={data?.grand_total}
+              autoComplete="off"
             />
           </div>
 
@@ -496,6 +510,7 @@ export default function TambahForm(props) {
               onChange={handleChange}
               required
               value={data?.down_payment}
+              autoComplete="off"
             />
           </div>
 
@@ -508,6 +523,7 @@ export default function TambahForm(props) {
               disabled
               required
               value={data?.remaining_balance}
+              autoComplete="off"
             />
           </div>
         </div>

@@ -71,7 +71,7 @@ export default function Header(props) {
       </form>
       <form
         onSubmit={handleSearch}
-        className="flex flex-nowrap items-center gap-3 max-w-sm w-full sm:w-80">
+        className="flex flex-nowrap justify-end items-center gap-3 max-w-sm w-full sm:w-80">
         <div className="relative">
           <Input
             autoFocus
@@ -80,7 +80,9 @@ export default function Header(props) {
           />
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="absolute right-3 top-1/2 -translate-y-1/2">
+              <TooltipTrigger
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2">
                 <AlertCircle
                   size={15}
                   className="stroke-slate-400"
@@ -90,7 +92,7 @@ export default function Header(props) {
                 <p>
                   {searchColumn &&
                     searchColumn.map((item, i) => {
-                      return <span key={i}>{item}&nbsp;</span>;
+                      return <span key={i}>{item},&nbsp;</span>;
                     })}
                 </p>
               </TooltipContent>

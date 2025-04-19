@@ -2,15 +2,6 @@ import { Input } from "@/components/ui/input";
 import fetch from "@/lib/fetch";
 import React, { useEffect, useState } from "react";
 
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
 export default function SearchProduct(props) {
   const { setProductInvoice, product, handleChangeProduct } = props;
   const [productInvoiceSearch, setProductInvoiceSearch] = useState(null);
@@ -31,16 +22,19 @@ export default function SearchProduct(props) {
         fetch
           .get("product/", {
             params: {
+              perPage: 5,
               search: value,
               orderBy: "name",
               orderDirection: "asc",
             },
           })
           .then((res) => {
-            const newProduct = res.data.data.data;
-            setProductInvoiceSearch(newProduct);
+            const products = res.data.data.data;
+            setProductInvoiceSearch(products);
           })
-          .catch((err) => console.log(err))
+          .catch(() => {
+            setProductInvoiceSearch(null);
+          })
           .finally(() => setIsLoading(false));
       }
     }, 2000);
@@ -77,7 +71,10 @@ export default function SearchProduct(props) {
         value={product.name}
         onFocus={() => setFocus(true)}
         onBlur={() => {
-          setTimeout(() => setFocus(false), 500);
+          setTimeout(() => {
+            setProductInvoiceSearch(null);
+            setFocus(false);
+          }, 500);
         }}
       />
       {focus && (

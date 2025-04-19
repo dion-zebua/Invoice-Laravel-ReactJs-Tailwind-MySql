@@ -26,6 +26,7 @@ import fetch from "@/lib/fetch";
 import SkelatonTable from "./SkelatonTable";
 import DataNotFound from "./DataNotFound";
 import Data from "./Data";
+import { useSession } from "@/context/SessionContext";
 
 export default function DataTable(props) {
   const { column, path, model, defaultParams, searchColumn } = props;
@@ -33,6 +34,8 @@ export default function DataTable(props) {
   const [message, setMessage] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(true);
   const [params, setParams] = useState(defaultParams);
+
+  const session = useSession();
 
   useEffect(() => {
     setIsLoadingData(true);
@@ -74,110 +77,112 @@ export default function DataTable(props) {
             <TableRow>
               {column.map((col, i) => {
                 return (
-                  <TableHead
-                    key={i}
-                    className="[&>div]:flex [&>div]:gap-x-2 [&>div]:whitespace-nowrap pr-7">
-                    {isLoadingData && (
-                      <span className="font-semibold text-slate-800">
-                        {col.header}
-                      </span>
-                    )}
-                    {!isLoadingData && !col?.sortable && !col?.selector && (
-                      <span className="font-semibold text-slate-800">
-                        {col.header}
-                      </span>
-                    )}
-                    {!isLoadingData && col?.sortable && (
-                      <div
-                        onClick={() =>
-                          !isLoadingData && col?.sortable
-                            ? setParams((prev) => ({
-                                ...prev,
-                                orderBy: col.key,
-                                orderDirection:
-                                  prev.orderBy === col.key
-                                    ? prev.orderDirection === "asc"
-                                      ? "desc"
-                                      : "asc"
-                                    : "asc",
-                              }))
-                            : ""
-                        }
-                        key={i}
-                        className={`hover:cursor-pointer hover:[&_svg]:!stroke-slate-700 hover:[&_svg]:!stroke-4 ${col?.className}`}>
+                  (!col?.role || (col?.role && col?.role == session?.role)) && (
+                    <TableHead
+                      key={i}
+                      className="[&>div]:flex [&>div]:gap-x-2 [&>div]:whitespace-nowrap pr-7">
+                      {isLoadingData && (
                         <span className="font-semibold text-slate-800">
                           {col.header}
                         </span>
-                        <div>
-                          <ChevronUp
-                            className={`top-0.5 relative ${
-                              params?.orderBy == col?.key &&
-                              params.orderDirection == "desc"
-                                ? "!stroke-slate-700 stroke-[4px]"
-                                : ""
-                            }`}
-                            size={10}
-                          />
-                          <ChevronDown
-                            className={`bottom-0.5 relative ${
-                              params?.orderBy == col?.key &&
-                              params.orderDirection == "asc"
-                                ? "!stroke-slate-700 stroke-[4px]"
-                                : ""
-                            }`}
-                            size={10}
-                          />
-                        </div>
-                      </div>
-                    )}
-                    {!isLoadingData && col?.selector && (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <div className="hover:cursor-pointer hover:[&_svg]:!stroke-slate-700 hover:[&_svg]:!stroke-4">
-                            <span className="font-semibold text-slate-800">
-                              {col.header}
-                            </span>
-                            <div className="flex items-center">
-                              <ChevronRight
-                                size={10}
-                                className={
-                                  params?.[col?.key]
-                                    ? "!stroke-slate-700 !stroke-4"
-                                    : ""
-                                }
-                              />
-                            </div>
+                      )}
+                      {!isLoadingData && !col?.sortable && !col?.selector && (
+                        <span className="font-semibold text-slate-800">
+                          {col.header}
+                        </span>
+                      )}
+                      {!isLoadingData && col?.sortable && (
+                        <div
+                          onClick={() =>
+                            !isLoadingData && col?.sortable
+                              ? setParams((prev) => ({
+                                  ...prev,
+                                  orderBy: col.key,
+                                  orderDirection:
+                                    prev.orderBy === col.key
+                                      ? prev.orderDirection === "asc"
+                                        ? "desc"
+                                        : "asc"
+                                      : "asc",
+                                }))
+                              : ""
+                          }
+                          key={i}
+                          className={`hover:cursor-pointer hover:[&_svg]:!stroke-slate-700 hover:[&_svg]:!stroke-4 ${col?.className}`}>
+                          <span className="font-semibold text-slate-800">
+                            {col.header}
+                          </span>
+                          <div>
+                            <ChevronUp
+                              className={`top-0.5 relative ${
+                                params?.orderBy == col?.key &&
+                                params.orderDirection == "desc"
+                                  ? "!stroke-slate-700 stroke-[4px]"
+                                  : ""
+                              }`}
+                              size={10}
+                            />
+                            <ChevronDown
+                              className={`bottom-0.5 relative ${
+                                params?.orderBy == col?.key &&
+                                params.orderDirection == "asc"
+                                  ? "!stroke-slate-700 stroke-[4px]"
+                                  : ""
+                              }`}
+                              size={10}
+                            />
                           </div>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56">
-                          <DropdownMenuLabel>
-                            Pilih {col.header}
-                          </DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuRadioGroup>
-                            {col?.selector &&
-                              col?.selectorItem?.length > 0 &&
-                              col?.selectorItem.map((item, i) => {
-                                return (
-                                  <DropdownMenuCheckboxItem
-                                    key={i}
-                                    checked={item.key == params?.[col?.key]}
-                                    onCheckedChange={() => {
-                                      setParams((prev) => ({
-                                        ...prev,
-                                        [col?.key]: item.key,
-                                      }));
-                                    }}
-                                    value={item.key}>
-                                    {item?.label}
-                                  </DropdownMenuCheckboxItem>
-                                );
-                              })}
-                          </DropdownMenuRadioGroup>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
-                  </TableHead>
+                        </div>
+                      )}
+                      {!isLoadingData && col?.selector && (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <div className="hover:cursor-pointer hover:[&_svg]:!stroke-slate-700 hover:[&_svg]:!stroke-4">
+                              <span className="font-semibold text-slate-800">
+                                {col.header}
+                              </span>
+                              <div className="flex items-center">
+                                <ChevronRight
+                                  size={10}
+                                  className={
+                                    params?.[col?.key]
+                                      ? "!stroke-slate-700 !stroke-4"
+                                      : ""
+                                  }
+                                />
+                              </div>
+                            </div>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent className="w-56">
+                            <DropdownMenuLabel>
+                              Pilih {col.header}
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuRadioGroup>
+                              {col?.selector &&
+                                col?.selectorItem?.length > 0 &&
+                                col?.selectorItem.map((item, i) => {
+                                  return (
+                                    <DropdownMenuCheckboxItem
+                                      key={i}
+                                      checked={item.key == params?.[col?.key]}
+                                      onCheckedChange={() => {
+                                        setParams((prev) => ({
+                                          ...prev,
+                                          [col?.key]: item.key,
+                                        }));
+                                      }}
+                                      value={item.key}>
+                                      {item?.label}
+                                    </DropdownMenuCheckboxItem>
+                                  );
+                                })}
+                            </DropdownMenuRadioGroup>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      )}
+                    </TableHead>
+                  )
                 );
               })}
             </TableRow>
