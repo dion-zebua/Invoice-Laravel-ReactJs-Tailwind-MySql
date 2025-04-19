@@ -51,6 +51,8 @@ export default function IndexTable(props) {
       model="product"
       defaultParams={defaultParams}
       searchColumn={["name", "unit", "harga"]}
+      header={true}
+      footer={true}
     />
   );
 }

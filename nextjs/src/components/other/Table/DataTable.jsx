@@ -29,7 +29,8 @@ import Data from "./Data";
 import { useSession } from "@/context/SessionContext";
 
 export default function DataTable(props) {
-  const { column, path, model, defaultParams, searchColumn } = props;
+  const { column, path, model, defaultParams, searchColumn, header, footer } =
+    props;
   const [data, setData] = useState(null);
   const [message, setMessage] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(true);
@@ -65,12 +66,14 @@ export default function DataTable(props) {
 
   return (
     <div className="w-full">
-      <Header
-        isLoadingData={isLoadingData}
-        params={params}
-        setParams={setParams}
-        searchColumn={searchColumn}
-      />
+      {header && (
+        <Header
+          isLoadingData={isLoadingData}
+          params={params}
+          setParams={setParams}
+          searchColumn={searchColumn}
+        />
+      )}
       <div>
         <Table className="table-auto">
           <TableHeader className="bg-gray-100">
@@ -80,7 +83,7 @@ export default function DataTable(props) {
                   (!col?.role || (col?.role && col?.role == session?.role)) && (
                     <TableHead
                       key={i}
-                      className="[&>div]:flex [&>div]:gap-x-2 [&>div]:whitespace-nowrap pr-7">
+                      className="[&>div]:flex [&>div]:gap-x-2 [&>div]:whitespace-nowrap px-5">
                       {isLoadingData && (
                         <span className="font-semibold text-slate-800">
                           {col.header}
@@ -216,12 +219,14 @@ export default function DataTable(props) {
           </TableBody>
         </Table>
       </div>
-      <Footer
-        params={params}
-        setParams={setParams}
-        data={data}
-        path={path}
-      />
+      {footer && (
+        <Footer
+          params={params}
+          setParams={setParams}
+          data={data}
+          path={path}
+        />
+      )}
     </div>
   );
 }

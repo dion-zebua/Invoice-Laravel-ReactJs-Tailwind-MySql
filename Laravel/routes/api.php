@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\InvoiceGenerator;
 use App\Http\Controllers\ProductController;
@@ -42,6 +43,8 @@ Route::middleware(['auth:sanctum', 'unverified'])->controller(AuthController::cl
     ->group(function () {
         Route::post('logout/', 'logout');
         Route::get('check-login/', 'checkLogin');
+
+        Route::get('all-data/count/', [Controller::class, 'allDataCount']);
 
         // User
         Route::controller(UserController::class)

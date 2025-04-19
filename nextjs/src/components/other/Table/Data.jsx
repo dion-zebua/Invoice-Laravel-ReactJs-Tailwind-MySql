@@ -19,7 +19,7 @@ export default function Data(props) {
           return (
             (!col?.role || (col?.role && col?.role == session?.role)) && (
               <TableCell
-                className="whitespace-normal max-w-36 pr-7"
+                className="whitespace-normal max-w-36 px-5"
                 key={i}>
                 <div
                   className={`line-clamp-1 block text-ellipsis ${col.className}`}>

@@ -5,7 +5,12 @@ import { CheckCircle, XCircle } from "@deemlol/next-icons";
 export default function IndexTable(props) {
   const column = [
     { key: "id", header: "No", sortable: true },
-    { key: "name", header: "Nama", sortable: true, className: "min-w-36" },
+    {
+      key: "name",
+      header: "Perusahaan",
+      sortable: true,
+      className: "min-w-36",
+    },
     { key: "sales", header: "Sales", sortable: true },
     {
       key: "role",
@@ -74,6 +79,8 @@ export default function IndexTable(props) {
       model="user"
       defaultParams={defaultParams}
       searchColumn={["name", "sales"]}
+      header={true}
+      footer={true}
     />
   );
 }

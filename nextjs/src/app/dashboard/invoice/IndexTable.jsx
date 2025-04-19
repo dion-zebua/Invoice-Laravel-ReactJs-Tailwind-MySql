@@ -126,6 +126,8 @@ export default function IndexTable(props) {
         "perusahaan pembeli",
         "email pembeli",
       ]}
+      header={true}
+      footer={true}
     />
   );
 }
