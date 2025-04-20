@@ -10,14 +10,14 @@ export default function Invoice() {
       key: "code",
       header: "Kode",
       cell: function ({ data }) {
-        return `#${data}`;
+        return `#${data?.code}`;
       },
     },
     {
       key: "user",
       header: "Perusahaan Penjual",
       cell: function ({ data }) {
-        return data?.name;
+        return data?.user?.name;
       },
       role: "admin",
     },
@@ -32,21 +32,23 @@ export default function Invoice() {
       cell: function ({ data }) {
         return (
           <div className="flex items-center gap-x-2 whitespace-nowrap">
-            {data == "paid" ? (
+            {data?.status == "paid" ? (
               <>
                 <CheckCircle
-                  className="stroke-emerald-500"
                   size={15}
-                />{" "}
-                Lunas
+                  className="stroke-emerald-500"
+                />
+                <span className="line-clamp-1 block text-ellipsis">Lunas</span>
               </>
             ) : (
               <>
                 <XCircle
-                  className="stroke-rose-500"
                   size={15}
-                />{" "}
-                Belum Lunas
+                  className="stroke-rose-500"
+                />
+                <span className="line-clamp-1 block text-ellipsis">
+                  Belum Lunas
+                </span>
               </>
             )}
           </div>

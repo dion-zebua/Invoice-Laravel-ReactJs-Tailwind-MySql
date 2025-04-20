@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('invoice')->group(function () {
     Route::get('{id}/{code}/stream/', [InvoiceGenerator::class, 'stream']);
+    Route::get('{id}/{code}/download/', [InvoiceGenerator::class, 'download']);
     Route::get('{id}/{code}/', [InvoiceController::class, 'show']);
 });
 

@@ -15,6 +15,12 @@
         rel="stylesheet">
 
     <style>
+        @font-face {
+            font-family: 'Poppins';
+            font-weight: normal;
+            font-style: normal;
+        }
+
         *,
         *::before,
         *::after {
@@ -24,7 +30,7 @@
         }
 
         body {
-            padding: 60px 0 40px 0;
+            padding: 60px 0 30px 0;
         }
 
         .poppins-regular {
@@ -90,6 +96,10 @@
             margin-top: 20px;
         }
 
+        #header p {
+            margin-bottom: -5px !important;
+        }
+
         .address-details tr td {
             width: 50%;
         }
@@ -106,6 +116,7 @@
         .address-details p.detail {
             opacity: .65;
             height: 30px;
+            margin-bottom: 0px !important;
         }
 
         .address-details p {
@@ -113,6 +124,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 270px;
+            margin-bottom: -5px !important;
         }
 
 
@@ -125,6 +137,7 @@
         }
 
         #main table {
+            white-space: nowrap;
             margin: 20px 0 10px 0;
             width: 100%;
             border-collapse: collapse;
@@ -134,7 +147,7 @@
         #main table td,
         #main table th {
             border: 1px solid rgb(130, 130, 130);
-            padding: 8px;
+            padding: 0px 8px 5px 8px;
             text-align: left;
             color: rgb(109, 109, 109);
         }
@@ -145,6 +158,7 @@
 
         #main table.total th {
             border: 0 !important;
+            padding-bottom: 10px;
         }
 
         #main table th {
@@ -205,7 +219,7 @@
 </head>
 
 <body class="poppins-regular" style="font-size: 14px;">
-    <img id="bg" src="{{ public_path('img/bg-invoice.jpg') }}" alt="background">
+    {{-- <img id="bg" src="{{ public_path('img/bg-invoice.jpg') }}" alt="background"> --}}
     <div id="container">
         <div class="status">
             @for ($i = 0; $i < 3; $i++)
@@ -217,13 +231,14 @@
         </div>
 
         <div id="header">
+            {{-- {{ asset($data->user->logo['result']) }} --}}
             <table style="width: 100%;">
                 <tbody>
                     <tr>
                         <td style="width: 50%;">
                             <img style="max-width: 110px; max-height: 70px;" class="logo"
-                                src="{{ public_path($data->user->logo['result']) }}" alt="logo">
-                            {{-- <p>Generator invoice</p> --}}
+                                src="{{ $data->user->logo['result'] }}" alt="logo">
+                            <p>Generator invoice</p>
                         </td>
                         <td style="width: 50%; text-align: right;">
 
@@ -270,10 +285,10 @@
                         </td>
                         <td class="detail-right" style="text-align: right;">
                             <p class="detail">
-                                To : {{ Str::limit($data->to_name, 30, '...') }}
+                                To : {{ Str::limit($data->to_sales, 30, '...') }}
                             </p>
                             <p>
-                                {{ Str::limit($data->to_company, 30, '...') }}
+                                {{ Str::limit($data->to_name, 30, '...') }}
                             </p>
                             <p>
                                 {{ Str::limit($data->to_address, 30, '...') }}
@@ -304,6 +319,7 @@
                     </tr>
                 </thead>
                 <tbody>
+
                     @foreach ($products as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
@@ -319,14 +335,14 @@
             <table class="total">
                 <thead style="">
                     <tr>
-                        <th></th>
+                        <th style=""></th>
                         <th style="width: 130px !important; "></th>
                         <th style="width: 130px !important;"></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="3" style="border: 0;"></td>
+                        <td colspan="3" style="border: 0; padding-bottom: 10px;"></td>
                     </tr>
                     <tr>
                         <td rowspan="3" class="payment">
@@ -399,7 +415,8 @@
                     <tr>
                         <td>Thank you</td>
                         <td>
-                            <img src="{{ $qrCode }}" alt="QR">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAIAAAAiOjnJAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAE/0lEQVR4nO3dQW7jOhBF0Z+P3v+W0zMPBIeQLF5SHZwzDGzJiR+IEkMWv76/v/+D2f7f/QH4nQSLhGCRECwSgkVCsEj8efvTr6+vNbc/THZcuu/4vZeuPJ5zGV952Ysv2fUNvhixSAgWCcEiIVgk3hfvB7uKykv33VWtX/oYl+478crrv0EjFgnBIiFYJASLxKni/aArwMc3unOpiaX9WPcPgDsvPljwDRqxSAgWCcEiIVgkPineOxMnpu94yMz7sgeOghGLhGCRECwSgkXiWcX7wcSF2xMn8S+V2BOr9Tv7A9YzYpEQLBKCRUKwSHxSvHeTvLsWqu96765l7Aum6Y1YJASLhGCRECwSp4r3XZO8d2rbg+694z/OxLn1bitswYhFQrBICBYJwSLx9ai10t1Gyl1Xfsgq/vWMWCQEi4RgkRAsEp8U78u6sS/r/jhxYnrZDPjEFvkHUy5lxCIhWCQEi4RgkZg/8z6xWfnEintZx8plv/7Yriu/GLFICBYJwSIhWCTeF+9db5Y77kzE71qgcufX7ybxuw45L0YsEoJFQrBICBaJ9xtWlx1AOr7yJV21/pD/JUxcrXTJZ1+3EYuEYJEQLBKCRWLCzHu3nHzX7PnEfzxculHHshl+CcEiIVgkBIvEhEOaJrYjf+bBQ93Kn64XzeG9XT/LnxixSAgWCcEiIVgkNs+87+pO/pBHiokT4gfbu+sYsUgIFgnBIiFYJD6Zeb8zjXvpyg85SmlZP8vuRuv79hixSAgWCcEiIVgkTm1Y7Y767PrY7HqGmLgHdVe1rtsMzyVYJASLhGCReF+8d13CuyJ6/CHvVL6XJqaXFf4PWfnzEyMWCcEiIVgkBIvEqUOanrmP9OCZZxiNdUvRl93IzDtLCRYJwSIhWCRObVidaOKimokHn451y1cmWrbZ9SQjFgnBIiFYJASLxCeHNB3cWVUyvm9XJneV/jMb9azv6mPEIiFYJASLhGCRONVtZuK09R3deaRjdwrhievWJz6OTGx68xMjFgnBIiFYJASLRH5I00F3SuquNi/j945dalE5fu8lC557jFgkBIuEYJEQLBKnivdlBekly/pZXrJsc++y01mteedBBIuEYJEQLBKfLJu5s+hi/OJLup4wEw946to9TmxCWXwMIxYJwSIhWCQEi8SpbjO/oIPKRF3jmn/iL6l4ZyfBIiFYJASLxCdr3pf1PZ/YfGb84oNlvdqXre1ZduztixGLhGCRECwSgkXik+K9KxsvXWrXipRxP5llS27GLj0WFH9YIxYJwSIhWCQEi8SEmfeJfV3uvHdXg/VnHot656Hh0sewbIalBIuEYJEQLBLv17zv0i3NvmPiJP7Ex5EFm07vMGKRECwSgkVCsEi8n3nf1e/wId1XOsvWnk9cPm/mnQcRLBKCRUKwSMzv8z627GihiWXysrbvE+fWu6/Mmnd2EiwSgkVCsEhs3rA6vvLEA566hSK7WuIcLFsmZOadnQSLhGCRECwSnxTvuyzbkjo2sQDfdbDUxC3HPzFikRAsEoJFQrBIPLp47/rYXHrxspbx4yvf+W/BxK2wJ38jIxYJwSIhWCQEi0R+SNOuK3c7Nu/caHzlZQ8r4ytPWXpvxCIhWCQEi4RgkThVvC9rxjK+7651Mrs+xq6uk3c+1YsRi4RgkRAsEoJF4ll93vk1jFgkBIuEYJEQLBKCRUKwSAgWib+p5NCpmGw+jQAAAABJRU5ErkJggg=="
+                                alt="QR">
                         </td>
                     </tr>
                     <tr>

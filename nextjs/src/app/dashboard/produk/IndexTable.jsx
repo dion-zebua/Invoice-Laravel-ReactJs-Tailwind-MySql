@@ -13,8 +13,8 @@ export default function IndexTable(props) {
         return (
           <Link
             className="underline"
-            href={`./pengguna/${data?.id}`}>
-            {data?.name}
+            href={`./pengguna/${data?.user?.id}`}>
+            {data?.user?.name}
           </Link>
         );
       },
@@ -29,7 +29,7 @@ export default function IndexTable(props) {
         return new Intl.NumberFormat("id-ID", {
           style: "currency",
           currency: "IDR",
-        }).format(data);
+        }).format(data?.price);
       },
       sortable: true,
     },

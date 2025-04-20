@@ -13,7 +13,7 @@ export default function Data(props) {
     return (
       <TableRow
         key={index}
-        className="even:bg-gray-50">
+        className="evenodd:bg-gray-50 odd:bg-gray-100 hover:bg-slate-100">
         {/* Tampilkan Kolom */}
         {column.map((col, i) => {
           return (
@@ -22,7 +22,9 @@ export default function Data(props) {
                 className="whitespace-normal max-w-36 px-5"
                 key={i}>
                 <div
-                  className={`line-clamp-1 block text-ellipsis ${col.className}`}>
+                  className={`line-clamp-1 block text-ellipsis ${
+                    col.className ?? ""
+                  }`}>
                   {/* Tampilkan Nomor */}
                   {col?.key == "id" ? (
                     index + 1
@@ -38,7 +40,7 @@ export default function Data(props) {
                     />
                   ) : // Tampilkan Kolom yang memiliki custom
                   col.cell ? (
-                    col.cell({ data: item[col.key] })
+                    col.cell({ data: item })
                   ) : (
                     // Tampilkan default kolom
                     item[col.key] ?? "-"

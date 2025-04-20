@@ -12,16 +12,30 @@ export default function User() {
       key: "is_verified",
       header: "Status",
       cell: function ({ data }) {
-        return data ? (
-          <CheckCircle
-            className="stroke-emerald-500"
-            size={15}
-          />
-        ) : (
-          <XCircle
-            className="stroke-rose-500"
-            size={15}
-          />
+        return (
+          <div className="flex items-center gap-x-2 whitespace-nowrap">
+            {data?.is_verified ? (
+              <>
+                <CheckCircle
+                  className="stroke-emerald-500"
+                  size={15}
+                />
+                <span className="line-clamp-1 block text-ellipsis">
+                  Terverifikasi
+                </span>
+              </>
+            ) : (
+              <>
+                <XCircle
+                  className="stroke-rose-500"
+                  size={15}
+                />
+                <span className="line-clamp-1 block text-ellipsis">
+                  Tidak terverifikasi
+                </span>
+              </>
+            )}
+          </div>
         );
       },
     },

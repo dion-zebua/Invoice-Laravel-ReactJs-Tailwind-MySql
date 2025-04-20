@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Validator;
 
 class InvoiceGenerator extends Controller
 {
-    public function stream($id, $code)
+    public function generate($id, $code)
     {
         $invoice = Invoice::where('id', $id)
             ->where('code', $code)
@@ -20,29 +19,45 @@ class InvoiceGenerator extends Controller
         }
 
         $invoiceProducts = $invoice->invoiceProducts;
-        // $invoiceProducts = [];
-        // for ($i = 0; $i < 40; $i++) {
-        //     $invoiceProducts[$i] = $invoice->invoiceProducts[0];
-        // }
 
         $qrCode = GenerateQrCodeController::getQrCode(env('APP_URL_FRONTEND') . "invoice/$invoice->id/$invoice->code/");
 
-        // return view('pdf.invoice', ['data' => $invoice]);
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.invoice', [
             'data' => $invoice,
             'products' => $invoiceProducts,
             'qrCode' => $qrCode,
-        ]);
+        ])
+            // ->setWarnings(true)
+            ->setOptions([
+                'isRemoteEnabled' => true,
+            ])
+            ->setHttpContext(stream_context_create([
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                ]
+            ]));
+        return $pdf;
+    }
 
-        // $pdf->setOptions([
-        //     'isHtml5ParserEnabled' => true,
-        //     'isPhpEnabled' => true,
-        //     'defaultPaperSize' => 'a4'
-        // ]);
-
+    public function stream($id, $code)
+    {
         $random = Str::random(5);
-        return $pdf->stream("invoice-$invoice->id-$invoice->code-$random.pdf");
 
-        // return $this->dataFound($invoice, 'Invoice');
+        $pdf = $this->generate($id, $code);
+        return $pdf->stream("invoice-$id-$code-$random.pdf", [
+            true
+        ]);
+    }
+
+    public function download($id, $code)
+    {
+        $random = Str::random(5);
+
+        $pdf = $this->generate($id, $code);
+        return $pdf->download("invoice-$id-$code-$random.pdf", [
+            true
+        ]);
     }
 }

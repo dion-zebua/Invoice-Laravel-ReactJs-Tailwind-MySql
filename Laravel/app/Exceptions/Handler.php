@@ -5,6 +5,8 @@ namespace App\Exceptions;
 use Throwable;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use Illuminate\Support\Facades\RateLimiter;
 
 
 class Handler extends ExceptionHandler
@@ -24,6 +26,24 @@ class Handler extends ExceptionHandler
             ], 401);
         }
     }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof ThrottleRequestsException) {
+            $key = $request->user()?->id ?: $request->ip();
+
+            // Ambil waktu retry dari RateLimiter
+            $retryAfter = RateLimiter::availableIn($key);
+
+            return response()->json([
+                "status" => false,
+                'message' => 'Batas penggunaan API tercapai. Coba lagi dalam 1 menit.',
+            ], 429);
+        }
+
+        return parent::render($request, $exception);
+    }
+
 
     protected $dontFlash = [
         'current_password',

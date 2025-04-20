@@ -1,6 +1,7 @@
 "use client";
 import DataTable from "@/components/other/Table/DataTable";
-import { CheckCircle, XCircle } from "@deemlol/next-icons";
+import { Button } from "@/components/ui/button";
+import { CheckCircle, Download, Eye, XCircle } from "@deemlol/next-icons";
 import Link from "next/link";
 
 export default function IndexTable(props) {
@@ -11,7 +12,7 @@ export default function IndexTable(props) {
       header: "Kode",
       sortable: true,
       cell: function ({ data }) {
-        return `#${data}`;
+        return `#${data.code}`;
       },
     },
     {
@@ -22,8 +23,8 @@ export default function IndexTable(props) {
         return (
           <Link
             className="underline"
-            href={`./pengguna/${data?.id}`}>
-            {data?.name}
+            href={`./pengguna/${data?.user?.id}`}>
+            {data?.user?.name}
           </Link>
         );
       },
@@ -38,8 +39,8 @@ export default function IndexTable(props) {
           <Link
             className="underline"
             target="_blank"
-            href={`tel:${data}`}>
-            {data}
+            href={`tel:${data.to_telephone}`}>
+            {data.to_telephone}
           </Link>
         );
       },
@@ -52,8 +53,8 @@ export default function IndexTable(props) {
           <Link
             className="underline"
             target="_blank"
-            href={`mailto:${data}`}>
-            {data}
+            href={`mailto:${data.to_email}`}>
+            {data.to_email}
           </Link>
         );
       },
@@ -70,21 +71,23 @@ export default function IndexTable(props) {
       cell: function ({ data }) {
         return (
           <div className="flex items-center gap-x-2 whitespace-nowrap">
-            {data == "paid" ? (
+            {data?.status == "paid" ? (
               <>
                 <CheckCircle
-                  className="stroke-emerald-500"
                   size={15}
-                />{" "}
-                Lunas
+                  className="stroke-emerald-500"
+                />
+                <span className="line-clamp-1 block text-ellipsis">Lunas</span>
               </>
             ) : (
               <>
                 <XCircle
-                  className="stroke-rose-500"
                   size={15}
-                />{" "}
-                Belum Lunas
+                  className="stroke-rose-500"
+                />
+                <span className="line-clamp-1 block text-ellipsis">
+                  Belum Lunas
+                </span>
               </>
             )}
           </div>
@@ -99,7 +102,34 @@ export default function IndexTable(props) {
         return new Intl.NumberFormat("id-ID", {
           style: "currency",
           currency: "IDR",
-        }).format(data);
+        }).format(data?.grand_total);
+      },
+    },
+    {
+      key: "code",
+      header: "",
+      cell: function ({ data }) {
+        return (
+          <div className="flex gap-x-2 [&_button]:rounded-sm [&_button]:!p-[3px] [&_button]:h-auto [&_button]:border-2 [&_button]:text-red-50 [&_svg]:!w-3.5 [&_svg]:!h-3.5">
+            <Button
+              onClick={() => {
+                window.open(
+                  `${process.env.NEXT_PUBLIC_APP_URL_BACKEND}invoice/${data.id}/${data.code}/download/`
+                );
+              }}
+              variant="destructive"
+              className="border-emerald-200 hover:bg-emerald-500 bg-emerald-700">
+              <Download />
+            </Button>
+            <Link target="_blank" href={`/invoice/${data.id}/${data.code}/`}>
+              <Button
+                variant="destructive"
+                className="border-cyan-200 hover:bg-cyan-500 bg-cyan-700">
+                <Eye />
+              </Button>
+            </Link>
+          </div>
+        );
       },
     },
     { header: true, action: { edit: true, delete: true } },

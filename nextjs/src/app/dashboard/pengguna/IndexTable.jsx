@@ -25,11 +25,11 @@ export default function IndexTable(props) {
         return (
           <div
             className={`inline-block font-medium border-2 text-slate-100 px-1 rounded-sm ${
-              data == "user"
+              data?.role == "user"
                 ? "bg-violet-700 border-violet-200"
                 : "bg-teal-700 border-teal-200"
             }`}>
-            {data}
+            {data?.role}
           </div>
         );
       },
@@ -45,16 +45,30 @@ export default function IndexTable(props) {
         { key: 0, label: "tidak terverifikasi" },
       ],
       cell: function ({ data }) {
-        return data ? (
-          <CheckCircle
-            className="stroke-emerald-500"
-            size={15}
-          />
-        ) : (
-          <XCircle
-            className="stroke-rose-500"
-            size={15}
-          />
+        return (
+          <div className="flex items-center gap-x-2 whitespace-nowrap">
+            {data?.is_verified ? (
+              <>
+                <CheckCircle
+                  className="stroke-emerald-500"
+                  size={15}
+                />
+                <span className="line-clamp-1 block text-ellipsis">
+                  Terverifikasi
+                </span>
+              </>
+            ) : (
+              <>
+                <XCircle
+                  className="stroke-rose-500"
+                  size={15}
+                />
+                <span className="line-clamp-1 block text-ellipsis">
+                  Tidak terverifikasi
+                </span>
+              </>
+            )}
+          </div>
         );
       },
     },

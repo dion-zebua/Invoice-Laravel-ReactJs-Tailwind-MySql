@@ -76,8 +76,8 @@ export default function DataTable(props) {
       )}
       <div>
         <Table className="table-auto">
-          <TableHeader className="bg-gray-100">
-            <TableRow>
+          <TableHeader>
+            <TableRow className="bg-white hover:bg-white">
               {column.map((col, i) => {
                 return (
                   (!col?.role || (col?.role && col?.role == session?.role)) && (
