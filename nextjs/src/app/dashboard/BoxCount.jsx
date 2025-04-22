@@ -20,7 +20,7 @@ export default function BoxCount() {
         return false;
       })
       .finally(() => setIsLoading(false));
-  });
+  }, []);
 
   const className =
     "flex items-center flex-nowrap gap-x-1 text-primary hover:[&_svg]:scale-125 hover:[&_svg]:w-8 [&_svg]:transition-all [&_svg]:stroke-primary text-sm";

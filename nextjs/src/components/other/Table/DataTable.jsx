@@ -23,7 +23,7 @@ import { ChevronUp } from "lucide-react";
 import Footer from "./Footer";
 import Header from "./Header";
 import fetch from "@/lib/fetch";
-import SkelatonTable from "./SkelatonTable";
+import SkeletonTable from "./SkeletonTable";
 import DataNotFound from "./DataNotFound";
 import Data from "./Data";
 import { useSession } from "@/context/SessionContext";
@@ -194,7 +194,7 @@ export default function DataTable(props) {
           <TableBody>
             {/* Buat Skeleton */}
             {(isLoadingData && (
-              <SkelatonTable
+              <SkeletonTable
                 column={column}
                 params={params}
               />

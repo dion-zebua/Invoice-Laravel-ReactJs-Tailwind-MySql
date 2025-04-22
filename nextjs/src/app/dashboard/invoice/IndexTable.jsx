@@ -1,10 +1,12 @@
 "use client";
 import DataTable from "@/components/other/Table/DataTable";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Download, Eye, XCircle } from "@deemlol/next-icons";
+import { useSession } from "@/context/SessionContext";
+import { CheckCircle, Download, Edit, Eye, XCircle } from "@deemlol/next-icons";
 import Link from "next/link";
 
 export default function IndexTable(props) {
+  const user = useSession();
   const column = [
     { key: "id", header: "No", sortable: true },
     {
@@ -121,18 +123,31 @@ export default function IndexTable(props) {
               className="border-emerald-200 hover:bg-emerald-500 bg-emerald-700">
               <Download />
             </Button>
-            <Link target="_blank" href={`/invoice/${data.id}/${data.code}/`}>
+            <Link
+              target="_blank"
+              href={`/invoice/${data.id}/${data.code}/`}>
               <Button
                 variant="destructive"
                 className="border-cyan-200 hover:bg-cyan-500 bg-cyan-700">
                 <Eye />
               </Button>
             </Link>
+            {user?.role == "user" && data?.status == "unpaid" && (
+              <Link
+                target="_blank"
+                href={`./invoice/edit/${data.id}/${data.code}/`}>
+                <Button
+                  variant="destructive"
+                  className="border-yellow-200 hover:bg-yellow-500 bg-yellow-700">
+                  <Edit />
+                </Button>
+              </Link>
+            )}
           </div>
         );
       },
     },
-    { header: true, action: { edit: true, delete: true } },
+    { header: true, action: { delete: true } },
   ];
 
   const defaultParams = {

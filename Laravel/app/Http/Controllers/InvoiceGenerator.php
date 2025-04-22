@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class InvoiceGenerator extends Controller
 {
-    public function generate($id, $code)
+    public function generate($id, $code, $action)
     {
         $invoice = Invoice::where('id', $id)
             ->where('code', $code)
@@ -38,26 +38,27 @@ class InvoiceGenerator extends Controller
                     'allow_self_signed' => true
                 ]
             ]));
-        return $pdf;
+        $random = Str::random(5);
+
+        if ($action == 'stream') {
+            return $pdf->stream("invoice-$id-$code-$random.pdf", [
+                true
+            ]);
+        } else {
+            return $pdf->stream("invoice-$id-$code-$random.pdf", [
+                true
+            ]);
+        }
     }
 
     public function stream($id, $code)
     {
-        $random = Str::random(5);
 
-        $pdf = $this->generate($id, $code);
-        return $pdf->stream("invoice-$id-$code-$random.pdf", [
-            true
-        ]);
+        return $this->generate($id, $code, 'stream');
     }
 
     public function download($id, $code)
     {
-        $random = Str::random(5);
-
-        $pdf = $this->generate($id, $code);
-        return $pdf->download("invoice-$id-$code-$random.pdf", [
-            true
-        ]);
+        return $this->generate($id, $code, 'download');
     }
 }

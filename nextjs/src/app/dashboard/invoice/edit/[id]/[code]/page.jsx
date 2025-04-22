@@ -3,9 +3,9 @@ import updateMetadata from "@/lib/meta";
 import React from "react";
 import fetch from "@/lib/fetch";
 import { redirect } from "next/navigation";
-import EditForm from "../EditForm";
+import EditForm from "./EditForm";
 
-const pageTitle = "Edit Pengguna";
+const pageTitle = "Edit Invoice";
 
 export const metadata = updateMetadata({
   title: `Halaman ${pageTitle} - ${process.env.NEXT_PUBLIC_APP_NAME}`,
@@ -17,14 +17,14 @@ export const metadata = updateMetadata({
 });
 
 export default async function page({ params }) {
-  const { id } = await params;
+  const { id, code } = await params;
   let data = {};
 
   try {
-    const res = await fetch.get(`user/${id}/`);
+    const res = await fetch.get(`invoice/${id}/${code}/`);
     data = res.data.data;
   } catch (err) {
-    redirect("/dashboard/pengguna");
+    redirect("/dashboard/invoice");
   }
 
   return (

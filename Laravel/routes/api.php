@@ -90,7 +90,7 @@ Route::middleware(['auth:sanctum', 'unverified'])->controller(AuthController::cl
                 Route::middleware('company')->group(function () {
 
 
-                    // Route::get('/{id}/{code}/', 'show');
+                    Route::get('/{id}/{code}/', 'show');
                     Route::put('/{id}/', 'update');
                     Route::middleware(['role:user'])
                         ->group(function () {

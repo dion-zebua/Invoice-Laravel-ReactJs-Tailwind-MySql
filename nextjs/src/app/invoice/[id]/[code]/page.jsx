@@ -1,23 +1,75 @@
-"use server";
-
+import NavbarLandingPage from "@/components/navbar/NavbarLandingPage";
+import DefaultBaner from "@/components/other/DefaultBaner";
+import Footer from "@/components/footer/Footer";
 import fetch from "@/lib/fetch";
-import { redirect } from "next/navigation";
+import updateMetadata from "@/lib/meta";
+import FormLandingPage from "@/components/other/FormLandingPage";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { title } from "process";
+import Iframe from "./Iframe";
 
-export default async function PDFPreview({ params }) {
-  const { id, code } = await params;
-  const invoice = `invoice/${id}/${code}/`;
+const pageTitle = "Invoice";
 
+async function getInvoice(id, code) {
   try {
-    const response = await fetch.get(invoice);
+    const response = await fetch.get(`invoice/${id}/${code}/`);
+    return response;
   } catch (err) {
-    // redirect("/");
-    console.log(err);
+    return err;
   }
+}
+
+export const metadata = updateMetadata({
+  title: `Halaman ${pageTitle} - ${process.env.APP_NAME}`,
+  description: `Halaman ${pageTitle} - ${process.env.APP_NAME}`,
+  openGraph: {
+    title: `Halaman ${pageTitle} - ${process.env.APP_NAME}`,
+    description: `Halaman ${pageTitle} - ${process.env.APP_NAME}`,
+  },
+  robots: {
+    index: false,
+    follow: false,
+    nocache: false,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+    },
+  },
+});
+
+export default async function Page({ params }) {
+  const { id, code } = await params;
+  const invoice = await getInvoice(id, code);
+
+  let titleInvoice;
+  if (invoice.status == 200) {
+    titleInvoice = `Invoice #${invoice.data.data.code}`;
+  } else {
+    titleInvoice = "Invoice";
+  }
+
   return (
-    <div className="h-dvh w-dvw">
-      <iframe
-        src={`${process.env.APP_URL_BACKEND}invoice/${id}/${code}/stream/`}
-        className="w-full h-full"></iframe>
-    </div>
+    <>
+      <NavbarLandingPage />
+      <DefaultBaner pageTitle={titleInvoice} />
+      {invoice.status == 200 ? (
+        <Iframe
+          id={id}
+          code={code}
+        />
+      ) : (
+        <>
+          <FormLandingPage pageTitle={pageTitle}>
+            <Alert>
+              <AlertDescription>
+                {invoice?.response?.data?.message ?? invoice?.message}
+              </AlertDescription>
+            </Alert>
+          </FormLandingPage>
+        </>
+      )}
+      <Footer />
+    </>
   );
 }

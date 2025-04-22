@@ -75,7 +75,7 @@ export default function Action(props) {
         </Link>
       )}
 
-      {action?.edit && <Delete />}
+      {action?.delete && <Delete />}
     </div>
   );
 }

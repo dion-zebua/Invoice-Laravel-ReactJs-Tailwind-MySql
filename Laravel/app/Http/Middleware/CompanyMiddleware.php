@@ -32,7 +32,9 @@ class CompanyMiddleware
     protected function isProfileIncomplete($user)
     {
         // Memeriksa jika semua field profil lengkap
-        return $user->sales &&
+        return $user->name &&
+            $user->email &&
+            $user->sales &&
             $user->logo &&
             $user->address &&
             $user->telephone &&

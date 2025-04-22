@@ -222,7 +222,7 @@ class InvoiceController extends Controller
         if ($invoice->status == 'paid') {
             return response()->json([
                 'status' => 'false',
-                'message' => 'Invoice paid! Tidak bisa edit.',
+                'message' => 'Invoice lunas! Tidak bisa edit.',
             ], 403);
         }
 

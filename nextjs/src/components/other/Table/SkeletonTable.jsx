@@ -2,7 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { TableCell, TableRow } from "@/components/ui/table";
 import React from "react";
 
-export default function SkelatonTable(props) {
+export default function SkeletonTable(props) {
   const { column, params } = props;
   return Array.from({ length: params?.perPage }, (_, i) => (
     <TableRow key={i}>
