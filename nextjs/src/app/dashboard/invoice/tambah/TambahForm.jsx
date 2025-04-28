@@ -43,7 +43,7 @@ export default function TambahForm(props) {
     sub_total: 0,
     discount: 0,
     total: 0,
-    tax: false,
+    tax: 0,
     tax_price: 0,
     grand_total: 0,
     down_payment: 0,
@@ -154,6 +154,8 @@ export default function TambahForm(props) {
   };
 
   useEffect(() => {
+    console.log(data);
+
     const sub_total = productInvoice.reduce(
       (total, item) => total + Number(item.amount),
       0
@@ -467,11 +469,10 @@ export default function TambahForm(props) {
               <Checkbox
                 id="tax"
                 className="w-5 h-5 border-2 mr-2 border-slate-400"
-                checked={data?.tax}
                 onCheckedChange={(value) => {
                   setData((prev) => ({
                     ...prev,
-                    tax: value,
+                    tax: value ? 1 : 0,
                   }));
                 }}
               />

@@ -386,7 +386,7 @@
                             </ul>
                         </td>
                         <td>Tax</td>
-                        <td>{{ getRupiah(($data->total * 11) / 100) }}</td>
+                        <td>{{ getRupiah($data->tax == 1 ? ($data->total * 11) / 100 : 0) }}</td>
                     </tr>
                     <tr>
                         <td class="my-bold">Grand Total</td>
