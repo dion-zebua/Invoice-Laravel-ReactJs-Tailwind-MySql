@@ -23,13 +23,23 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $payment = fake()->creditCardDetails();
         return [
-            'name' => fake()->name(),
+            'name' => fake()->company(),
             'email' => fake()->unique()->safeEmail(),
             // 'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'role' => 'user',
             // 'remember_token' => Str::random(10),
+
+            'is_verified' => fake()->numberBetween(0, 1),
+            'sales' => fake()->name(),
+            "logo" => "as.jpg",
+            "address" => fake()->address(),
+            "telephone" => fake()->phoneNumber(),
+            "payment_methode" => $payment['type'],
+            "payment_name" => $payment['name'],
+            "payment_number" => $payment['number'],
         ];
     }
 

@@ -13,7 +13,5 @@ export const metadata = updateMetadata({
 });
 
 export default async function PageNotFound() {
-    return <>
-        <NotFound />
-    </>
+    return <NotFound />
 }

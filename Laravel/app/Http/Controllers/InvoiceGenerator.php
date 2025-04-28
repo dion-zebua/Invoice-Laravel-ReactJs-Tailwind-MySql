@@ -19,8 +19,7 @@ class InvoiceGenerator extends Controller
         }
 
         $invoiceProducts = $invoice->invoiceProducts;
-
-        $qrCode = GenerateQrCodeController::getQrCode(env('APP_URL_FRONTEND') . "invoice/$invoice->id/$invoice->code/");
+        $qrCode = GenerateQrCodeController::getQrCode(env('APP_URL_FRONTEND') . "invoice/$id/$code/");
 
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.invoice', [
             'data' => $invoice,
@@ -40,15 +39,9 @@ class InvoiceGenerator extends Controller
             ]));
         $random = Str::random(5);
 
-        if ($action == 'stream') {
-            return $pdf->stream("invoice-$id-$code-$random.pdf", [
-                true
-            ]);
-        } else {
-            return $pdf->stream("invoice-$id-$code-$random.pdf", [
-                true
-            ]);
-        }
+        return $pdf->$action("invoice-$id-$code-$random.pdf", [
+            true
+        ]);
     }
 
     public function stream($id, $code)
@@ -59,6 +52,19 @@ class InvoiceGenerator extends Controller
 
     public function download($id, $code)
     {
+        return $this->generate($id, $code, 'download');
+    }
+
+    public function show($id, $code)
+    {
+        $invoice = Invoice::where('id', $id)
+            ->where('code', $code)
+            ->first();
+
+        if (!$invoice) {
+            return $this->dataNotFound('Invoice');
+        }
+        return $this->dataFound($invoice, 'Invoice');
         return $this->generate($id, $code, 'download');
     }
 }

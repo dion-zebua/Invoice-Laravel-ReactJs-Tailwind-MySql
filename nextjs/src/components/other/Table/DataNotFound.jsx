@@ -6,8 +6,8 @@ export default function DataNotFound(props) {
   return (
     <TableRow>
       <TableCell
-        colSpan={column.length}
-        className="h-24 text-center">
+        colSpan={column}
+        className="h-24 text-center [&>*]:max-w-full whitespace-normal">
         {message}
       </TableCell>
     </TableRow>

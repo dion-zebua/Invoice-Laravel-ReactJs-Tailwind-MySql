@@ -8,13 +8,13 @@ import {
 import React from "react";
 
 export default function Footer(props) {
-  const { data, path, params, setParams } = props;
+  const { data, setParams } = props;
 
   return (
     <div className="flex flex-col items-center justify-center border-t py-5 space-y-3">
       <div className="space-y-3.5 text-sm text-center text-muted-foreground">
         <p>
-          {data?.from ?? 0} - {data?.to ?? 0} dari {data?.total ?? 0} {path}.
+          {data?.from ?? 0} - {data?.to ?? 0} dari {data?.total ?? 0} baris.
         </p>
         <p>
           Halaman {data?.current_page ?? 1} dari {data?.last_page ?? 1}.
@@ -24,7 +24,7 @@ export default function Footer(props) {
         {/* First */}
         <Button
           onClick={() => setParams((prevData) => ({ ...prevData, page: 1 }))}
-          disabled={data?.current_page == 1}
+          disabled={!data?.current_page || data?.current_page == 1}
           variant=""
           size="sm">
           <ChevronLeft2 size={20} />

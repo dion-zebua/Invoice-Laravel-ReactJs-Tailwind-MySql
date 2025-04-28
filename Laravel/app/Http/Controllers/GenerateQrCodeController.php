@@ -19,15 +19,16 @@ class GenerateQrCodeController extends Controller
         $result = Builder::create()
             ->writer(new PngWriter())
             ->writerOptions([])
+            ->validateResult(false)
             ->data($url)
             ->errorCorrectionLevel(ErrorCorrectionLevel::High)
             ->size(200)
             ->margin(0)
             ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
-            ->validateResult(false)
             ->build();
 
         header('Content-Type: ' . $result->getMimeType());
+        $result->getDataUri();
         return $result->getDataUri();
     }
 }

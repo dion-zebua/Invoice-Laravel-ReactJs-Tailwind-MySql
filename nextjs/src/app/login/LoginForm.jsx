@@ -92,8 +92,9 @@ export default function LoginForm({ pageTitle }) {
       </div>
       <Link
         target="_blank"
-        href="https://api.whatsapp.com/send/?phone=6288289317870&text=Saya+ingin+daftar+https://invoices.my.id">
+        href={`https://api.whatsapp.com/send/?phone=6288289317870&text=Saya+ingin+daftar+${process.env.NEXT_PUBLIC_APP_URL_FRONTEND}`}>
         <Button
+          type="button"
           className="w-full lg:!px-5"
           variant="outline">
           <UserPlus /> Daftar

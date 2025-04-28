@@ -42,7 +42,7 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $token = $user->createToken('apiToken')->plainTextToken;
+        $token = $user->createToken('apiToken', expiresAt: Carbon::now()->addMinute(config('sanctum.expiration')))->plainTextToken;
         $user['token'] = $token;
 
         return response()->json([

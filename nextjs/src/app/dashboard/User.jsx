@@ -1,65 +1,137 @@
 "use client";
 import Box from "@/components/other/Box";
-import DataTable from "@/components/other/Table/DataTable";
+import fetch from "@/lib/fetch";
 import { CheckCircle, XCircle } from "@deemlol/next-icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import SkeletonTable from "@/components/other/Table/SkeletonTable";
+import { useSession } from "@/context/SessionContext";
+import Link from "next/link";
+import DataNotFound from "@/components/other/Table/DataNotFound";
 
 export default function User() {
-  const column = [
-    { key: "name", header: "Perusahaan", className: "min-w-36" },
-    { key: "telephone", header: "Telephone" },
-    {
-      key: "is_verified",
-      header: "Status",
-      cell: function ({ data }) {
-        return (
-          <div className="flex items-center gap-x-2 whitespace-nowrap">
-            {data?.is_verified ? (
-              <>
-                <CheckCircle
-                  className="stroke-emerald-500"
-                  size={15}
-                />
-                <span className="line-clamp-1 block text-ellipsis">
-                  Terverifikasi
-                </span>
-              </>
-            ) : (
-              <>
-                <XCircle
-                  className="stroke-rose-500"
-                  size={15}
-                />
-                <span className="line-clamp-1 block text-ellipsis">
-                  Tidak terverifikasi
-                </span>
-              </>
-            )}
-          </div>
-        );
-      },
-    },
-  ];
+  const user = useSession();
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  const [data, setData] = useState(null);
+  const [message, setMessage] = useState(null);
 
-  const defaultParams = {
+  const [params, setParams] = useState({
     page: 1,
     perPage: 5,
     role: "user",
     orderBy: "id",
     orderDirection: "desc", // asc=oldest
-  };
+  });
+
+  useEffect(() => {
+    setIsLoadingData(true);
+    fetch
+      .get("user/", { params: params })
+      .then((res) => setData(res.data.data))
+      .catch((err) => {
+        setData(null);
+        let newMessage = err.response.data.message ?? err.message;
+        if (newMessage && typeof newMessage == "object") {
+          const messageFlat = Object.values(newMessage).flat();
+          setMessage(
+            <ul className="">
+              {messageFlat.map((msg, index) => (
+                <li key={index}>{msg}</li>
+              ))}
+            </ul>
+          );
+        } else {
+          setMessage(newMessage);
+        }
+      })
+      .finally(() => {
+        setIsLoadingData(false);
+      });
+  }, [params]);
 
   return (
     <Box
       title="User Terbaru"
       className="col-span-full h-80">
-      <DataTable
-        column={column}
-        path="pengguna"
-        model="user"
-        defaultParams={defaultParams}
-        searchColumn={["name", "sales"]}
-      />
+      <Table className="table-auto">
+        <TableHeader>
+          <TableRow className="bg-white hover:bg-white">
+            <TableHead>Perusahaan</TableHead>
+            <TableHead>Sales</TableHead>
+            <TableHead>Telephone</TableHead>
+            <TableHead>Status</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {/* Skelaton */}
+          {isLoadingData && (
+            <SkeletonTable
+              column={user?.role == "user" ? 5 : 6}
+              params={params}
+            />
+          )}
+
+          {/* Data */}
+          {!isLoadingData &&
+            data?.data &&
+            data?.data.length > 0 &&
+            data?.data.map((col, i) => (
+              <TableRow key={i}>
+                <TableCell>
+                  <Link
+                    className="underline"
+                    target="_blank"
+                    href={`/dashboard/pengguna/${col?.id}/`}>
+                    {col?.name ?? "-"}
+                  </Link>
+                </TableCell>
+                <TableCell>{col?.name ?? "-"}</TableCell>
+                <TableCell>{col?.telephone}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-x-2 whitespace-nowrap">
+                    {col?.is_verified == 1 ? (
+                      <>
+                        <CheckCircle
+                          className="stroke-emerald-500"
+                          size={15}
+                        />
+                        <span className="line-clamp-1 block text-ellipsis">
+                          Verif
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <XCircle
+                          className="stroke-rose-500"
+                          size={15}
+                        />
+                        <span className="line-clamp-1 block text-ellipsis">
+                          Unverif
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+
+          {/* Not Found */}
+          {!isLoadingData && !data?.data && (
+            <DataNotFound
+              column={7}
+              message={message}
+            />
+          )}
+        </TableBody>
+      </Table>
     </Box>
   );
 }

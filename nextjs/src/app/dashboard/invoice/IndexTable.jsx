@@ -1,178 +1,302 @@
 "use client";
-import DataTable from "@/components/other/Table/DataTable";
-import { Button } from "@/components/ui/button";
-import { useSession } from "@/context/SessionContext";
-import { CheckCircle, Download, Edit, Eye, XCircle } from "@deemlol/next-icons";
+
+import Action from "@/components/other/Table/Action";
+import DataNotFound from "@/components/other/Table/DataNotFound";
+import Footer from "@/components/other/Table/Footer";
+import Header from "@/components/other/Table/Header";
+import SkeletonTable from "@/components/other/Table/SkeletonTable";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import fetch from "@/lib/fetch";
+import {
+  CheckCircle,
+  Download,
+  Edit,
+  Eye,
+  Trash,
+  XCircle,
+} from "@deemlol/next-icons";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import error from "@/lib/error";
+import { toast } from "sonner";
+import Sortable from "@/components/other/Table/Sortable";
+import Selector from "@/components/other/Table/Selector";
+import { useSession } from "@/context/SessionContext";
 
-export default function IndexTable(props) {
+export default function IndexTable() {
   const user = useSession();
-  const column = [
-    { key: "id", header: "No", sortable: true },
-    {
-      key: "code",
-      header: "Kode",
-      sortable: true,
-      cell: function ({ data }) {
-        return `#${data.code}`;
-      },
-    },
-    {
-      key: "user",
-      header: "Perusahaan Penjual",
-      sortable: true,
-      cell: function ({ data }) {
-        return (
-          <Link
-            className="underline"
-            href={`./pengguna/${data?.user?.id}`}>
-            {data?.user?.name}
-          </Link>
-        );
-      },
-      role: "admin",
-    },
-    { key: "to_name", header: "Perusahan Pembeli", sortable: true },
-    {
-      key: "to_telephone",
-      header: "Telp Pembeli",
-      cell: function ({ data }) {
-        return (
-          <Link
-            className="underline"
-            target="_blank"
-            href={`tel:${data.to_telephone}`}>
-            {data.to_telephone}
-          </Link>
-        );
-      },
-    },
-    {
-      key: "to_email",
-      header: "Email Pembeli",
-      cell: function ({ data }) {
-        return (
-          <Link
-            className="underline"
-            target="_blank"
-            href={`mailto:${data.to_email}`}>
-            {data.to_email}
-          </Link>
-        );
-      },
-    },
-    {
-      key: "status",
-      header: "Status",
-      selector: true,
-      selectorItem: [
-        { key: null, label: "semua" },
-        { key: "paid", label: "Lunas" },
-        { key: "unpaid", label: "Belum Lunas" },
-      ],
-      cell: function ({ data }) {
-        return (
-          <div className="flex items-center gap-x-2 whitespace-nowrap">
-            {data?.status == "paid" ? (
-              <>
-                <CheckCircle
-                  size={15}
-                  className="stroke-emerald-500"
-                />
-                <span className="line-clamp-1 block text-ellipsis">Lunas</span>
-              </>
-            ) : (
-              <>
-                <XCircle
-                  size={15}
-                  className="stroke-rose-500"
-                />
-                <span className="line-clamp-1 block text-ellipsis">
-                  Belum Lunas
-                </span>
-              </>
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      key: "grand_total",
-      header: "Total",
-      sortable: true,
-      cell: function ({ data }) {
-        return new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-        }).format(data?.grand_total);
-      },
-    },
-    {
-      key: "code",
-      header: "",
-      cell: function ({ data }) {
-        return (
-          <div className="flex gap-x-2 [&_button]:rounded-sm [&_button]:!p-[3px] [&_button]:h-auto [&_button]:border-2 [&_button]:text-red-50 [&_svg]:!w-3.5 [&_svg]:!h-3.5">
-            <Button
-              onClick={() => {
-                window.open(
-                  `${process.env.NEXT_PUBLIC_APP_URL_BACKEND}invoice/${data.id}/${data.code}/download/`
-                );
-              }}
-              variant="destructive"
-              className="border-emerald-200 hover:bg-emerald-500 bg-emerald-700">
-              <Download />
-            </Button>
-            <Link
-              target="_blank"
-              href={`/invoice/${data.id}/${data.code}/`}>
-              <Button
-                variant="destructive"
-                className="border-cyan-200 hover:bg-cyan-500 bg-cyan-700">
-                <Eye />
-              </Button>
-            </Link>
-            {user?.role == "user" && data?.status == "unpaid" && (
-              <Link
-                target="_blank"
-                href={`./invoice/edit/${data.id}/${data.code}/`}>
-                <Button
-                  variant="destructive"
-                  className="border-yellow-200 hover:bg-yellow-500 bg-yellow-700">
-                  <Edit />
-                </Button>
-              </Link>
-            )}
-          </div>
-        );
-      },
-    },
-    { header: true, action: { delete: true } },
-  ];
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  const [data, setData] = useState(null);
+  const [message, setMessage] = useState(null);
 
-  const defaultParams = {
+  const [params, setParams] = useState({
     page: 1,
     perPage: 5,
-    status: null,
     search: null,
     orderBy: "id",
     orderDirection: "desc", // asc=oldest
+  });
+
+  useEffect(() => {
+    setIsLoadingData(true);
+    fetch
+      .get("invoice/", { params: params })
+      .then((res) => setData(res.data.data))
+      .catch((err) => {
+        setData(null);
+        let newMessage = err.response.data.message ?? err.message;
+        if (newMessage && typeof newMessage == "object") {
+          const messageFlat = Object.values(newMessage).flat();
+          setMessage(
+            <ul className="">
+              {messageFlat.map((msg, index) => (
+                <li key={index}>{msg}</li>
+              ))}
+            </ul>
+          );
+        } else {
+          setMessage(newMessage);
+        }
+      })
+      .finally(() => {
+        setIsLoadingData(false);
+      });
+  }, [params]);
+
+  const handleDelete = (e, col) => {
+    e.preventDefault();
+    toast.info("Sedang menghapus...");
+    setIsLoadingData(true);
+    fetch
+      .delete(`invoice/${col?.id}/`)
+      .then((response) => {
+        setParams((prevData) => ({
+          ...prevData,
+          timeStamp: Date.now(),
+        }));
+        toast.success(response.data.message);
+      })
+      .catch((err) => {
+        error(err);
+      })
+      .finally(() => setIsLoadingData(false));
   };
 
   return (
-    <DataTable
-      column={column}
-      path="invoice"
-      model="invoice"
-      defaultParams={defaultParams}
-      searchColumn={[
-        "kode",
-        "perusahaan penjual",
-        "perusahaan pembeli",
-        "email pembeli",
-      ]}
-      header={true}
-      footer={true}
-    />
+    <>
+      <Header
+        isLoadingData={isLoadingData}
+        params={params}
+        setParams={setParams}
+        searchColumn={`kode, ${
+          user?.role == "admin" ? "perusahaan penjual, " : ""
+        }perusahaan pembeli`}
+      />
+
+      <Table className="table-auto">
+        <TableHeader>
+          <TableRow className="bg-white hover:bg-white">
+            <TableHead>
+              <Sortable
+                isLoadingData={isLoadingData}
+                params={params}
+                column="id"
+                setParams={setParams}>
+                No
+              </Sortable>
+            </TableHead>
+            <TableHead>
+              <Sortable
+                isLoadingData={isLoadingData}
+                params={params}
+                column="code"
+                setParams={setParams}>
+                Kode
+              </Sortable>
+            </TableHead>
+            {user?.role == "admin" && (
+              <TableHead>
+                <Sortable
+                  isLoadingData={isLoadingData}
+                  params={params}
+                  column="name"
+                  setParams={setParams}>
+                  Perusahaan Penjual
+                </Sortable>
+              </TableHead>
+            )}
+            <TableHead>
+              <Sortable
+                isLoadingData={isLoadingData}
+                params={params}
+                column="to_name"
+                setParams={setParams}>
+                Perusahaan Pembeli
+              </Sortable>
+            </TableHead>
+            <TableHead>
+              <Selector
+                isLoadingData={isLoadingData}
+                params={params}
+                column="status"
+                setParams={setParams}
+                item={[
+                  { key: null, label: "semua" },
+                  { key: "paid", label: "lunas" },
+                  { key: "unpaid", label: "belum lunas" },
+                ]}>
+                Status
+              </Selector>
+            </TableHead>
+            <TableHead>
+              <Sortable
+                isLoadingData={isLoadingData}
+                params={params}
+                column="grand_total"
+                setParams={setParams}>
+                Biaya
+              </Sortable>
+            </TableHead>
+            <TableHead></TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {/* Skelaton */}
+          {isLoadingData && (
+            <SkeletonTable
+              column={user?.role == "user" ? 5 : 6}
+              params={params}
+            />
+          )}
+
+          {/* Data */}
+          {!isLoadingData &&
+            data?.data &&
+            data?.data.length > 0 &&
+            data?.data.map((col, i) => (
+              <TableRow key={i}>
+                <TableCell>{i + data?.from}</TableCell>
+                <TableCell>{"#" + col["code"] ?? "-"}</TableCell>
+                {user?.role == "admin" && (
+                  <TableCell>
+                    <Link
+                      className="underline"
+                      href={`./pengguna/edit/${col?.user?.id}`}>
+                      {col?.user?.name}
+                    </Link>
+                  </TableCell>
+                )}
+                <TableCell>{col?.to_name ?? "-"}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-x-2 whitespace-nowrap">
+                    {col?.status == "paid" ? (
+                      <>
+                        <CheckCircle
+                          className="stroke-emerald-500"
+                          size={15}
+                        />
+                        <span className="line-clamp-1 block text-ellipsis">
+                          Lunas
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <XCircle
+                          className="stroke-rose-500"
+                          size={15}
+                        />
+                        <span className="line-clamp-1 block text-ellipsis">
+                          Belum lunas
+                        </span>
+                      </>
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell>
+                  {new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                  }).format(col?.grand_total ?? 0)}
+                </TableCell>
+                <TableCell>
+                  <Action>
+                    {/* Download */}
+                    <Link
+                      target="_blank"
+                      // download
+                      href={`${process.env.NEXT_PUBLIC_APP_URL_BACKEND}invoice/${col?.id}/${col?.code}/download/`}
+                      className="block border-teal-200 hover:bg-teal-500 bg-teal-700 p-1">
+                      <Download />
+                    </Link>
+
+                    {/* Lihat */}
+                    <Link
+                      target="_blank"
+                      href={`/invoice/${col?.id}/${col?.code}`}
+                      className="block border-cyan-200 hover:bg-cyan-500 bg-cyan-700 p-1">
+                      <Eye />
+                    </Link>
+
+                    {/* Delete */}
+                    <AlertDialog>
+                      <AlertDialogTrigger
+                        variant="destructive"
+                        className="border-rose-200 hover:bg-rose-500 bg-rose-700">
+                        <Trash />
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Anda yakin hapus?</AlertDialogTitle>
+                          <AlertDialogDescription></AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Tidak</AlertDialogCancel>
+                          <form onSubmit={(e) => handleDelete(e, col)}>
+                            <AlertDialogAction type="submit">
+                              Ya
+                            </AlertDialogAction>
+                          </form>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </Action>
+                </TableCell>
+              </TableRow>
+            ))}
+
+          {/* Not Found */}
+          {!isLoadingData && !data?.data && (
+            <DataNotFound
+              column={7}
+              message={message}
+            />
+          )}
+        </TableBody>
+      </Table>
+
+      <Footer
+        setParams={setParams}
+        data={data}
+      />
+    </>
   );
 }

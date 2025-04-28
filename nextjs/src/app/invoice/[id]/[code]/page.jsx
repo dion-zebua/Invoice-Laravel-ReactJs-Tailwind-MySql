@@ -5,7 +5,6 @@ import fetch from "@/lib/fetch";
 import updateMetadata from "@/lib/meta";
 import FormLandingPage from "@/components/other/FormLandingPage";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { title } from "process";
 import Iframe from "./Iframe";
 
 const pageTitle = "Invoice";
@@ -25,16 +24,6 @@ export const metadata = updateMetadata({
   openGraph: {
     title: `Halaman ${pageTitle} - ${process.env.APP_NAME}`,
     description: `Halaman ${pageTitle} - ${process.env.APP_NAME}`,
-  },
-  robots: {
-    index: false,
-    follow: false,
-    nocache: false,
-    googleBot: {
-      index: false,
-      follow: false,
-      noimageindex: true,
-    },
   },
 });
 

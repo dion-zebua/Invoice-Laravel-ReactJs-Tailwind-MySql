@@ -23,7 +23,7 @@ export default function Logout() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    toast.info("Sedang logout...");
     fetch
       .post("logout/")
       .then((response) => {

@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +18,12 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
+        $id = User::where('role', 'user')->inRandomOrder()->first()->id;
         return [
-            //
+            'users_id' => $id,
+            'name' => Str::title(fake()->word()),
+            'unit' => fake()->randomElement(['Pax', 'Pasang', 'Buah', 'Kodi']),
+            'price' => fake()->numberBetween(50000, 1000000),
         ];
     }
 }

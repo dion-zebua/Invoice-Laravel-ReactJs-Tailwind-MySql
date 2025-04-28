@@ -3,7 +3,7 @@ import updateMetadata from "@/lib/meta";
 import React from "react";
 import fetch from "@/lib/fetch";
 import { redirect } from "next/navigation";
-import EditForm from "../EditForm";
+import EditForm from "./EditForm";
 
 const pageTitle = "Edit Pengguna";
 

@@ -138,14 +138,12 @@ export default function TambahForm(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(data);
-
     setLoadingSubmit(true);
     fetch
       .post(`invoice/`, data)
       .then((response) => {
+        router.push(`/dashboard/invoice/`);
         toast.success(response.data.message);
-        // router.push(`/dashboard/invoice/edit/${response.data.data.id}`);
       })
       .catch((err) => {
         error(err);

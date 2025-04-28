@@ -17,8 +17,8 @@ export async function middleware(request) {
     ];
 
     const restrictedAdminPaths = [
-        '/dashboard/produk/',
-        '/dashboard/invoice/',
+        '/dashboard/produk/tambah',
+        '/dashboard/invoice/tambah',
     ]
 
     const restrictedUserPaths = [

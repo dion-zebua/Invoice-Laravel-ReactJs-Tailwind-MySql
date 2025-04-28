@@ -1,58 +1,245 @@
 "use client";
-import DataTable from "@/components/other/Table/DataTable";
+
+import Action from "@/components/other/Table/Action";
+import DataNotFound from "@/components/other/Table/DataNotFound";
+import Footer from "@/components/other/Table/Footer";
+import Header from "@/components/other/Table/Header";
+import SkeletonTable from "@/components/other/Table/SkeletonTable";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import fetch from "@/lib/fetch";
+import { CheckCircle, Edit, Trash, XCircle } from "@deemlol/next-icons";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import error from "@/lib/error";
+import { toast } from "sonner";
+import Sortable from "@/components/other/Table/Sortable";
+import Selector from "@/components/other/Table/Selector";
+import { useSession } from "@/context/SessionContext";
 
-export default function IndexTable(props) {
-  const column = [
-    { key: "id", header: "No", sortable: true },
-    {
-      key: "user",
-      header: "Perusahaan Penjual",
-      sortable: true,
-      cell: function ({ data }) {
-        return (
-          <Link
-            className="underline"
-            href={`./pengguna/${data?.user?.id}`}>
-            {data?.user?.name}
-          </Link>
-        );
-      },
-      role: "admin",
-    },
-    { key: "name", header: "Nama", sortable: true, className: "min-w-36" },
-    { key: "unit", header: "Unit", sortable: true },
-    {
-      key: "price",
-      header: "Price",
-      cell: function ({ data }) {
-        return new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-        }).format(data?.price);
-      },
-      sortable: true,
-    },
-    { header: true, action: { edit: true, delete: true } },
-  ];
+export default function IndexTable() {
+  const user = useSession();
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  const [data, setData] = useState(null);
+  const [message, setMessage] = useState(null);
 
-  const defaultParams = {
+  const [params, setParams] = useState({
     page: 1,
     perPage: 5,
     search: null,
     orderBy: "id",
     orderDirection: "desc", // asc=oldest
+  });
+
+  useEffect(() => {
+    setIsLoadingData(true);
+    fetch
+      .get("product/", { params: params })
+      .then((res) => setData(res.data.data))
+      .catch((err) => {
+        setData(null);
+        let newMessage = err.response.data.message ?? err.message;
+        if (newMessage && typeof newMessage == "object") {
+          const messageFlat = Object.values(newMessage).flat();
+          setMessage(
+            <ul className="">
+              {messageFlat.map((msg, index) => (
+                <li key={index}>{msg}</li>
+              ))}
+            </ul>
+          );
+        } else {
+          setMessage(newMessage);
+        }
+      })
+      .finally(() => {
+        setIsLoadingData(false);
+      });
+  }, [params]);
+
+  const handleDelete = (e, col) => {
+    e.preventDefault();
+    toast.info("Sedang menghapus...");
+    setIsLoadingData(true);
+    fetch
+      .delete(`product/${col?.id}/`)
+      .then((response) => {
+        setParams((prevData) => ({
+          ...prevData,
+          timeStamp: Date.now(),
+        }));
+        toast.success(response.data.message);
+      })
+      .catch((err) => {
+        error(err);
+      })
+      .finally(() => setIsLoadingData(false));
   };
 
   return (
-    <DataTable
-      column={column}
-      path="produk"
-      model="product"
-      defaultParams={defaultParams}
-      searchColumn={["name", "unit", "harga"]}
-      header={true}
-      footer={true}
-    />
+    <>
+      <Header
+        isLoadingData={isLoadingData}
+        params={params}
+        setParams={setParams}
+        searchColumn="produk, unit, harga"
+      />
+
+      <Table className="table-auto">
+        <TableHeader>
+          <TableRow className="bg-white hover:bg-white">
+            <TableHead>
+              <Sortable
+                isLoadingData={isLoadingData}
+                params={params}
+                column="id"
+                setParams={setParams}>
+                No
+              </Sortable>
+            </TableHead>
+            {user?.role == "admin" && (
+              <TableHead>
+                <Sortable
+                  isLoadingData={isLoadingData}
+                  params={params}
+                  column="name"
+                  setParams={setParams}>
+                  Perusahaan Penjual
+                </Sortable>
+              </TableHead>
+            )}
+            <TableHead>
+              <Sortable
+                isLoadingData={isLoadingData}
+                params={params}
+                column="name"
+                setParams={setParams}>
+                Produk
+              </Sortable>
+            </TableHead>
+            <TableHead>
+              <Sortable
+                isLoadingData={isLoadingData}
+                params={params}
+                column="unit"
+                setParams={setParams}>
+                Unit
+              </Sortable>
+            </TableHead>
+            <TableHead>
+              <Sortable
+                isLoadingData={isLoadingData}
+                params={params}
+                column="price"
+                setParams={setParams}>
+                Harga
+              </Sortable>
+            </TableHead>
+            <TableHead></TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {/* Skelaton */}
+          {isLoadingData && (
+            <SkeletonTable
+              column={user?.role == "user" ? 5 : 6}
+              params={params}
+            />
+          )}
+
+          {/* Data */}
+          {!isLoadingData &&
+            data?.data &&
+            data?.data.length > 0 &&
+            data?.data.map((col, i) => (
+              <TableRow key={i}>
+                <TableCell>{i + data?.from}</TableCell>
+                {user?.role == "admin" && (
+                  <TableCell>
+                    <Link
+                      className="underline"
+                      href={`./pengguna/edit/${col?.user?.id}`}>
+                      {col?.user?.name}
+                    </Link>
+                  </TableCell>
+                )}
+                <TableCell>{col?.name ?? "-"}</TableCell>
+                <TableCell>{col?.unit ?? "-"}</TableCell>
+                <TableCell>
+                  {new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                  }).format(col?.price ?? 0)}
+                </TableCell>
+                <TableCell>
+                  <Action>
+                    {/* Edit */}
+                    <Link
+                      href={`./produk/edit/${col?.id}/`}
+                      className="block border-yellow-200 hover:bg-yellow-500 bg-yellow-700 p-1">
+                      <Edit />
+                    </Link>
+
+                    {/* Delete */}
+                    <AlertDialog>
+                      <AlertDialogTrigger
+                        variant="destructive"
+                        className="border-rose-200 hover:bg-rose-500 bg-rose-700">
+                        <Trash />
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Anda yakin hapus?</AlertDialogTitle>
+                          <AlertDialogDescription></AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Tidak</AlertDialogCancel>
+                          <form onSubmit={(e) => handleDelete(e, col)}>
+                            <AlertDialogAction type="submit">
+                              Ya
+                            </AlertDialogAction>
+                          </form>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </Action>
+                </TableCell>
+              </TableRow>
+            ))}
+
+          {/* Not Found */}
+          {!isLoadingData && !data?.data && (
+            <DataNotFound
+              column={user?.role == "user" ? 5 : 6}
+              message={message}
+            />
+          )}
+        </TableBody>
+      </Table>
+
+      <Footer
+        setParams={setParams}
+        data={data}
+      />
+    </>
   );
 }

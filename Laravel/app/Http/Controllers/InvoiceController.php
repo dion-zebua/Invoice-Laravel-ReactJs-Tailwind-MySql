@@ -56,15 +56,14 @@ class InvoiceController extends Controller
             ->when($user->role == 'user', function ($q) use ($user) {
                 $q->where('users_id', $user->id);
             })
-            ->where(function ($q) use ($search) {
+            ->where(function ($q) use ($search, $user) {
                 $q->where('code', 'like', "%{$search}%")
-                    ->orWhere('to_email', 'like', "%{$search}%")
-                    ->orWhere('to_name', 'like', "%{$search}%")
-                    ->orWhereHas('user', function ($query) use ($search) {
-                        //     $query->where('telephone', 'like', "%{$search}%")
-                        //         ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('to_name', 'like', "%{$search}%");
+                if ($user->role == 'admin') {
+                    $q->orWhereHas('user', function ($query) use ($search) {
                         $query->where('name', 'like', "%{$search}%");
                     });
+                }
             })
             ->orderBy($orderBy, $orderDirection)
             ->paginate($perPage);
@@ -254,7 +253,7 @@ class InvoiceController extends Controller
             return $this->unauthorizedResponse();
         }
 
-        $invoice->delete();
+        // $invoice->delete();
         return $this->deleteSuccess();
     }
 }

@@ -78,26 +78,23 @@ export default function Header(props) {
             placeholder="cari..."
             disabled={isLoadingData}
           />
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger
-                type="button"
-                className="absolute right-3 top-1/2 -translate-y-1/2">
-                <AlertCircle
-                  size={15}
-                  className="stroke-slate-400"
-                />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>
-                  {searchColumn &&
-                    searchColumn.map((item, i) => {
-                      return <span key={i}>{item},&nbsp;</span>;
-                    })}
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          {searchColumn && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger
+                  type="button"
+                  className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <AlertCircle
+                    size={15}
+                    className="stroke-slate-400"
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{searchColumn}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
         </div>
         <Button
           disabled={isLoadingData}
