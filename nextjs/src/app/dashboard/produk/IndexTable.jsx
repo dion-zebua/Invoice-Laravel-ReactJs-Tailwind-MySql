@@ -193,11 +193,13 @@ export default function IndexTable() {
                 <TableCell>
                   <Action>
                     {/* Edit */}
-                    <Link
-                      href={`./produk/edit/${col?.id}/`}
-                      className="block border-yellow-200 hover:bg-yellow-500 bg-yellow-700 p-1">
-                      <Edit />
-                    </Link>
+                    {user?.role == "user" && (
+                      <Link
+                        href={`./produk/edit/${col?.id}/`}
+                        className="block border-yellow-200 hover:bg-yellow-500 bg-yellow-700 p-1">
+                        <Edit />
+                      </Link>
+                    )}
 
                     {/* Delete */}
                     <AlertDialog>

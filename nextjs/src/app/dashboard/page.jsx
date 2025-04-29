@@ -23,8 +23,8 @@ export default async function page() {
   return (
     <Main page={pageTitle}>
       <BoxCount />
-      <Invoice />
       {user?.role == "admin" && <User />}
+      <Invoice />
     </Main>
   );
 }

@@ -226,7 +226,7 @@ class InvoiceController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'status' => 'required|in:paid',
+            'status' => 'required|in:paid,unpaid',
         ]);
 
         if ($validator->fails()) {

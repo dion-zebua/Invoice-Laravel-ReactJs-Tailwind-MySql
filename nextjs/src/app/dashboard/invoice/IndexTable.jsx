@@ -40,6 +40,8 @@ import { toast } from "sonner";
 import Sortable from "@/components/other/Table/Sortable";
 import Selector from "@/components/other/Table/Selector";
 import { useSession } from "@/context/SessionContext";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export default function IndexTable() {
   const user = useSession();
@@ -98,6 +100,26 @@ export default function IndexTable() {
         error(err);
       })
       .finally(() => setIsLoadingData(false));
+  };
+  const handleEdit = (e, col) => {
+    e.preventDefault();
+    const status = e.target.querySelector("input:checked")?.value;
+
+    toast.info("Sedang edit...");
+    fetch
+      .put(`invoice/${col?.id}/`, { status: status })
+      .then((response) => {
+        setData((prevData) => ({
+          ...data,
+          data: data.data.map((item) =>
+            item.id == col?.id ? { ...item, status: status } : item
+          ),
+        }));
+        toast.success(response.data.message);
+      })
+      .catch((err) => {
+        error(err);
+      });
   };
 
   return (
@@ -255,6 +277,59 @@ export default function IndexTable() {
                       className="block border-cyan-200 hover:bg-cyan-500 bg-cyan-700 p-1">
                       <Eye />
                     </Link>
+
+                    {/* Edit */}
+                    {user?.role == "user" && (
+                      <AlertDialog>
+                        <AlertDialogTrigger
+                          variant="destructive"
+                          className="border-yellow-200 hover:bg-yellow-500 bg-yellow-700">
+                          <Edit />
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <form onSubmit={(e) => handleEdit(e, col)}>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Edit</AlertDialogTitle>
+                              <div className="text-slate-800">
+                                <RadioGroup
+                                  defaultValue={col?.status}
+                                  id="status"
+                                  className="sm:!col-span-full">
+                                  <Label htmlFor="name">Status</Label>
+                                  <div className="flex items-center space-x-2">
+                                    <RadioGroupItem
+                                      value="unpaid"
+                                      id="unpaid"
+                                    />
+                                    <Label htmlFor="unpaid">Belum Lunas</Label>
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <RadioGroupItem
+                                      value="paid"
+                                      id="paid"
+                                    />
+                                    <Label htmlFor="paid">Lunas</Label>
+                                  </div>
+                                  <span className="text-xs block text-left">
+                                    *Setelah lunas tidak bisa edit.
+                                  </span>
+                                </RadioGroup>
+                              </div>
+                              <AlertDialogDescription></AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Tidak</AlertDialogCancel>
+                              <AlertDialogAction
+                                type={
+                                  col?.status == "paid" ? "button" : "submit"
+                                }>
+                                Ya
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </form>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    )}
 
                     {/* Delete */}
                     <AlertDialog>

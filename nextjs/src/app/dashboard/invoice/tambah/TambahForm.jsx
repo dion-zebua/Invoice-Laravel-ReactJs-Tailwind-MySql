@@ -154,8 +154,6 @@ export default function TambahForm(props) {
   };
 
   useEffect(() => {
-    console.log(data);
-
     const sub_total = productInvoice.reduce(
       (total, item) => total + Number(item.amount),
       0

@@ -45,14 +45,14 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Product::factory(50)->create();
 
         // // invoice
-        // for ($i = 0; $i < 4; $i++) {
-        //     $invoice = \App\Models\Invoice::factory()->create([
-        //         'users_id' => 2,
-        //     ]);
-        //     \App\Models\InvoiceProduct::factory(2)->create([
-        //         'invoices_code' => $invoice->code,
-        //     ]);
-        // }
+        for ($i = 0; $i < 4; $i++) {
+            $invoice = \App\Models\Invoice::factory()->create([
+                'users_id' => 2,
+            ]);
+            \App\Models\InvoiceProduct::factory(2)->create([
+                'invoices_code' => $invoice->code,
+            ]);
+        }
         // $invoice = \App\Models\Invoice::factory(100)->create();
         // \App\Models\InvoiceProduct::factory(20)->create();
     }
