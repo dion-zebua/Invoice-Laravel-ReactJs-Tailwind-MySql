@@ -1,6 +1,4 @@
 
-# Invoice Laravel ReactJs Tailwind MySql
+# Invoice Laravel MySql | ReactJs Tailwind | React Native
 
-Invoice Laravel ReactJs Tailwind MySql
-
-https://gf37thc4-5173.asse.devtunnels.ms/
+Invoice Laravel MySql | ReactJs Tailwind | React Native
