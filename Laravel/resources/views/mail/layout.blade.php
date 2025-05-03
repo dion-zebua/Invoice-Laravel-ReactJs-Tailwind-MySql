@@ -29,7 +29,8 @@
         @if (!empty($password))
             <p style="color:#c9c9c9;margin: 20px 0;">Password : {{ $password }}</p>
         @endif
-        <p style="color: #a9a9a9;margin:10px 0">Klik tombol dibawah ini untuk {{ $title }}</p>
+        <p style="color: #a9a9a9;margin:10px 0">Segera lakukan {{ $title }} agar akun anda dapat berfungsi dengan
+            baik.</p>
         <a href={{ env('APP_URL_FRONTEND') . $link . '/' . $user['id'] . '/' . $token }}
             style="font-weight: 700;text-decoration: underline; color: #171a1c;">
             <div style="padding: 20px; background: #afe1ff;">

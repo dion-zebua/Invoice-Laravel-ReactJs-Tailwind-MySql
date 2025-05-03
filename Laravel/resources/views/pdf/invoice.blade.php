@@ -410,7 +410,7 @@
                 <tbody>
                     <tr>
                         <td></td>
-                        <td>{{ Str::limit($data->to_name, 30, '...') }}</td>
+                        <td>{{ Str::limit($data->user->name, 30, '...') }}</td>
                     </tr>
                     <tr>
                         <td>Thank you</td>

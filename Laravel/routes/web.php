@@ -23,9 +23,3 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function (Request $request) {
     return view('welcome');
 });
-
-// Route::get('/invoice/{code}', [InvoiceGenerator::class, 'stream']);
-// Route::get('/user', [\App\Http\Controllers\UserController::class, 'index']);
-// Route::get('/company', [\App\Http\Controllers\CompanyController::class, 'index']);
-// Route::get('/invoice', [\App\Http\Controllers\InvoiceController::class, 'index']);
-// Route::get('/product', [\App\Http\Controllers\ProductController::class, 'index']);

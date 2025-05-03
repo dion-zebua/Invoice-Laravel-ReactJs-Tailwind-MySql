@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         ]);
         $user = \App\Models\User::factory()->create([
             'name' => 'PT. Tester',
-            'email' => 'test@gmail.com',
+            'email' => 'zebuadbless@gmail.com',
             'password' => 'Password',
             'role' => 'user',
             'is_verified' => 1,

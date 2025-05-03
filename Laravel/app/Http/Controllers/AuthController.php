@@ -9,6 +9,7 @@ use App\Mail\Verification;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
@@ -87,19 +88,30 @@ class AuthController extends Controller
 
         $tokenVerified = Str::random(60);
 
-        $user->update([
-            'token_verified' => Hash::make($tokenVerified),
-            'token_verified_before_at' => now()->addMinutes(30),
-            'is_verified' => false,
-            'email_verified_at' => NULL,
-        ]);
+        DB::beginTransaction();
+        try {
+            $user->update([
+                'token_verified' => Hash::make($tokenVerified),
+                'token_verified_before_at' => now()->addMinutes(30),
+                'is_verified' => false,
+                'email_verified_at' => NULL,
+            ]);
 
-        Mail::to($user->email)->send(new Verification($user, $tokenVerified));
+            Mail::to($user->email)->send(new Verification($user, $tokenVerified));
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Email Verifikasi telah terkirim.',
-        ], 200);
+            // DB::commit();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Email Verifikasi telah terkirim.',
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function checkVerification($id, $token)
