@@ -19,25 +19,28 @@
 </head>
 
 <body>
-    <div style="font-family: system-ui;width: 100%; background: #171a1c; padding: 20px;">
+    <div
+        style="font-family: system-ui;width: 100%; max-width: 380px; background: #171a1c; padding: 20px; margin: 0 auto; border-radius: 5px;">
         <img style="height: 50px;" src="{{ env('APP_URL_FRONTEND') . 'images/invoice.jpg' }}" alt="logo" />
-        <div style="width: 100%; height: 1px; background: #444;"></div>
         <h1 style="color:#c9c9c9;margin: 20px 0;">{{ $title }}</h1>
-        <p style="color: #a9a9a9;">Email <span style="color: #367cf5;">{{ $user['email'] }}</span> telah
-            {{ $desc }} dan
-            segera lakukan {{ $title }}, token berakhir 30 menit kedepan!!!</p>
+        <p style="color: #a9a9a9;">Anda telah
+            {{ $desc }} pada {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('l, d F Y H:i') }}.
+            Silahkan {{ Str::lower($title) }} sebelum kadaluarsa dalam 30 menit.</p>
         @if (!empty($password))
-            <p style="color:#c9c9c9;margin: 20px 0;">Password : {{ $password }}</p>
+            <p style="color:#c9c9c9;margin: 20px 0;">Password: {{ $password }}</p>
         @endif
-        <p style="color: #a9a9a9;margin:10px 0">Segera lakukan {{ $title }} agar akun anda dapat berfungsi dengan
+        <p style="color: #a9a9a9; margin: 20px 0">Segera lakukan {{ $title }} agar akun anda dapat berfungsi
+            dengan
             baik.</p>
-        <a href={{ env('APP_URL_FRONTEND') . $link . '/' . $user['id'] . '/' . $token }}
-            style="font-weight: 700;text-decoration: underline; color: #171a1c;">
-            <div style="padding: 20px; background: #afe1ff;">
-                {{ env('APP_URL_FRONTEND') . $link . '/' . $user['id'] . '/' . $token }}
-            </div>
+
+        <a href="{{ env('APP_URL_FRONTEND') . $link . '/' . $user['id'] . '/' . $token }}"
+            style="background: #367cf5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+            {{ $title }} Sekarang
         </a>
-        <p style="color: #a9a9a9;  margin: 15px 0;">Jika bukan anda, maka hiraukan pesan ini!</p>
+
+        <p style="color: #a9a9a9; margin: 15px 0;">Jika bukan anda, maka hiraukan pesan ini!</p>
+        <p style="color: #a9a9a9; margin: 15px 0;">&copy; {{ date('Y') }} {{ env('APP_NAME') }}. All rights
+            reserved.</p>
     </div>
 </body>
 

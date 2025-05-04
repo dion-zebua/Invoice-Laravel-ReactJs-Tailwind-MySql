@@ -24,7 +24,7 @@ class Verification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Selesaikan Verifikasi Email',
+            subject: 'Verifikasi Email',
         );
     }
 

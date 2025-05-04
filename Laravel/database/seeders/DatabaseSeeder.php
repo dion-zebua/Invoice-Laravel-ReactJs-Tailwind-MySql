@@ -15,25 +15,25 @@ class DatabaseSeeder extends Seeder
         // user
         \App\Models\User::factory()->create([
             'name' => 'Invoices',
-            'email' => 'admin@gmail.com',
+            'email' => 'admin@invoices.my.id',
             'password' => 'Password',
             'role' => 'admin',
             'is_verified' => 1,
         ]);
-        $user = \App\Models\User::factory()->create([
-            'name' => 'PT. Tester',
-            'email' => 'zebuadbless@gmail.com',
-            'password' => 'Password',
-            'role' => 'user',
-            'is_verified' => 1,
-            'sales' => "Dion Zebua",
-            "logo" => "as.jpg",
-            "address" => "Depok Jawa Barat",
-            "telephone" => "088289317870",
-            "payment_methode" => "BANK MANDIRI",
-            "payment_name" => "Dion Elson Famahato Zebua",
-            "payment_number" => "203892393889",
-        ]);
+        // $user = \App\Models\User::factory()->create([
+        //     'name' => 'PT. Tester',
+        //     'email' => 'zebuadbles@gmail.com',
+        //     'password' => 'Password',
+        //     'role' => 'user',
+        //     'is_verified' => 1,
+        //     'sales' => "Dion Zebua",
+        //     "logo" => "as.jpg",
+        //     "address" => "Depok Jawa Barat",
+        //     "telephone" => "088289317870",
+        //     "payment_methode" => "BANK MANDIRI",
+        //     "payment_name" => "Dion Elson Famahato Zebua",
+        //     "payment_number" => "203892393889",
+        // ]);
         // \App\Models\User::factory(35)->create();
 
         // // product

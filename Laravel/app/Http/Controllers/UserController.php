@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -94,17 +95,26 @@ class UserController extends Controller
 
         $tokenVerified = Str::random(60);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'token_verified' => Hash::make($tokenVerified),
-            'token_verified_before_at' => now()->addMinutes(30),
-        ]);
+        DB::beginTransaction();
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'token_verified' => Hash::make($tokenVerified),
+                'token_verified_before_at' => now()->addMinutes(30),
+            ]);
 
-        Mail::to($request->email)->send(new Verification($user, $tokenVerified, $request->password));
-
-        return $this->createSuccess($user);
+            Mail::to($request->email)->send(new Verification($user, $tokenVerified, $request->password));
+            DB::commit();
+            return $this->createSuccess($user);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
@@ -182,28 +192,37 @@ class UserController extends Controller
             $validatedData['logo'] = "img/company/$filename";
         }
 
-        if ($user->email != $validatedData['email']) {
+        DB::beginTransaction();
+        try {
+            if ($user->email != $validatedData['email']) {
 
-            $tokenTime = Carbon::parse($user->token_verified_before_at);
-            if ($user->token_verified_before_at && !$tokenTime->isPast()) {
-                return $this->limitTime('verifikasi email', $tokenTime->format('H:i:s'));
+                $tokenTime = Carbon::parse($user->token_verified_before_at);
+                if ($user->token_verified_before_at && !$tokenTime->isPast()) {
+                    return $this->limitTime('verifikasi email', $tokenTime->format('H:i:s'));
+                }
+
+                $tokenVerified = Str::random(60);
+
+                $validatedData['id'] = $id;
+                $validatedData['token_verified'] = Hash::make($tokenVerified);
+                $validatedData['token_verified_before_at'] = now()->addMinutes(30);
+                $validatedData['is_verified'] = false;
+                $validatedData['email_verified_at'] = NULL;
+
+                Mail::to($validatedData['email'])->send(new Verification($validatedData, $tokenVerified));
             }
+            $user->update($validatedData);
 
-            $tokenVerified = Str::random(60);
+            DB::commit();
 
-            $validatedData['id'] = $id;
-            $validatedData['token_verified'] = Hash::make($tokenVerified);
-            $validatedData['token_verified_before_at'] = now()->addMinutes(30);
-            $validatedData['is_verified'] = false;
-            $validatedData['email_verified_at'] = NULL;
-
-            Mail::to($validatedData['email'])->send(new Verification($validatedData, $tokenVerified));
+            return $this->editSuccess($user);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ], 500);
         }
-
-        $user->update($validatedData);
-
-
-        return $this->editSuccess($user);
     }
 
 

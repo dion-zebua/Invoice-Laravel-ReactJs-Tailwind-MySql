@@ -253,7 +253,7 @@ class InvoiceController extends Controller
             return $this->unauthorizedResponse();
         }
 
-        // $invoice->delete();
+        $invoice->delete();
         return $this->deleteSuccess();
     }
 }

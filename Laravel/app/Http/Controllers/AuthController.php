@@ -99,7 +99,7 @@ class AuthController extends Controller
 
             Mail::to($user->email)->send(new Verification($user, $tokenVerified));
 
-            // DB::commit();
+            DB::commit();
 
             return response()->json([
                 'status' => true,
@@ -162,18 +162,28 @@ class AuthController extends Controller
 
         $tokenVerified = Str::random(60);
 
+        DB::beginTransaction();
+        try {
+            $user->update([
+                'token_reset_password' => Hash::make($tokenVerified),
+                'token_reset_password_before_at' => now()->addMinutes(30),
+            ]);
 
-        $user->update([
-            'token_reset_password' => Hash::make($tokenVerified),
-            'token_reset_password_before_at' => now()->addMinutes(30),
-        ]);
+            Mail::to($user->email)->send(new ResetPassword($user, $tokenVerified));
 
-        Mail::to($user->email)->send(new ResetPassword($user, $tokenVerified));
+            DB::commit();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Email Reset Password telah terkirim.',
-        ], 200);
+            return response()->json([
+                'status' => true,
+                'message' => 'Email Reset Password telah terkirim.',
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function checkResetPassword(Request $request, $id, $token)

@@ -16,7 +16,6 @@ import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import Logout from "../other/Logout";
 import { useSession } from "@/context/SessionContext";
-import { useEffect } from "react";
 
 export default function NavbarDashboard() {
   const session = useSession();

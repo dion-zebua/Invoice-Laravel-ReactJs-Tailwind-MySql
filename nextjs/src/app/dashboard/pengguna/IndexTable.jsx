@@ -70,15 +70,12 @@ export default function IndexTable() {
           setMessage(newMessage);
         }
       })
-      .finally(() => {
-        setIsLoadingData(false);
-      });
+      .finally(() => setIsLoadingData(false));
   }, [params]);
 
   const handleDelete = (e, col) => {
     e.preventDefault();
     toast.info("Sedang menghapus...");
-    setIsLoadingData(true);
     fetch
       .delete(`user/${col?.id}/`)
       .then((response) => {
@@ -90,8 +87,7 @@ export default function IndexTable() {
       })
       .catch((err) => {
         error(err);
-      })
-      .finally(() => setIsLoadingData(false));
+      });
   };
 
   return (
