@@ -64,7 +64,7 @@ export default function IndexTable() {
       .then((res) => setData(res.data.data))
       .catch((err) => {
         setData(null);
-        let newMessage = err.response.data.message ?? err.message;
+        let newMessage = err?.response?.data?.message ?? err?.message;
         if (newMessage && typeof newMessage == "object") {
           const messageFlat = Object.values(newMessage).flat();
           setMessage(

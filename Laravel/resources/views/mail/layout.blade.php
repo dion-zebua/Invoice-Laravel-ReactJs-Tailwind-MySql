@@ -25,20 +25,19 @@
         <h1 style="color:#c9c9c9;margin: 20px 0;">{{ $title }}</h1>
         <p style="color: #a9a9a9;">Anda telah
             {{ $desc }} pada {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('l, d F Y H:i') }}.
-            Silahkan {{ Str::lower($title) }} sebelum kadaluarsa dalam 30 menit.</p>
+            Silahkan {{ Str::lower($title) }} anda dalam waktu 30 menit sebelum tautan kedaluwarsa.</p>
         @if (!empty($password))
-            <p style="color:#c9c9c9;margin: 20px 0;">Password: {{ $password }}</p>
+            <p style="color:#c9c9c9;margin: 20px 0;">Password sementara: {{ $password }}</p>
         @endif
-        <p style="color: #a9a9a9; margin: 20px 0">Segera lakukan {{ $title }} agar akun anda dapat berfungsi
-            dengan
-            baik.</p>
+        <p style="color: #a9a9a9; margin: 20px 0">Klik tombol di bawah ini untuk {{ Str::lower($title) }} Anda:</p>
 
         <a href="{{ env('APP_URL_FRONTEND') . $link . '/' . $user['id'] . '/' . $token }}"
             style="background: #367cf5; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
             {{ $title }} Sekarang
         </a>
 
-        <p style="color: #a9a9a9; margin: 15px 0;">Jika bukan anda, maka hiraukan pesan ini!</p>
+        <p style="color: #a9a9a9; margin: 15px 0;">Jika Anda tidak merasa melakukan permintaan ini, abaikan email ini.
+            Akun Anda akan tetap aman.</p>
         <p style="color: #a9a9a9; margin: 15px 0;">&copy; {{ date('Y') }} {{ env('APP_NAME') }}. All rights
             reserved.</p>
     </div>

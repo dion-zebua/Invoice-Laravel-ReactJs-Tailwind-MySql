@@ -47,9 +47,6 @@ export default function LoginForm({ pageTitle }) {
       });
   };
 
-  // const user = getSession();
-  // console.log(user);
-
   return (
     <FormLandingPage
       pageTitle={pageTitle}
