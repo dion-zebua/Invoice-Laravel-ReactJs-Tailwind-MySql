@@ -15,29 +15,28 @@ class DatabaseSeeder extends Seeder
         // user
         \App\Models\User::factory()->create([
             'name' => 'Invoices',
-            'email' => 'zebuadbless@gmail.com',
-            // 'email' => 'admin@invoices.my.id',
+            'email' => 'admin@invoices.my.id',
             'password' => 'Password',
             'role' => 'admin',
             'is_verified' => 1,
         ]);
         // $user = \App\Models\User::factory()->create([
         //     'name' => 'PT. Tester',
-        //     'email' => 'zebuadbles@gmail.com',
+        //     'email' => 'user@gmail.com',
         //     'password' => 'Password',
         //     'role' => 'user',
         //     'is_verified' => 1,
-        //     'sales' => "Dion Zebua",
+        //     'sales' => "Handoko Sumanto",
         //     "logo" => "as.jpg",
         //     "address" => "Depok Jawa Barat",
         //     "telephone" => "088289317870",
-        //     "payment_methode" => "BANK MANDIRI",
-        //     "payment_name" => "Dion Elson Famahato Zebua",
-        //     "payment_number" => "203892393889",
+        //     "payment_methode" => "BANK BCA",
+        //     "payment_name" => "Handoko Sumanto",
+        //     "payment_number" => "203292393889",
         // ]);
         // \App\Models\User::factory(35)->create();
 
-        // // product
+        // product
         // for ($i = 0; $i < 4; $i++) {
         //     \App\Models\Product::factory()->create([
         //         'users_id' => 2,
@@ -46,14 +45,14 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Product::factory(50)->create();
 
         // // invoice
-        for ($i = 0; $i < 4; $i++) {
-            $invoice = \App\Models\Invoice::factory()->create([
-                'users_id' => 2,
-            ]);
-            \App\Models\InvoiceProduct::factory(2)->create([
-                'invoices_code' => $invoice->code,
-            ]);
-        }
+        // for ($i = 0; $i < 4; $i++) {
+        //     $invoice = \App\Models\Invoice::factory()->create([
+        //         'users_id' => 2,
+        //     ]);
+        //     \App\Models\InvoiceProduct::factory(2)->create([
+        //         'invoices_code' => $invoice->code,
+        //     ]);
+        // }
         // $invoice = \App\Models\Invoice::factory(100)->create();
         // \App\Models\InvoiceProduct::factory(20)->create();
     }

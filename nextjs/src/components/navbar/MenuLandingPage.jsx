@@ -6,6 +6,7 @@ import { LogIn } from "@deemlol/next-icons";
 const menu = [
   ["/", "Beranda"],
   ["/tentang", "Tentang"],
+  ["/harga", "Harga"],
   ["/kebijakan", "Kebijakan"],
 ];
 

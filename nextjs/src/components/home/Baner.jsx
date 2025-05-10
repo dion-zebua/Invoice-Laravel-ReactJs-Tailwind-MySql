@@ -1,8 +1,8 @@
-"use client";
 import React from "react";
 import Link from "next/link";
 import { LogIn, UserPlus } from "@deemlol/next-icons";
 import { Button } from "../ui/button";
+import helper from "@/lib/helper";
 
 export default function Baner() {
   return (
@@ -24,10 +24,10 @@ export default function Baner() {
           </Link>
           <Link
             target="_blank"
-            href={`https://api.whatsapp.com/send/?phone=6288289317870&text=Saya+ingin+daftar+${process.env.NEXT_PUBLIC_APP_URL_FRONTEND}`}>
+            href={helper.whatsapp()}>
             <Button
               className="w-full lg:!px-5"
-              variant={"outline"}>
+              variant="outline">
               <UserPlus /> Daftar
             </Button>
           </Link>

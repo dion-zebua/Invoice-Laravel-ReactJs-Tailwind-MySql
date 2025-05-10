@@ -3,6 +3,7 @@ import DefaultBaner from "../../components/other/DefaultBaner";
 import Image from "next/image";
 import updateMetadata from "../../lib/meta";
 import Footer from "@/components/footer/Footer";
+import helper from "@/lib/helper";
 
 const pageTitle = "Kebijakan";
 
@@ -115,7 +116,7 @@ export default function page() {
                 silakan hubungi kami di:
               </p>
               <p>
-                <strong>Whatsapp:</strong> 0882-8931-7870
+                <strong>Whatsapp:</strong> {helper.telephone()}
               </p>
             </div>
           </div>

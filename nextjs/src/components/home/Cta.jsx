@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import { CheckCircle, UserPlus } from "@deemlol/next-icons";
 import Link from "next/link";
+import helper from "@/lib/helper";
 
 export default function Cta() {
   return (
@@ -21,7 +22,7 @@ export default function Cta() {
           <div className="mt-8">
             <Link
               target="_blank"
-              href="https://api.whatsapp.com/send/?phone=6288289317870&text=Saya+ingin+daftar+https://invoices.my.id">
+              href={helper.whatsapp()}>
               <Button
                 className="w-auto lg:!px-5"
                 variant={"outline"}>
