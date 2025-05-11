@@ -23,6 +23,7 @@ return [
         'http://localhost:3000',
         'http://127.0.0.1:3000',
         'http://127.0.0.1:8081',
+        'https://invoices.my.id',
         env("APP_URL_FRONTEND")
     ],
 

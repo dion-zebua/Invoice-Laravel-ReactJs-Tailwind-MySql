@@ -21,7 +21,7 @@ export default async function page({ params }) {
   let data = {};
 
   try {
-    const res = await fetch.get(`user/${id}/`);
+    const res = await fetch.get(`user/${id}`);
     data = res.data.data;
   } catch (err) {
     redirect("/dashboard/pengguna");

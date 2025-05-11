@@ -20,7 +20,7 @@ export default function SearchProduct(props) {
       if (value && value.length > 2) {
         setIsLoading(true);
         fetch
-          .get("product/", {
+          .get("product", {
             params: {
               perPage: 5,
               search: value,

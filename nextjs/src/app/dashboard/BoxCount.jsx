@@ -14,7 +14,7 @@ export default function BoxCount() {
 
   useEffect(() => {
     fetch
-      .get("all-data/count/")
+      .get("all-data/count")
       .then((res) => setData(res.data.data))
       .catch((err) => {
         return false;

@@ -28,7 +28,7 @@ export default function ResetPasswordForm({ pageTitle }) {
 
     setLoadingSubmit(true);
     fetch
-      .post("send-forgot-password/", data)
+      .post("send-forgot-password", data)
       .then((response) => {
         toast.success(response.data.message);
       })

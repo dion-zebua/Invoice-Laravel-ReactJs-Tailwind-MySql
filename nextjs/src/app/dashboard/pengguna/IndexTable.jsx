@@ -52,7 +52,7 @@ export default function IndexTable() {
   useEffect(() => {
     setIsLoadingData(true);
     fetch
-      .get("user/", { params: params })
+      .get("user", { params: params })
       .then((res) => setData(res.data.data))
       .catch((err) => {
         setData(null);
@@ -77,7 +77,7 @@ export default function IndexTable() {
     e.preventDefault();
     toast.info("Sedang menghapus...");
     fetch
-      .delete(`user/${col?.id}/`)
+      .delete(`user/${col?.id}`)
       .then((response) => {
         setParams((prevData) => ({
           ...prevData,

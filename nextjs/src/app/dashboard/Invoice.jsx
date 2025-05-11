@@ -32,7 +32,7 @@ export default function Invoice() {
   useEffect(() => {
     setIsLoadingData(true);
     fetch
-      .get("invoice/", { params: params })
+      .get("invoice", { params: params })
       .then((res) => setData(res.data.data))
       .catch((err) => {
         setData(null);

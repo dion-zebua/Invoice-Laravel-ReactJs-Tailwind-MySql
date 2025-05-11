@@ -140,7 +140,7 @@ export default function TambahForm(props) {
     e.preventDefault();
     setLoadingSubmit(true);
     fetch
-      .post(`invoice/`, data)
+      .post(`invoice`, data)
       .then((response) => {
         router.push(`/dashboard/invoice/`);
         toast.success(response.data.message);

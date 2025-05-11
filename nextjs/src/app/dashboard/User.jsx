@@ -33,7 +33,7 @@ export default function User() {
   useEffect(() => {
     setIsLoadingData(true);
     fetch
-      .get("user/", { params: params })
+      .get("user", { params: params })
       .then((res) => setData(res.data.data))
       .catch((err) => {
         setData(null);

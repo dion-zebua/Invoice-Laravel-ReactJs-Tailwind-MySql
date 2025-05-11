@@ -11,7 +11,7 @@ const pageTitle = "Invoice";
 
 async function getInvoice(id, code) {
   try {
-    const response = await fetch.get(`invoice/${id}/${code}/`);
+    const response = await fetch.get(`invoice/${id}/${code}`);
     return response;
   } catch (err) {
     return err;

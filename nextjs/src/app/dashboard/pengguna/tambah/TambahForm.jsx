@@ -29,7 +29,7 @@ export default function TambahForm(props) {
 
     setLoadingSubmit(true);
     fetch
-      .post(`user/`, data)
+      .post(`user`, data)
       .then((response) => {
         toast.success(response.data.message);
         router.push(`/dashboard/pengguna/edit/${response.data.data.id}`);

@@ -20,7 +20,7 @@ export default async function page() {
   let data = {};
 
   try {
-    const res = await fetch.get(`check-login/`);
+    const res = await fetch.get(`check-login`);
     data = res.data.data;
   } catch (err) {
     redirect("/dashboard/pengguna");

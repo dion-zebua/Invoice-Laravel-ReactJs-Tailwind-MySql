@@ -33,7 +33,7 @@ export default function LoginForm({ pageTitle }) {
 
     setLoadingSubmit(true);
     fetch
-      .post("login/", data)
+      .post("login", data)
       .then((response) => {
         login(response.data.data);
         toast.success(response.data.message);

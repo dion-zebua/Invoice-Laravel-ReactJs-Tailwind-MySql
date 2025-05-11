@@ -60,7 +60,7 @@ export default function IndexTable() {
   useEffect(() => {
     setIsLoadingData(true);
     fetch
-      .get("invoice/", { params: params })
+      .get("invoice", { params: params })
       .then((res) => setData(res.data.data))
       .catch((err) => {
         setData(null);
@@ -85,7 +85,7 @@ export default function IndexTable() {
     e.preventDefault();
     toast.info("Sedang menghapus...");
     fetch
-      .delete(`invoice/${col?.id}/`)
+      .delete(`invoice/${col?.id}`)
       .then((response) => {
         setParams((prevData) => ({
           ...prevData,
@@ -103,7 +103,7 @@ export default function IndexTable() {
     const status = e.target.querySelector("input:checked")?.value;
     toast.info("Sedang edit...");
     fetch
-      .put(`invoice/${col?.id}/`, { status: status })
+      .put(`invoice/${col?.id}`, { status: status })
       .then((response) => {
         setData((prevData) => ({
           ...data,

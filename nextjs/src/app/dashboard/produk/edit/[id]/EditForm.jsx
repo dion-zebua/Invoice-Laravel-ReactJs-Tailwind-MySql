@@ -27,7 +27,7 @@ export default function EditForm(props) {
 
     setLoadingSubmit(true);
     fetch
-      .put(`product/${initialData?.id}/`, data)
+      .put(`product/${initialData?.id}`, data)
       .then((response) => {
         toast.success(response.data.message);
       })

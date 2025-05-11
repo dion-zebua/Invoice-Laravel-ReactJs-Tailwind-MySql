@@ -28,7 +28,7 @@ export default function VerifyEmailForm({ pageTitle }) {
 
     setLoadingSubmit(true);
     fetch
-      .post("send-verification/", data)
+      .post("send-verification", data)
       .then((response) => {
         toast.success(response.data.message);
       })

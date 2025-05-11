@@ -38,7 +38,7 @@ export default function EditForm(props) {
 
     setLoadingSubmit(true);
     fetch
-      .post(`user/${initialData?.id}/`, data, {
+      .post(`user/${initialData?.id}`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
