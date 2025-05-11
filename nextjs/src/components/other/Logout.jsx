@@ -25,7 +25,7 @@ export default function Logout() {
     e.preventDefault();
     toast.info("Sedang logout...");
     fetch
-      .post("logout/")
+      .post("logout")
       .then((response) => {
         toast.success(response.data.message);
         logout();
