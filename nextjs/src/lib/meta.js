@@ -13,7 +13,7 @@ export default async function updateMetadata(updates) {
             url: process.env.NEXT_PUBLIC_APP_URL_FRONTEND,
             images: [
                 {
-                    url: `${process.env.NEXT_PUBLIC_APP_URL_FRONTEND}/image/invoice-logo.jpg`,
+                    url: `${process.env.NEXT_PUBLIC_APP_URL_FRONTEND}image/invoice-logo.jpg`,
                     width: 500,
                     height: 500,
                 },
