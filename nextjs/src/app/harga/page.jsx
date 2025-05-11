@@ -43,16 +43,16 @@ export default function page() {
           <div className="bg-slate-50 grid gap-0 grid-cols-1 sm:grid-cols-2 py-10 sm:px-5 md:px-14 rounded-3xl">
             <div className="col-span-full max-w-2xl mx-auto mb-10">
               <h2 className="text-center subtitle text-2xl font-bold leading-8 md:leading-9 lg:leading-10">
-                Langganan sekarang juga!
+                Coba sekarang juga!
               </h2>
             </div>
             <div className="rounded-3xl py-10 px-5 sm:px-7 md:px-10 text-slate-800">
               <div className="">
                 <div className="flex items-start mb-5">
                   <span className="text-xl text-slate-700">Rp</span>
-                  <span className="text-8xl">0</span>
+                  <span className="text-7xl">0</span>
                 </div>
-                <h3 className="text-xl font-semibold">Premium</h3>
+                <h3 className="text-xl font-semibold">Trial</h3>
                 <p className="mb-5">Coba secara gratis</p>
                 <Link
                   href={helper.whatsapp(
@@ -67,7 +67,7 @@ export default function page() {
                 <ul
                   role="list"
                   className="mt-5 tracking-tight text-base divide-y divide-slate-900/10 text-slate-900 [&_svg]:fill-slate-900">
-                  <List item="1 Tahun" />
+                  <List item="1 Hari" />
                   <List item="Produk Tanpa Batas" />
                   <List item="Invoice Tanpa Batas" />
                 </ul>
@@ -77,10 +77,10 @@ export default function page() {
               <div className="bg-[url(/image/star.svg)] bg-right-bottom bg-[size:200%]">
                 <div className="flex items-start mb-5">
                   <span className="text-xl text-slate-300">Rp</span>
-                  <span className="text-8xl">0</span>
+                  <span className="text-7xl">250k</span>
                 </div>
                 <h3 className="text-xl font-semibold">Premium</h3>
-                <p className="mb-5">Coba secara gratis</p>
+                <p className="mb-5">Coba langganan</p>
                 <Link
                   href={helper.whatsapp(
                     `Saya ingin coba 1 tahun ${process.env.NEXT_PUBLIC_APP_URL_FRONTEND}`
