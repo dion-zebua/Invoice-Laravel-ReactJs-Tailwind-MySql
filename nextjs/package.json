@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
     "lint": "next lint",
-    "push-next": "git add -A && git commit -m 'malas ngoding, paham 🖐' && git push -u origin main"
+    "push-next": "git add -A && git commit -m \"malas ngoding, paham 🖐\" && git push -u origin nextjs"
   },
   "dependencies": {
     "@deemlol/next-icons": "^0.1.9",

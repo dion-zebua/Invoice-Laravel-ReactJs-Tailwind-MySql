@@ -25,6 +25,6 @@ class Push extends Command
      */
     public function handle()
     {
-        exec("git add -A && git commit -m 'malas ngoding, paham 🖐' && git push -u origin main");
+        exec("git add -A && git commit -m \"malas ngoding, paham 🖐\" && git push -u origin laravel");
     }
 }
