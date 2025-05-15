@@ -96,7 +96,7 @@ export default function SearchProduct(props) {
                   key={i}
                   onFocus={() => setFocus(true)}
                   onClick={() => handleNewSearchProduct(row, product.idRow)}
-                  className="px-2 py-1 hover:bg-gray-100 cursor-pointer">
+                  className="px-2 py-1 hover:bg-gray-100 cursor-pointer text-ellipsis block">
                   {row.name}
                 </div>
               );
