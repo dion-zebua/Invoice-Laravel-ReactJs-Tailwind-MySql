@@ -21,7 +21,7 @@
 <body>
     <div
         style="font-family: system-ui;width: 100%; max-width: 380px; background: #171a1c; padding: 20px; margin: 0 auto; border-radius: 5px;">
-        <img style="height: 50px;" src="{{ env('APP_URL_FRONTEND') . 'images/invoice.jpg' }}" alt="logo" />
+        <img style="height: 50px;" src="{{ env('APP_LOGO') }}" alt="logo" />
         <h1 style="color:#c9c9c9;margin: 20px 0;">{{ $title }}</h1>
         <p style="color: #a9a9a9;">Anda telah
             {{ $desc }} pada {{ \Carbon\Carbon::now()->locale('id')->translatedFormat('l, d F Y H:i') }}.

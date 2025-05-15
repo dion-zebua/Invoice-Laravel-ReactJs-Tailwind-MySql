@@ -193,7 +193,7 @@ export default function IndexTable() {
                 <TableCell>{col?.telephone ?? "-"}</TableCell>
                 <TableCell>
                   <div className="flex items-center gap-x-2 whitespace-nowrap">
-                    {col?.is_verified ? (
+                    {col?.is_verified == 1 ? (
                       <>
                         <CheckCircle
                           className="stroke-emerald-500"
