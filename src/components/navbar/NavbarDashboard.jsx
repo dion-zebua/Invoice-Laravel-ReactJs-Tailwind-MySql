@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { ChevronDown } from "@deemlol/next-icons";
+import { ChevronDown, Database } from "@deemlol/next-icons";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import Logout from "../other/Logout";
@@ -63,12 +63,9 @@ export default function NavbarDashboard() {
                 </DropdownMenuItem>
               </Link>
               <Separator className="my-1" />
-
-              {/* <DropdownMenuItem className="cursor-pointer hover:!text-primary p-0 pl-2 [&_button]:py-1.5 [&_button]:w-full [&_button]:text-left"> */}
               <div className="cursor-pointer hover:!text-primary p-0 pl-2 [&_button]:py-1.5 [&_button]:w-full [&_button]:text-left text-sm">
                 <Logout />
               </div>
-              {/* </DropdownMenuItem> */}
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
