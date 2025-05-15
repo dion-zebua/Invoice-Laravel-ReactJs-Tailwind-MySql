@@ -171,7 +171,7 @@ class AuthController extends Controller
 
             Mail::to($user->email)->send(new ResetPassword($user, $tokenVerified));
 
-            // DB::commit();
+            DB::commit();
 
             return response()->json([
                 'status' => true,
