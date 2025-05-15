@@ -3,9 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\File;
-use Carbon\Carbon;
 
 class BackupDB extends Command
 {
@@ -42,7 +39,6 @@ class BackupDB extends Command
             mkdir(dirname($fullPath), 0755, true);
         }
 
-        // Bungkus password dalam kutip ganda
         $command = "$mysqldumpPath --user=\"{$dbUser}\" --password=\"{$dbPass}\" --host=\"{$dbHost}\" {$dbName} | gzip > \"{$fullPath}\"";
 
         exec($command, $output, $returnVar);

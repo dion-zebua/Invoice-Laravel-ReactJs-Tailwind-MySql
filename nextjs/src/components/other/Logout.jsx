@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { LogOut as LogOutIcon } from "@deemlol/next-icons";
 
 export default function Logout() {
   const router = useRouter();
@@ -44,7 +45,10 @@ export default function Logout() {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger>Logout</AlertDialogTrigger>
+      <AlertDialogTrigger className="flex items-center">
+        Logout
+        <LogOutIcon className="!h-3 ml-2" />
+      </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Anda yakin logout?</AlertDialogTitle>
