@@ -65,6 +65,5 @@ class InvoiceGenerator extends Controller
             return $this->dataNotFound('Invoice');
         }
         return $this->dataFound($invoice, 'Invoice');
-        return $this->generate($id, $code, 'download');
     }
 }
