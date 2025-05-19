@@ -89,7 +89,7 @@ export default function User() {
                   <Link
                     className="underline"
                     target="_blank"
-                    href={`/dashboard/pengguna/${col?.id}/`}>
+                    href={`/dashboard/pengguna/edit/${col?.id}/`}>
                     {col?.name ?? "-"}
                   </Link>
                 </TableCell>
