@@ -29,7 +29,7 @@ class InvoiceGenerator extends Controller
         $pdf->setOptions([
             'fontDir' => public_path('/font'),
             'fontCache' => public_path('/font'),
-            'defaultFont' => 'Poppins',
+            'defaultFont' => 'poppins',
             'isRemoteEnabled' => true,
         ]);
         $pdf->getDomPDF()->setHttpContext(

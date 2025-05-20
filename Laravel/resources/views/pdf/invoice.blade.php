@@ -10,10 +10,10 @@
 
     <style>
         @font-face {
-            font-family: 'Poppins';
+            font-family: 'poppins';
             font-style: normal;
             font-weight: 400;
-            src: url({{ public_path('font/poppins.ttf') }}) format('truetype');
+            src: url('/font/poppins.ttf') format('truetype');
         }
 
         *,
@@ -25,7 +25,7 @@
 
         body {
             padding: 60px 0 30px 0;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'poppins', sans-serif;
         }
 
         .page-break {
