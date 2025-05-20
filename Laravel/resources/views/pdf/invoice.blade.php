@@ -6,19 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Document</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+    <title>#INV-{{ $data->code }}</title>
 
     <style>
         @font-face {
             font-family: 'Poppins';
-            font-weight: normal;
             font-style: normal;
+            font-weight: 400;
+            src: url('{{ public_path('fonts/Poppins-Regular.ttf') }}') format('truetype');
         }
 
         *,
@@ -26,17 +21,11 @@
         *::after {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         body {
             padding: 60px 0 30px 0;
-        }
-
-        .poppins-regular {
-            font-family: "Poppins", sans-serif !important;
-            font-weight: 400;
-            font-style: normal;
+            font-family: 'Poppins', sans-serif;
         }
 
         .page-break {
@@ -97,7 +86,7 @@
         }
 
         #header p {
-            margin-bottom: -5px !important;
+            margin-bottom: 5px !important;
         }
 
         .address-details tr td {
@@ -122,9 +111,8 @@
         .address-details p {
             white-space: nowrap;
             overflow: hidden;
-            text-overflow: ellipsis;
             max-width: 270px;
-            margin-bottom: -5px !important;
+            margin-bottom: 5px !important;
         }
 
 
@@ -147,7 +135,7 @@
         #main table td,
         #main table th {
             border: 1px solid rgb(130, 130, 130);
-            padding: 0px 8px 5px 8px;
+            padding: 8px !important;
             text-align: left;
             color: rgb(109, 109, 109);
         }
@@ -158,7 +146,6 @@
 
         #main table.total th {
             border: 0 !important;
-            padding-bottom: 10px;
         }
 
         #main table th {
@@ -179,7 +166,7 @@
 
         .payment ul span {
             font-style: italic;
-            margin-bottom: 2px;
+            margin-bottom: 5px;
             display: inline-block;
         }
 
@@ -218,7 +205,7 @@
     </style>
 </head>
 
-<body class="poppins-regular" style="font-size: 14px;">
+<body class="" style="font-size: 14px;">
     {{-- <img id="bg" src="{{ public_path('img/bg-invoice.jpg') }}" alt="background"> --}}
     <div id="container">
         <div class="status">
@@ -323,9 +310,12 @@
                     @foreach ($products as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ Str::limit($item->name, 1000, '...') }}</td>
+                            <td style="max-width: 300px; white-space: wrap;">
+                                {{ Str::limit($item->name, 60, '...') }}
+                            </td>
                             <td>{{ $item->quantity }}</td>
-                            <td>{{ Str::limit($item->unit, 10, '...') }}</td>
+                            <td style="max-width: 100px; white-space: wrap;">
+                                {{ Str::limit($item->unit, 15, '...') }}</td>
                             <td>{{ getRupiah($item->price) }}</td>
                             <td>{{ getRupiah($item->amount) }}</td>
                         </tr>
