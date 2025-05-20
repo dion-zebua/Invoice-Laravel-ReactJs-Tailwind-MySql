@@ -13,7 +13,7 @@
             font-family: 'Poppins';
             font-style: normal;
             font-weight: 400;
-            src: url('{{ public_path('fonts/Poppins-Regular.ttf') }}') format('truetype');
+            src: url({{ public_path('font/poppins.ttf') }}) format('truetype');
         }
 
         *,

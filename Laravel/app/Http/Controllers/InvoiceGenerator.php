@@ -27,8 +27,8 @@ class InvoiceGenerator extends Controller
             'qrCode' => $qrCode,
         ]);
         $pdf->setOptions([
-            'fontDir' => public_path('/fonts'),
-            'fontCache' => public_path('/fonts'),
+            'fontDir' => public_path('/font'),
+            'fontCache' => public_path('/font'),
             'defaultFont' => 'Poppins',
             'isRemoteEnabled' => true,
         ]);
