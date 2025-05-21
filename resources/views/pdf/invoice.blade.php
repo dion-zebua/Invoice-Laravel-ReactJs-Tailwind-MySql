@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Document</title>
+    <title>#INV-{{ $data->code }}</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -97,7 +97,7 @@
         }
 
         #header p {
-            margin-bottom: -5px !important;
+            margin-bottom: 10px !important;
         }
 
         .address-details tr td {
@@ -147,7 +147,7 @@
         #main table td,
         #main table th {
             border: 1px solid rgb(130, 130, 130);
-            padding: 0px 8px 5px 8px;
+            padding: 8px;
             text-align: left;
             color: rgb(109, 109, 109);
         }
