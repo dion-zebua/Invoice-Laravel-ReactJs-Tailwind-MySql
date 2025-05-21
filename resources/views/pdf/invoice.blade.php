@@ -124,7 +124,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 270px;
-            margin-bottom: 10px !important;
+            margin-bottom: 5px !important;
         }
 
 
