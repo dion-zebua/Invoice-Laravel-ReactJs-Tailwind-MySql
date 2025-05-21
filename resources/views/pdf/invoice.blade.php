@@ -116,7 +116,7 @@
         .address-details p.detail {
             opacity: .65;
             height: 30px;
-            margin-bottom: 0px !important;
+            margin-bottom: 10px !important;
         }
 
         .address-details p {
