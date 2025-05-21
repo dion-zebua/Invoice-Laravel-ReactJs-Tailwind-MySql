@@ -11,8 +11,6 @@ return [
     | in dompdf_config.inc.php. You can also override the entire config file.
     |
     */
-    'isRemoteEnabled' => true,
-
     'show_warnings' => false,   // Throw an Exception on warnings from dompdf
 
     'public_path' => null,  // Override the public path if needed

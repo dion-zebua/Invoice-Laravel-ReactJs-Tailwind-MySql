@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,12 +22,14 @@ class InvoiceGenerator extends Controller
         $invoiceProducts = $invoice->invoiceProducts;
         $qrCode = GenerateQrCodeController::getQrCode(env('APP_URL_FRONTEND') . "invoice/$id/$code/");
 
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.invoice', [
+        $pdf = Pdf::loadView('pdf.invoice', [
             'data' => $invoice,
             'products' => $invoiceProducts,
             'qrCode' => $qrCode,
+            'font' => public_path('fonts/poppins.ttf'),
+            // public/fonts/poppins.ttf
         ])
-            // ->setWarnings(true)
+            ->setWarnings(true)
             ->setOptions([
                 'isRemoteEnabled' => true,
             ])
