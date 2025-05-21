@@ -116,7 +116,7 @@
         .address-details p.detail {
             opacity: .65;
             height: 30px;
-            margin-bottom: 10px !important;
+            margin-bottom: 0px !important;
         }
 
         .address-details p {
@@ -124,7 +124,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             max-width: 270px;
-            margin-bottom: -5px !important;
+            margin-bottom: 10px !important;
         }
 
 
@@ -179,7 +179,7 @@
 
         .payment ul span {
             font-style: italic;
-            margin-bottom: 2px;
+            margin-bottom: 5px;
             display: inline-block;
         }
 
@@ -208,7 +208,7 @@
             opacity: .5;
             letter-spacing: 0.3px;
             font-size: 14px;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         .my-bold {
