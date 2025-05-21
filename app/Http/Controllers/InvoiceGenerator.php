@@ -26,10 +26,8 @@ class InvoiceGenerator extends Controller
             'data' => $invoice,
             'products' => $invoiceProducts,
             'qrCode' => $qrCode,
-            'font' => public_path('fonts/poppins.ttf'),
-            // public/fonts/poppins.ttf
         ])
-            ->setWarnings(true)
+            // ->setWarnings(true)
             ->setOptions([
                 'isRemoteEnabled' => true,
             ])
