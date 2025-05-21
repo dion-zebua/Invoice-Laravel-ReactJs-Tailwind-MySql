@@ -13,18 +13,17 @@ class InvoiceGenerator extends Controller
     {
         $invoice = Invoice::where('id', $id)
             ->where('code', $code)
+            ->with('invoiceProducts')
             ->first();
 
         if (!$invoice) {
             return $this->dataNotFound('Invoice');
         }
 
-        $invoiceProducts = $invoice->invoiceProducts;
         $qrCode = GenerateQrCodeController::getQrCode(env('APP_URL_FRONTEND') . "invoice/$id/$code/");
 
         $pdf = Pdf::loadView('pdf.invoice', [
             'data' => $invoice,
-            'products' => $invoiceProducts,
             'qrCode' => $qrCode,
         ])
             // ->setWarnings(true)
@@ -60,12 +59,12 @@ class InvoiceGenerator extends Controller
     {
         $invoice = Invoice::where('id', $id)
             ->where('code', $code)
+            ->with('invoiceProducts')
             ->first();
 
         if (!$invoice) {
             return $this->dataNotFound('Invoice');
         }
         return $this->dataFound($invoice, 'Invoice');
-        return $this->generate($id, $code, 'download');
     }
 }
