@@ -323,9 +323,12 @@
                     @foreach ($products as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ Str::limit($item->name, 1000, '...') }}</td>
+                            <td style="max-width: 300px; white-space: wrap;">
+                                {{ Str::limit($item->name, 60, '...') }}
+                            </td>
                             <td>{{ $item->quantity }}</td>
-                            <td>{{ Str::limit($item->unit, 10, '...') }}</td>
+                            <td style="max-width: 100px; white-space: wrap;">
+                                {{ Str::limit($item->unit, 15, '...') }}</td>
                             <td>{{ getRupiah($item->price) }}</td>
                             <td>{{ getRupiah($item->amount) }}</td>
                         </tr>
