@@ -166,12 +166,6 @@ export default function Iframe(invoice) {
             </table>
           </div>
           {/* Produk */}
-
-          {/* Total */}
-          <div className="px-4">
-            <div className=""></div>
-          </div>
-          {/* Total */}
         </div>
       </div>
     </div>
