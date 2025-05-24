@@ -60,6 +60,7 @@ class InvoiceGenerator extends Controller
         $invoice = Invoice::where('id', $id)
             ->where('code', $code)
             ->with('invoiceProducts')
+            ->with('user')
             ->first();
 
         if (!$invoice) {
