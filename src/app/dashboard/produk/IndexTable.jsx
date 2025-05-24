@@ -34,6 +34,7 @@ import { toast } from "sonner";
 import Sortable from "@/components/other/Table/Sortable";
 import Selector from "@/components/other/Table/Selector";
 import { useSession } from "@/context/SessionContext";
+import helper from "@/lib/helper";
 
 export default function IndexTable() {
   const user = useSession();
@@ -181,10 +182,7 @@ export default function IndexTable() {
                 <TableCell>{col?.name ?? "-"}</TableCell>
                 <TableCell>{col?.unit ?? "-"}</TableCell>
                 <TableCell>
-                  {new Intl.NumberFormat("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                  }).format(col?.price ?? 0)}
+                  {helper.convertToRupiah(col?.price ?? 0)}
                 </TableCell>
                 <TableCell>
                   <Action>

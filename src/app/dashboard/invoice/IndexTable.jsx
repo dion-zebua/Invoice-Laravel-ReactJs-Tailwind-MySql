@@ -42,6 +42,7 @@ import Selector from "@/components/other/Table/Selector";
 import { useSession } from "@/context/SessionContext";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import helper from "@/lib/helper";
 
 export default function IndexTable() {
   const user = useSession();
@@ -250,10 +251,7 @@ export default function IndexTable() {
                   </div>
                 </TableCell>
                 <TableCell>
-                  {new Intl.NumberFormat("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                  }).format(col?.grand_total ?? 0)}
+                  {helper.convertToRupiah(col?.grand_total ?? 0)}
                 </TableCell>
                 <TableCell>
                   <Action>
