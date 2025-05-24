@@ -8,24 +8,30 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>#INV-{{ $data->code }}</title>
 
-    <style>
-        @font-face {
-            font-family: 'poppins';
-            font-style: normal;
-            font-weight: 400;
-            src: url('/font/poppins.ttf') format('truetype');
-        }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900"
+        rel="stylesheet">
 
+    <style>
         *,
         *::before,
         *::after {
             margin: 0;
             padding: 0;
+            /* box-sizing: border-box; */
         }
 
         body {
             padding: 60px 0 30px 0;
-            font-family: 'poppins', sans-serif;
+            font-family: "Poppins", sans-serif !important;
+        }
+
+        .poppins-regular {
+            font-family: "Poppins", sans-serif !important;
+            font-weight: 400;
+            font-style: normal;
         }
 
         .page-break {
@@ -86,7 +92,7 @@
         }
 
         #header p {
-            margin-bottom: 5px !important;
+            margin-bottom: 10px !important;
         }
 
         .address-details tr td {
@@ -111,6 +117,7 @@
         .address-details p {
             white-space: nowrap;
             overflow: hidden;
+            /* text-overflow: ellipsis; */
             max-width: 270px;
             margin-bottom: 5px !important;
         }
@@ -135,7 +142,7 @@
         #main table td,
         #main table th {
             border: 1px solid rgb(130, 130, 130);
-            padding: 8px !important;
+            padding: 8px;
             text-align: left;
             color: rgb(109, 109, 109);
         }
@@ -146,6 +153,7 @@
 
         #main table.total th {
             border: 0 !important;
+            padding-bottom: 10px;
         }
 
         #main table th {
@@ -195,7 +203,7 @@
             opacity: .5;
             letter-spacing: 0.3px;
             font-size: 14px;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         .my-bold {
@@ -205,7 +213,7 @@
     </style>
 </head>
 
-<body class="" style="font-size: 14px;">
+<body class="poppins-regular" style="font-size: 14px;">
     {{-- <img id="bg" src="{{ public_path('img/bg-invoice.jpg') }}" alt="background"> --}}
     <div id="container">
         <div class="status">
@@ -307,7 +315,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach ($products as $item)
+                    @foreach ($data['invoiceProducts'] as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td style="max-width: 300px; white-space: wrap;">

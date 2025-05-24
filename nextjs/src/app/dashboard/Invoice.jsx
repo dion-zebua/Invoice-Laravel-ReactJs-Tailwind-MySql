@@ -15,6 +15,7 @@ import SkeletonTable from "@/components/other/Table/SkeletonTable";
 import { useSession } from "@/context/SessionContext";
 import Link from "next/link";
 import DataNotFound from "@/components/other/Table/DataNotFound";
+import helper from "@/lib/helper";
 
 export default function Invoice() {
   const user = useSession();
@@ -129,10 +130,7 @@ export default function Invoice() {
                   </div>
                 </TableCell>
                 <TableCell>
-                  {new Intl.NumberFormat("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                  }).format(col?.grand_total ?? 0)}
+                  {helper.convertToRupiah(col?.grand_total ?? 0)}
                 </TableCell>
               </TableRow>
             ))}
