@@ -12,7 +12,7 @@ export default function Iframe(invoice) {
           {/* Status */}
           <div className="py-3 bg-blue-300 text-slate-50 flex justify-around italic">
             {Array.from({ length: 3 }).map((_, index) => (
-              <p key={index}>
+              <p key={index} className="px-5">
                 {data.status}, {new Date(data.expire) < new Date() && "expired"}
               </p>
             ))}
